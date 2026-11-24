@@ -614,7 +614,6 @@
   </div>
 
   <script>
-    // ডিফল্ট গোপন PIN 1234 দেওয়া আছে, এটি পরে পরিবর্তন করে নিতে পারেন:
     const ADMIN_PIN = "1234";
 
     const packages = [
@@ -640,7 +639,7 @@
           "<b>Send Money</b> -এ ক্লিক করুন।",
           "উপরের পার্সোনাল নম্বরে নির্দিষ্ট পরিমাণ টাকা পাঠান।",
           "নিশ্চিত করতে আপনার bKash PIN দিন।",
-          "টাকা পাঠানোর পর প্রাপ্ত <b>TrxID</b> ও আপনার নম্বর উপরে লিখে <b>ভেরিফাই করুন</b> বাটনে চাপ দিন."
+          "টাকা পাঠানোর পর প্রাপ্ত <b>TrxID</b> ও আপনার নম্বর উপরে লিখে <b>ভেরিফাই করুন</b> বাটনে চাপ দিন।"
         ]
       },
       rocket: {
@@ -652,7 +651,7 @@
           "<b>Send Money</b> অপশন সিলেক্ট করুন।",
           "উপরের পার্সোনাল নম্বরে নির্দিষ্ট পরিমাণ টাকা পাঠান।",
           "আপনার Rocket PIN দিয়ে লেনদেন সম্পন্ন করুন।",
-          "প্রাপ্ত <b>TrxID</b> ও আপনার নম্বর উপরে লিখে <b>ভেরিফাই করুন</b> বাটনে চাপ দিন."
+          "প্রাপ্ত <b>TrxID</b> ও আপনার নম্বর উপরে লিখে <b>ভেরিফাই করুন</b> বাটনে চাপ দিন।"
         ]
       }
     };
@@ -704,6 +703,11 @@
       } else {
         document.getElementById("methodRocket").classList.add("selected-rocket");
       }
+    }
+
+    function backToHome() {
+      switchTab("home");
+      window.scrollTo(0, 0);
     }
 
     function proceedToPayment() {
@@ -817,7 +821,8 @@
         return `<span class="badge badge-completed">✅ সম্পন্ন হয়েছে</span>`;
       }
       if (status === "Rejected") {
-        return `<span class="badge badge-rejected">}
+        return `<span class="badge badge-rejected">❌ বাতিল</span>`;
+      }
       return `<span class="badge badge-pending">⏳ পেন্ডিং</span>`;
     }
 
@@ -825,7 +830,7 @@
       const container = document.getElementById("ordersContainer");
       const orders = getOrders();
       if (orders.length === 0) {
-        container.innerHTML = `<p style="color:var(--muted); font-size:13px;">এখনো কোনো অর্ডার করা হয়নি.</p>`;
+        container.innerHTML = `<p style="color:var(--muted); font-size:13px;">এখনো কোনো অর্ডার করা হয়নি।</p>`;
         return;
       }
       container.innerHTML = orders.map(o => `
@@ -900,28 +905,23 @@
 
     renderPackages();
   </script>
+
   <script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-analytics.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-analytics.js";
 
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: "AIzaSyCE-FEVFOaGRaDHSk-Wz9v5q3D5Ma6weFA",
-    authDomain: "as-ff-topup.firebaseapp.com",
-    projectId: "as-ff-topup",
-    storageBucket: "as-ff-topup.firebasestorage.app",
-    messagingSenderId: "22387329816",
-    appId: "1:22387329816:web:ee20634b507842337fac6d",
-    measurementId: "G-YM3E2FVQMB"
-  };
+    const firebaseConfig = {
+      apiKey: "AIzaSyCE-FEVFOaGRaDHSk-Wz9v5q3D5Ma6weFA",
+      authDomain: "as-ff-topup.firebaseapp.com",
+      projectId: "as-ff-topup",
+      storageBucket: "as-ff-topup.firebasestorage.app",
+      messagingSenderId: "22387329816",
+      appId: "1:22387329816:web:ee20634b507842337fac6d",
+      measurementId: "G-YM3E2FVQMB"
+    };
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-</script>
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+  </script>
 </body>
 </html>
