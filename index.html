@@ -18,6 +18,7 @@
       --rocket: #8c3494;
       --success: #10b981;
       --danger: #ef4444;
+      --info: #38bdf8;
     }
 
     * {
@@ -30,7 +31,7 @@
     body {
       background-color: var(--bg);
       color: var(--text);
-      padding-bottom: 84px;
+      padding-bottom: 88px;
     }
 
     header {
@@ -89,6 +90,33 @@
       max-width: 540px;
       margin: 0 auto;
       padding: 16px;
+    }
+
+    .user-bar {
+      background: #0f172a;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin-bottom: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .support-code-pill {
+      background: rgba(56, 189, 248, 0.14);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      color: var(--info);
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
     }
 
     .notice-banner {
@@ -180,6 +208,10 @@
       color: var(--primary);
     }
 
+    .input-group {
+      margin-bottom: 12px;
+    }
+
     .input-group label {
       display: block;
       font-size: 13px;
@@ -255,6 +287,19 @@
 
     .btn-primary:hover {
       background: var(--primary-hover);
+    }
+
+    .btn-secondary {
+      width: 100%;
+      padding: 11px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #0b1120;
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 8px;
     }
 
     .hidden { display: none !important; }
@@ -483,6 +528,23 @@
   </header>
 
   <div class="container">
+    <!-- ইউজার স্ট্যাটাস ও সাপোর্ট কোড বার -->
+    <div class="user-bar" id="userBar">
+      <div>
+        <div style="font-size: 12px; color: var(--muted);" id="authStatusText">অ্যাকাউন্ট: লগইন করা নেই</div>
+        <div style="margin-top: 4px;" id="supportCodeArea" class="hidden">
+          <span class="support-code-pill" onclick="copySupportCode()" title="কপি করতে ক্লিক করুন">
+            🎫 সাপোর্ট কোড: <span id="userSupportCode">-</span> (কপি)
+          </span>
+        </div>
+      </div>
+      <div>
+        <button class="copy-btn" id="openAuthBtn" onclick="switchTab('account')">লগইন / সাইনআপ</button>
+        <button class="copy-btn hidden" id="logoutBtn" onclick="logoutUser()">লগআউট</button>
+      </div>
+    </div>
+
+    <!-- হোম ভিউ -->
     <div id="homeView">
       <div class="notice-banner">
         🔥 <b>বিশেষ অফার ও আপডেট!</b> আমাদের ওয়েবসাইট থেকে খুব কম মূল্যে ডায়মন্ড টপ-আপ করুন। অর্ডার সাবমিট করার পর ২-৩ মিনিটের মধ্যে যাচাই করে ডেলিভারি দেওয়া হয়।
@@ -527,6 +589,44 @@
       <button class="btn-primary" onclick="proceedToPayment()">এখনই কিনুন (Buy Now)</button>
     </div>
 
+    <!-- অ্যাকাউন্ট / ইমেইল-পাসওয়ার্ড লগইন ও সাইনআপ ভিউ -->
+    <div id="accountView" class="hidden">
+      <div class="section-card">
+        <div class="step-header">
+          <div class="step-title" id="authCardTitle">🔐 ইমেইল ও পাসওয়ার্ড দিয়ে লগইন করুন</div>
+        </div>
+
+        <div id="authFormBox">
+          <div class="input-group">
+            <label>আপনার ইমেইল (Email)</label>
+            <input type="email" id="authEmail" class="input-box" placeholder="example@gmail.com" />
+          </div>
+          <div class="input-group">
+            <label>পাসওয়ার্ড (কমপক্ষে ৬ অক্ষর)</label>
+            <input type="password" id="authPassword" class="input-box" placeholder="********" />
+          </div>
+
+          <button class="btn-primary" id="authSubmitBtn" onclick="handleEmailAuth()">লগইন করুন</button>
+          <button class="btn-secondary" id="toggleAuthModeBtn" onclick="toggleAuthMode()">নতুন অ্যাকাউন্ট তৈরি করতে চান? সাইনআপ করুন</button>
+        </div>
+
+        <div id="profileInfoBox" class="hidden">
+          <p style="font-size: 14px; margin-bottom: 10px;"><b>ইমেইল:</b> <span id="profileEmail"></span></p>
+          <p style="font-size: 14px; margin-bottom: 14px;">
+            <b>আপনার সাপোর্ট কোড:</b>
+            <span class="support-code-pill" onclick="copySupportCode()">
+              <span id="profileSupportCode"></span> (কপি করুন)
+            </span>
+          </p>
+          <p style="font-size: 12px; color: var(--muted); line-height: 1.6;">
+            সাপোর্টে যোগাযোগ করলে বা অর্ডার নিয়ে কোনো সহায়তা লাগলে আপনার এই সাপোর্ট কোডটি ব্যবহার করতে পারবেন।
+          </p>
+          <button class="btn-secondary" onclick="logoutUser()">লগআউট করুন</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- পেমেন্ট গেটওয়ে ভিউ -->
     <div id="paymentView" class="hidden">
       <div class="gateway-box">
         <div class="gateway-header" id="gatewayHeader">bKash Payment</div>
@@ -551,6 +651,7 @@
       </div>
     </div>
 
+    <!-- স্ট্যাটাস ভিউ -->
     <div id="statusView" class="hidden">
       <div class="section-card status-card">
         <div class="spinner"></div>
@@ -558,7 +659,8 @@
         <p style="font-size: 14px; color: var(--muted); line-height: 1.6; margin-bottom: 16px;">
           ২-৩ মিনিটের ভিতরে আপনার পেমেন্টটি যাচাই করে সম্পন্ন করা হবে এবং আপনার গেম অ্যাকাউন্টে (<b id="confirmUid" style="color:#fff;"></b>) ডায়মন্ড পাঠানো হবে।
         </p>
-        <div style="background:#0b1120; padding:12px; border-radius:10px; font-size:13px; text-align:left; margin-bottom:16px;">
+        <div style="background:#0b1120; padding:12px; border-radius:10px; font-size:13px; text-align:left; margin-bottom:16px; line-height:1.7;">
+          <div><b>সাপোর্ট কোড:</b> <span id="confirmSupportCode"></span></div>
           <div><b>প্যাকেজ:</b> <span id="confirmPkg"></span></div>
           <div><b>পেমেন্ট মাধ্যম:</b> <span id="confirmMethod"></span></div>
           <div><b>TrxID:</b> <span id="confirmTrx"></span></div>
@@ -567,6 +669,7 @@
       </div>
     </div>
 
+    <!-- আমার অর্ডারসমূহ -->
     <div id="ordersView" class="hidden">
       <div class="section-card">
         <div class="step-header">
@@ -576,28 +679,29 @@
       </div>
     </div>
 
+    <!-- অ্যাডমিন প্যানেল -->
     <div id="adminView" class="hidden">
-      <div class="section-card" id="adminLoginBox">
+      <div class="section-card" id="adminRestrictedBox">
         <div class="step-header">
-          <div class="step-title">🔐 অ্যাডমিন লগইন</div>
+          <div class="step-title">🛡️ অ্যাডমিন অ্যাক্সেস</div>
         </div>
-        <div class="input-group">
-          <label>আপনার গোপন Admin PIN দিন</label>
-          <input type="password" id="adminPinInput" class="input-box" placeholder="PIN লিখুন" />
-        </div>
-        <button class="btn-primary" onclick="unlockAdmin()">লগইন করুন</button>
+        <p style="font-size:13px; color:var(--muted); line-height:1.6; margin-bottom:12px;">
+          অ্যাডমিন ড্যাশবোর্ড দেখতে অনুগ্রহ করে <b>Account</b> ট্যাব থেকে আপনার নির্ধারিত অ্যাডমিন ইমেইল দিয়ে লগইন করুন।
+        </p>
+        <button class="btn-primary" onclick="switchTab('account')">অ্যাকাউন্ট লগইনে যান</button>
       </div>
 
       <div class="section-card hidden" id="adminDashboard">
         <div class="step-header" style="justify-content: space-between;">
           <div class="step-title">⚙️ অ্যাডমিন অর্ডার ম্যানেজমেন্ট</div>
-          <button class="copy-btn" onclick="lockAdmin()">লক করুন</button>
+          <button class="copy-btn" onclick="logoutUser()">লগআউট</button>
         </div>
         <div id="adminOrdersContainer"></div>
       </div>
     </div>
   </div>
 
+  <!-- বটম নেভিগেশন -->
   <div class="bottom-nav">
     <button class="nav-btn active" id="navHome" onclick="switchTab('home')">
       <span>🏠</span>
@@ -607,6 +711,10 @@
       <span>📋</span>
       <span>My Orders</span>
     </button>
+    <button class="nav-btn" id="navAccount" onclick="switchTab('account')">
+      <span>👤</span>
+      <span>Account</span>
+    </button>
     <button class="nav-btn" id="navAdmin" onclick="switchTab('admin')">
       <span>🛡️</span>
       <span>Admin</span>
@@ -614,7 +722,7 @@
   </div>
 
   <script>
-    const ADMIN_PIN = "1234";
+    const ADMIN_EMAIL = "mdassadikislambd123@gmail.com";
 
     const packages = [
       { id: "pack1", name: "💎 25 ডায়মন্ড", price: 21, stock: true },
@@ -658,14 +766,19 @@
 
     let selectedPkg = null;
     let selectedMethod = null;
-    let isAdminUnlocked = false;
+    let isSignupMode = false;
+    let currentUserData = null;
 
-    function getOrders() {
-      return JSON.parse(localStorage.getItem("as_ff_orders") || "[]");
-    }
+    window.generateSupportCode = function() {
+      return "SUP-" + Math.floor(100000 + Math.random() * 900000);
+    };
 
-    function saveOrders(orders) {
-      localStorage.setItem("as_ff_orders", JSON.stringify(orders));
+    function isCurrentUserAdmin() {
+      return Boolean(
+        currentUserData &&
+        currentUserData.email &&
+        currentUserData.email.toLowerCase() === ADMIN_EMAIL.toLowerCase()
+      );
     }
 
     function renderPackages() {
@@ -712,6 +825,11 @@
 
     function proceedToPayment() {
       const uid = document.getElementById("playerUid").value.trim();
+      if (!currentUserData) {
+        alert("অর্ডার করতে আগে ইমেইল ও পাসওয়ার্ড দিয়ে লগইন করুন!");
+        switchTab("account");
+        return;
+      }
       if (!selectedPkg) {
         alert("দয়া করে প্রথমে একটি প্যাকেজ সিলেক্ট করুন!");
         return;
@@ -735,7 +853,7 @@
       const ul = document.getElementById("gatewayInstructions");
       ul.innerHTML = info.steps.map(s => `<li>${s}</li>`).join("");
 
-      document.getElementById("homeView").classList.add("hidden");
+      hideAllViews();
       document.getElementById("paymentView").classList.remove("hidden");
       window.scrollTo(0, 0);
     }
@@ -746,7 +864,13 @@
       alert("নম্বর কপি হয়েছে: " + num);
     }
 
-    function submitPayment() {
+    function copySupportCode() {
+      if (!currentUserData || !currentUserData.supportCode) return;
+      navigator.clipboard.writeText(currentUserData.supportCode);
+      alert("আপনার সাপোর্ট কোড কপি হয়েছে: " + currentUserData.supportCode);
+    }
+
+    async function submitPayment() {
       const sender = document.getElementById("senderNumber").value.trim();
       const trx = document.getElementById("trxIdInput").value.trim();
       const uid = document.getElementById("playerUid").value.trim();
@@ -759,14 +883,21 @@
         alert("দয়া করে সঠিক ট্রানজেকশন আইডি (TrxID) দিন!");
         return;
       }
+      if (!currentUserData) {
+        alert("দয়া করে আগে লগইন করুন।");
+        switchTab("account");
+        return;
+      }
 
       const methodTitle = paymentDetails[selectedMethod].name;
       const orderId = "ORD-" + Math.floor(100000 + Math.random() * 900000);
       const timeNow = new Date().toLocaleString("bn-BD");
 
-      const orders = getOrders();
-      orders.unshift({
+      const newOrder = {
         orderId,
+        userUid: currentUserData.uid,
+        userEmail: currentUserData.email,
+        supportCode: currentUserData.supportCode,
         pkg: selectedPkg.name,
         price: selectedPkg.price,
         uid,
@@ -774,22 +905,26 @@
         sender,
         trx,
         time: timeNow,
+        createdAt: Date.now(),
         status: "Pending"
-      });
-      saveOrders(orders);
+      };
 
+      await window.saveOrderToFirestore(newOrder);
+
+      document.getElementById("confirmSupportCode").innerText = currentUserData.supportCode;
       document.getElementById("confirmUid").innerText = uid;
       document.getElementById("confirmPkg").innerText = `${selectedPkg.name} (${selectedPkg.price} TK)`;
       document.getElementById("confirmMethod").innerText = methodTitle;
       document.getElementById("confirmTrx").innerText = trx;
 
-      document.getElementById("paymentView").classList.add("hidden");
+      hideAllViews();
       document.getElementById("statusView").classList.remove("hidden");
       document.getElementById("trxIdInput").value = "";
     }
 
     function hideAllViews() {
       document.getElementById("homeView").classList.add("hidden");
+      document.getElementById("accountView").classList.add("hidden");
       document.getElementById("paymentView").classList.add("hidden");
       document.getElementById("statusView").classList.add("hidden");
       document.getElementById("ordersView").classList.add("hidden");
@@ -807,12 +942,94 @@
         document.getElementById("ordersView").classList.remove("hidden");
         document.getElementById("navOrders").classList.add("active");
         renderOrders();
+      } else if (tab === "account") {
+        document.getElementById("accountView").classList.remove("hidden");
+        document.getElementById("navAccount").classList.add("active");
+        updateAccountUI();
       } else if (tab === "admin") {
         document.getElementById("adminView").classList.remove("hidden");
         document.getElementById("navAdmin").classList.add("active");
-        if (isAdminUnlocked) {
-          renderAdminOrders();
-        }
+        updateAdminViewUI();
+      }
+    }
+
+    function toggleAuthMode() {
+      isSignupMode = !isSignupMode;
+      document.getElementById("authCardTitle").innerText = isSignupMode
+        ? "✨ নতুন অ্যাকাউন্ট তৈরি করুন (সাপোর্ট কোড পাবেন)"
+        : "🔐 ইমেইল ও পাসওয়ার্ড দিয়ে লগইন করুন";
+      document.getElementById("authSubmitBtn").innerText = isSignupMode
+        ? "সাইনআপ করুন"
+        : "লগইন করুন";
+      document.getElementById("toggleAuthModeBtn").innerText = isSignupMode
+        ? "আগে থেকেই অ্যাকাউন্ট আছে? লগইন করুন"
+        : "নতুন অ্যাকাউন্ট তৈরি করতে চান? সাইনআপ করুন";
+    }
+
+    async function handleEmailAuth() {
+      const email = document.getElementById("authEmail").value.trim();
+      const password = document.getElementById("authPassword").value.trim();
+      if (!email || !password) {
+        alert("দয়া করে ইমেইল ও পাসওয়ার্ড দিন!");
+        return;
+      }
+      await window.authenticateUser(email, password, isSignupMode);
+    }
+
+    async function logoutUser() {
+      await window.signOutFirebaseUser();
+    }
+
+    function updateUserHeaderUI(userData) {
+      currentUserData = userData;
+      const statusText = document.getElementById("authStatusText");
+      const codeArea = document.getElementById("supportCodeArea");
+      const codeSpan = document.getElementById("userSupportCode");
+      const openBtn = document.getElementById("openAuthBtn");
+      const logoutBtn = document.getElementById("logoutBtn");
+
+      if (userData) {
+        statusText.innerText = "লগইন: " + userData.email;
+        codeSpan.innerText = userData.supportCode;
+        codeArea.classList.remove("hidden");
+        openBtn.classList.add("hidden");
+        logoutBtn.classList.remove("hidden");
+      } else {
+        statusText.innerText = "অ্যাকাউন্ট: লগইন করা নেই";
+        codeArea.classList.add("hidden");
+        openBtn.classList.remove("hidden");
+        logoutBtn.classList.add("hidden");
+      }
+      updateAccountUI();
+      updateAdminViewUI();
+    }
+
+    function updateAccountUI() {
+      const authFormBox = document.getElementById("authFormBox");
+      const profileInfoBox = document.getElementById("profileInfoBox");
+
+      if (currentUserData) {
+        authFormBox.classList.add("hidden");
+        profileInfoBox.classList.remove("hidden");
+        document.getElementById("profileEmail").innerText = currentUserData.email;
+        document.getElementById("profileSupportCode").innerText = currentUserData.supportCode;
+      } else {
+        authFormBox.classList.remove("hidden");
+        profileInfoBox.classList.add("hidden");
+      }
+    }
+
+    function updateAdminViewUI() {
+      const restrictedBox = document.getElementById("adminRestrictedBox");
+      const dashboardBox = document.getElementById("adminDashboard");
+
+      if (isCurrentUserAdmin()) {
+        restrictedBox.classList.add("hidden");
+        dashboardBox.classList.remove("hidden");
+        renderAdminOrders();
+      } else {
+        dashboardBox.classList.add("hidden");
+        restrictedBox.classList.remove("hidden");
       }
     }
 
@@ -826,13 +1043,21 @@
       return `<span class="badge badge-pending">⏳ পেন্ডিং</span>`;
     }
 
-    function renderOrders() {
+    async function renderOrders() {
       const container = document.getElementById("ordersContainer");
-      const orders = getOrders();
-      if (orders.length === 0) {
-        container.innerHTML = `<p style="color:var(--muted); font-size:13px;">এখনো কোনো অর্ডার করা হয়নি।</p>`;
+      if (!currentUserData) {
+        container.innerHTML = `<p style="color:var(--muted); font-size:13px;">আপনার অর্ডার ও সাপোর্ট কোড দেখতে আগে ইমেইল দিয়ে লগইন করুন।</p>`;
         return;
       }
+
+      container.innerHTML = `<p style="color:var(--muted); font-size:13px;">অর্ডার লোড হচ্ছে...</p>`;
+      const orders = await window.fetchUserOrders(currentUserData.uid);
+
+      if (orders.length === 0) {
+        container.innerHTML = `<p style="color:var(--muted); font-size:13px;">এখনো কোনো অর্ডার করা হয়নি। (সাপোর্ট কোড: <b>${currentUserData.supportCode}</b>)</p>`;
+        return;
+      }
+
       container.innerHTML = orders.map(o => `
         <div class="order-item">
           <div class="order-top">
@@ -841,6 +1066,7 @@
           </div>
           <div style="color:var(--muted); line-height:1.6;">
             <div>অর্ডার আইডি: <b>${o.orderId}</b></div>
+            <div>সাপোর্ট কোড: <b style="color:var(--info);">${o.supportCode || currentUserData.supportCode}</b></div>
             <div>গেম UID: <b>${o.uid}</b></div>
             <div>মাধ্যম: ${o.method} (${o.sender})</div>
             <div>TrxID: <b>${o.trx}</b></div>
@@ -850,39 +1076,30 @@
       `).join("");
     }
 
-    function unlockAdmin() {
-      const pin = document.getElementById("adminPinInput").value.trim();
-      if (pin !== ADMIN_PIN) {
-        alert("ভুল Admin PIN! সঠিক PIN দিন।");
+    async function updateOrderStatus(docId, newStatus) {
+      if (!isCurrentUserAdmin()) {
+        alert("শুধুমাত্র অ্যাডমিন স্ট্যাটাস পরিবর্তন করতে পারবেন।");
         return;
       }
-      isAdminUnlocked = true;
-      document.getElementById("adminPinInput").value = "";
-      document.getElementById("adminLoginBox").classList.add("hidden");
-      document.getElementById("adminDashboard").classList.remove("hidden");
+      await window.updateOrderStatusInFirestore(docId, newStatus);
       renderAdminOrders();
     }
 
-    function lockAdmin() {
-      isAdminUnlocked = false;
-      document.getElementById("adminDashboard").classList.add("hidden");
-      document.getElementById("adminLoginBox").classList.remove("hidden");
-    }
-
-    function updateOrderStatus(orderId, newStatus) {
-      const orders = getOrders();
-      const updated = orders.map(o => o.orderId === orderId ? { ...o, status: newStatus } : o);
-      saveOrders(updated);
-      renderAdminOrders();
-    }
-
-    function renderAdminOrders() {
+    async function renderAdminOrders() {
       const container = document.getElementById("adminOrdersContainer");
-      const orders = getOrders();
+      if (!isCurrentUserAdmin()) {
+        container.innerHTML = `<p style="color:var(--muted); font-size:13px;">অ্যাডমিন অ্যাক্সেস নেই।</p>`;
+        return;
+      }
+
+      container.innerHTML = `<p style="color:var(--muted); font-size:13px;">সব অর্ডার লোড হচ্ছে...</p>`;
+      const orders = await window.fetchAllOrders();
+
       if (orders.length === 0) {
         container.innerHTML = `<p style="color:var(--muted); font-size:13px;">কোনো অর্ডার পাওয়া যায়নি।</p>`;
         return;
       }
+
       container.innerHTML = orders.map(o => `
         <div class="order-item">
           <div class="order-top">
@@ -890,14 +1107,16 @@
             ${getStatusBadge(o.status)}
           </div>
           <div style="color:var(--muted); line-height:1.6;">
+            <div>সাপোর্ট কোড: <b style="color:var(--info);">${o.supportCode || "N/A"}</b></div>
+            <div>ইমেইল: <b>${o.userEmail || "N/A"}</b></div>
             <div>গেম UID: <b style="color:#fff;">${o.uid}</b></div>
             <div>মাধ্যম: ${o.method} | সেন্ডার: <b>${o.sender}</b></div>
             <div>TrxID: <b style="color:#fff;">${o.trx}</b></div>
             <div style="font-size:11px; margin-top:4px;">${o.time}</div>
           </div>
           <div class="admin-actions">
-            <button class="btn-complete" onclick="updateOrderStatus('${o.orderId}', 'Completed')">✅ Complete</button>
-            <button class="btn-reject" onclick="updateOrderStatus('${o.orderId}', 'Rejected')">❌ Reject</button>
+            <button class="btn-complete" onclick="updateOrderStatus('${o.docId}', 'Completed')">✅ Complete</button>
+            <button class="btn-reject" onclick="updateOrderStatus('${o.docId}', 'Rejected')">❌ Reject</button>
           </div>
         </div>
       `).join("");
@@ -909,6 +1128,25 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-analytics.js";
+    import {
+      getAuth,
+      createUserWithEmailAndPassword,
+      signInWithEmailAndPassword,
+      signOut,
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js";
+    import {
+      getFirestore,
+      doc,
+      setDoc,
+      getDoc,
+      collection,
+      addDoc,
+      getDocs,
+      query,
+      where,
+      updateDoc
+    } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCE-FEVFOaGRaDHSk-Wz9v5q3D5Ma6weFA",
@@ -922,6 +1160,81 @@
 
     const app = initializeApp(firebaseConfig);
     const analytics = getAnalytics(app);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    async function ensureUserProfile(user) {
+      const userRef = doc(db, "users", user.uid);
+      const snap = await getDoc(userRef);
+      if (snap.exists()) {
+        return { uid: user.uid, email: user.email, ...snap.data() };
+      } else {
+        const supportCode = window.generateSupportCode();
+        const profileData = {
+          email: user.email,
+          supportCode,
+          createdAt: Date.now()
+        };
+        await setDoc(userRef, profileData);
+        return { uid: user.uid, ...profileData };
+      }
+    }
+
+    window.authenticateUser = async function(email, password, isSignup) {
+      try {
+        let cred;
+        if (isSignup) {
+          cred = await createUserWithEmailAndPassword(auth, email, password);
+        } else {
+          cred = await signInWithEmailAndPassword(auth, email, password);
+        }
+        const profile = await ensureUserProfile(cred.user);
+        updateUserHeaderUI(profile);
+        alert(isSignup ? `অ্যাকাউন্ট তৈরি হয়েছে! আপনার সাপোর্ট কোড: ${profile.supportCode}` : "সফলভাবে লগইন হয়েছে!");
+        switchTab("home");
+      } catch (err) {
+        alert("লগইন/সাইনআপ সমস্যা: " + err.message);
+      }
+    };
+
+    window.signOutFirebaseUser = async function() {
+      await signOut(auth);
+      updateUserHeaderUI(null);
+      alert("লগআউট সম্পন্ন হয়েছে।");
+    };
+
+    window.saveOrderToFirestore = async function(orderObj) {
+      await addDoc(collection(db, "orders"), orderObj);
+    };
+
+    window.fetchUserOrders = async function(userUid) {
+      const q = query(collection(db, "orders"), where("userUid", "==", userUid));
+      const snapshot = await getDocs(q);
+      const list = [];
+      snapshot.forEach(d => list.push({ docId: d.id, ...d.data() }));
+      return list.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+    };
+
+    window.fetchAllOrders = async function() {
+      const snapshot = await getDocs(collection(db, "orders"));
+      const list = [];
+      snapshot.forEach(d => list.push({ docId: d.id, ...d.data() }));
+      return list.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+    };
+
+    window.updateOrderStatusInFirestore = async function(docId, newStatus) {
+      const orderRef = doc(db, "orders", docId);
+      await updateDoc(orderRef, { status: newStatus });
+    };
+
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const profile = await ensureUserProfile(user);
+        updateUserHeaderUI(profile);
+      } else {
+        updateUserHeaderUI(null);
+      }
+    });
   </script>
 </body>
 </html>
