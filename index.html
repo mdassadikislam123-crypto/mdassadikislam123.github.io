@@ -1,88 +1,904 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A.S FF TopUp</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f7f6;
-            margin: 0;
-            padding: 20px;
-        }
-        .container {
-            max-width: 400px;
-            margin: 0 auto;
-            background: #ffffff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        h2 {
-            text-align: center;
-            color: #333;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            color: #555;
-        }
-        input, select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-        button {
-            width: 100%;
-            padding: 10px;
-            background-color: #28a745;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #218838;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A.S FF TopUp - দ্রুত ও নিরাপদ ডায়মন্ড টপ-আপ</title>
+  <style>
+    :root {
+      --bg: #0b1120;
+      --card: #162032;
+      --card-hover: #1e2b42;
+      --border: #2b3a55;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --primary: #f97316;
+      --primary-hover: #ea580c;
+      --bkash: #e2136e;
+      --rocket: #8c3494;
+      --success: #10b981;
+      --danger: #ef4444;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      padding-bottom: 84px;
+    }
+
+    header {
+      background: #0f172a;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-logo {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #f97316, #ec4899);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 16px;
+      color: #fff;
+    }
+
+    .brand-title {
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .brand-sub {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .support-btn {
+      background: var(--card);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 7px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .container {
+      max-width: 540px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    .notice-banner {
+      background: linear-gradient(135deg, rgba(249, 115, 22, 0.16), rgba(236, 72, 153, 0.14));
+      border: 1px solid rgba(249, 115, 22, 0.4);
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin-bottom: 16px;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .section-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .step-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .step-num {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #fff;
+      font-weight: 700;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .step-title {
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .package-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .pkg-item {
+      background: #0b1120;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      cursor: pointer;
+      transition: 0.2s;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .pkg-item:hover:not(.out-of-stock) {
+      border-color: var(--primary);
+      background: var(--card-hover);
+    }
+
+    .pkg-item.selected {
+      border-color: var(--primary);
+      background: rgba(249, 115, 22, 0.15);
+      box-shadow: 0 0 0 1px var(--primary);
+    }
+
+    .pkg-item.out-of-stock {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .pkg-name {
+      font-size: 13.5px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .pkg-price {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .input-group label {
+      display: block;
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .input-box {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: #0b1120;
+      color: var(--text);
+      font-size: 15px;
+      outline: none;
+    }
+
+    .input-box:focus {
+      border-color: var(--primary);
+    }
+
+    .method-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .method-card {
+      background: #0b1120;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 14px;
+      text-align: center;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .method-card.selected-bkash {
+      border-color: var(--bkash);
+      background: rgba(226, 19, 110, 0.14);
+    }
+
+    .method-card.selected-rocket {
+      border-color: var(--rocket);
+      background: rgba(140, 52, 148, 0.16);
+    }
+
+    .method-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 14px;
+      margin-bottom: 6px;
+      color: #fff;
+    }
+
+    .bg-bkash { background: var(--bkash); }
+    .bg-rocket { background: var(--rocket); }
+
+    .btn-primary {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      background: var(--primary);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+    }
+
+    .hidden { display: none !important; }
+
+    .gateway-box {
+      background: #ffffff;
+      color: #1e293b;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.45);
+    }
+
+    .gateway-header {
+      padding: 16px;
+      text-align: center;
+      color: #fff;
+      font-weight: 700;
+      font-size: 18px;
+    }
+
+    .gateway-amount {
+      background: #f1f5f9;
+      padding: 12px;
+      text-align: center;
+      font-size: 20px;
+      font-weight: 800;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .gateway-body {
+      padding: 18px;
+    }
+
+    .gateway-body input {
+      width: 100%;
+      padding: 12px;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 15px;
+      margin-top: 6px;
+      margin-bottom: 14px;
+    }
+
+    .copy-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #f8fafc;
+      border: 1px dashed #94a3b8;
+      padding: 10px 12px;
+      border-radius: 8px;
+      margin: 10px 0;
+      font-weight: 700;
+      font-size: 16px;
+    }
+
+    .copy-btn {
+      background: #1e293b;
+      color: #fff;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .instructions-list {
+      font-size: 13px;
+      line-height: 1.7;
+      color: #334155;
+      margin: 12px 0 16px;
+      padding-left: 16px;
+    }
+
+    .verify-btn {
+      width: 100%;
+      padding: 13px;
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .back-link {
+      display: block;
+      text-align: center;
+      margin-top: 12px;
+      color: #64748b;
+      font-size: 13px;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    .status-card {
+      text-align: center;
+      padding: 24px 16px;
+    }
+
+    .spinner {
+      width: 44px;
+      height: 44px;
+      border: 4px solid rgba(249, 115, 22, 0.2);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 14px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .order-item {
+      background: #0b1120;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      margin-bottom: 10px;
+      font-size: 13px;
+    }
+
+    .order-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+      font-weight: 700;
+    }
+
+    .badge {
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .badge-pending {
+      background: rgba(245, 158, 11, 0.2);
+      color: #fbbf24;
+    }
+
+    .badge-completed {
+      background: rgba(16, 185, 129, 0.2);
+      color: #34d399;
+    }
+
+    .badge-rejected {
+      background: rgba(239, 68, 68, 0.2);
+      color: #f87171;
+    }
+
+    .admin-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .btn-complete {
+      flex: 1;
+      padding: 8px;
+      border: none;
+      border-radius: 8px;
+      background: var(--success);
+      color: #fff;
+      font-weight: 700;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .btn-reject {
+      flex: 1;
+      padding: 8px;
+      border: none;
+      border-radius: 8px;
+      background: var(--danger);
+      color: #fff;
+      font-weight: 700;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #0f172a;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+      z-index: 50;
+    }
+
+    .nav-btn {
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .nav-btn.active {
+      color: var(--primary);
+    }
+  </style>
 </head>
 <body>
 
-<div class="container">
-    <h2>A.S FF TopUp</h2>
-    <form>
-        <div class="form-group">
-            <label for="uid">প্লেয়ার ইউআইডি (Player UID):</label>
-            <input type="text" id="uid" name="uid" placeholder="আপনার গেম ইউআইডি লিখুন" required>
-        </div>
-        
-        <div class="form-group">
-            <label for="package">প্যাকেজ নির্বাচন করুন:</label>
-            <select id="package" name="package">
-                <option value="100_diamond">১০০ ডায়মন্ড</option>
-                <option value="310_diamond">৩১০ ডায়মন্ড</option>
-                <option value="520_diamond">৫২০ ডায়মন্ড</option>
-            </select>
-        </div>
+  <header>
+    <div class="brand">
+      <div class="brand-logo">AS</div>
+      <div>
+        <div class="brand-title">A.S FF TopUp</div>
+        <div class="brand-sub">দ্রুত ও বিশ্বস্ত ডায়মন্ড শপ</div>
+      </div>
+    </div>
+    <a href="https://t.me/ownerastopup" target="_blank" class="support-btn">💬 সাপোর্ট</a>
+  </header>
 
-        <div class="form-group">
-            <label for="payment">পেমেন্ট মেথড:</label>
-            <select id="payment" name="payment">
-                <option value="bkash">বিকাশ (bKash)</option>
-                <option value="rocket">রকেট (Rocket)</option>
-            </select>
+  <div class="container">
+    <div id="homeView">
+      <div class="notice-banner">
+        🔥 <b>বিশেষ অফার ও আপডেট!</b> আমাদের ওয়েবসাইট থেকে খুব কম মূল্যে ডায়মন্ড টপ-আপ করুন। অর্ডার সাবমিট করার পর ২-৩ মিনিটের মধ্যে যাচাই করে ডেলিভারি দেওয়া হয়।
+      </div>
+
+      <div class="section-card">
+        <div class="step-header">
+          <div class="step-num">১</div>
+          <div class="step-title">প্যাকেজ সিলেক্ট করুন</div>
         </div>
+        <div class="package-list" id="packageList"></div>
+      </div>
 
-        <button type="submit">অর্ডার নিশ্চিত করুন</button>
-    </form>
-</div>
+      <div class="section-card">
+        <div class="step-header">
+          <div class="step-num">২</div>
+          <div class="step-title">গেম আইডি তথ্য দিন</div>
+        </div>
+        <div class="input-group">
+          <label>আপনার Free Fire Player UID দিন</label>
+          <input type="number" id="playerUid" class="input-box" placeholder="যেমন: 1234567890" />
+        </div>
+      </div>
 
+      <div class="section-card">
+        <div class="step-header">
+          <div class="step-num">৩</div>
+          <div class="step-title">পেমেন্ট মেথড নির্বাচন করুন</div>
+        </div>
+        <div class="method-grid">
+          <div class="method-card" id="methodBkash" onclick="selectMethod('bkash')">
+            <div class="method-badge bg-bkash">bKash</div>
+            <div style="font-size: 12px; color: var(--muted);">পার্সোনাল সেন্ড মানি</div>
+          </div>
+          <div class="method-card" id="methodRocket" onclick="selectMethod('rocket')">
+            <div class="method-badge bg-rocket">Rocket</div>
+            <div style="font-size: 12px; color: var(--muted);">পার্সোনাল সেন্ড মানি</div>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-primary" onclick="proceedToPayment()">এখনই কিনুন (Buy Now)</button>
+    </div>
+
+    <div id="paymentView" class="hidden">
+      <div class="gateway-box">
+        <div class="gateway-header" id="gatewayHeader">bKash Payment</div>
+        <div class="gateway-amount" id="gatewayAmount">৳ 0</div>
+        <div class="gateway-body">
+          <label style="font-size: 13px; font-weight: 700;">যে নম্বর থেকে টাকা পাঠিয়েছেন (Sender Number)</label>
+          <input type="tel" id="senderNumber" placeholder="01XXXXXXXXX" />
+
+          <label style="font-size: 13px; font-weight: 700;">ট্রানজেকশন আইডি দিন (TrxID)</label>
+          <input type="text" id="trxIdInput" placeholder="যেমন: 9H7G6F5D4S" />
+
+          <div class="copy-row">
+            <span>নম্বর: <span id="merchantNumber">01820313593</span></span>
+            <button class="copy-btn" onclick="copyNumber()">কপি করুন</button>
+          </div>
+
+          <ul class="instructions-list" id="gatewayInstructions"></ul>
+
+          <button class="verify-btn" id="verifyBtn" onclick="submitPayment()">ভেরিফাই করুন</button>
+          <span class="back-link" onclick="backToHome()">⬅️ ফিরে যান</span>
+        </div>
+      </div>
+    </div>
+
+    <div id="statusView" class="hidden">
+      <div class="section-card status-card">
+        <div class="spinner"></div>
+        <h3 style="margin-bottom: 8px; color: #fbbf24;">আপনার পেমেন্টটি পেন্ডিং রয়েছে!</h3>
+        <p style="font-size: 14px; color: var(--muted); line-height: 1.6; margin-bottom: 16px;">
+          ২-৩ মিনিটের ভিতরে আপনার পেমেন্টটি যাচাই করে সম্পন্ন করা হবে এবং আপনার গেম অ্যাকাউন্টে (<b id="confirmUid" style="color:#fff;"></b>) ডায়মন্ড পাঠানো হবে।
+        </p>
+        <div style="background:#0b1120; padding:12px; border-radius:10px; font-size:13px; text-align:left; margin-bottom:16px;">
+          <div><b>প্যাকেজ:</b> <span id="confirmPkg"></span></div>
+          <div><b>পেমেন্ট মাধ্যম:</b> <span id="confirmMethod"></span></div>
+          <div><b>TrxID:</b> <span id="confirmTrx"></span></div>
+        </div>
+        <button class="btn-primary" onclick="backToHome()">হোম পেজে ফিরে যান</button>
+      </div>
+    </div>
+
+    <div id="ordersView" class="hidden">
+      <div class="section-card">
+        <div class="step-header">
+          <div class="step-title">📦 আমার অর্ডারসমূহ</div>
+        </div>
+        <div id="ordersContainer"></div>
+      </div>
+    </div>
+
+    <div id="adminView" class="hidden">
+      <div class="section-card" id="adminLoginBox">
+        <div class="step-header">
+          <div class="step-title">🔐 অ্যাডমিন লগইন</div>
+        </div>
+        <div class="input-group">
+          <label>আপনার গোপন Admin PIN দিন</label>
+          <input type="password" id="adminPinInput" class="input-box" placeholder="PIN লিখুন" />
+        </div>
+        <button class="btn-primary" onclick="unlockAdmin()">লগইন করুন</button>
+      </div>
+
+      <div class="section-card hidden" id="adminDashboard">
+        <div class="step-header" style="justify-content: space-between;">
+          <div class="step-title">⚙️ অ্যাডমিন অর্ডার ম্যানেজমেন্ট</div>
+          <button class="copy-btn" onclick="lockAdmin()">লক করুন</button>
+        </div>
+        <div id="adminOrdersContainer"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <button class="nav-btn active" id="navHome" onclick="switchTab('home')">
+      <span>🏠</span>
+      <span>হোম</span>
+    </button>
+    <button class="nav-btn" id="navOrders" onclick="switchTab('orders')">
+      <span>📋</span>
+      <span>My Orders</span>
+    </button>
+    <button class="nav-btn" id="navAdmin" onclick="switchTab('admin')">
+      <span>🛡️</span>
+      <span>Admin</span>
+    </button>
+  </div>
+
+  <script>
+    // ডিফল্ট গোপন PIN 1234 দেওয়া আছে, এটি পরে পরিবর্তন করে নিতে পারেন:
+    const ADMIN_PIN = "1234";
+
+    const packages = [
+      { id: "pack1", name: "💎 25 ডায়মন্ড", price: 21, stock: true },
+      { id: "pack2", name: "💎 50 ডায়মন্ড", price: 35, stock: true },
+      { id: "pack3", name: "💎 115 ডায়মন্ড", price: 76, stock: true },
+      { id: "pack4", name: "💎 240 ডায়মন্ড", price: 152, stock: true },
+      { id: "pack5", name: "💎 610 ডায়মন্ড", price: 383, stock: true },
+      { id: "pack6", name: "💎 1240 ডায়মন্ড", price: 770, stock: true },
+      { id: "pack7", name: "💎 2530 ডায়মন্ড", price: 1550, stock: true },
+      { id: "pack8", name: "Weekly", price: 152, stock: true },
+      { id: "pack9", name: "Monthly", price: 765, stock: true },
+      { id: "pack10", name: "❌ ২০০০ Unipin (Out of stock)", price: 1690, stock: false }
+    ];
+
+    const paymentDetails = {
+      bkash: {
+        name: "বিকাশ (bKash)",
+        number: "01820313593",
+        color: "#e2136e",
+        steps: [
+          "*247# ডায়াল করে আপনার bKash মোবাইল মেনুতে যান অথবা bKash অ্যাপ খুলুন।",
+          "<b>Send Money</b> -এ ক্লিক করুন।",
+          "উপরের পার্সোনাল নম্বরে নির্দিষ্ট পরিমাণ টাকা পাঠান।",
+          "নিশ্চিত করতে আপনার bKash PIN দিন।",
+          "টাকা পাঠানোর পর প্রাপ্ত <b>TrxID</b> ও আপনার নম্বর উপরে লিখে <b>ভেরিফাই করুন</b> বাটনে চাপ দিন."
+        ]
+      },
+      rocket: {
+        name: "রকেট (Rocket)",
+        number: "01820313593",
+        color: "#8c3494",
+        steps: [
+          "*322# ডায়াল করে আপনার Rocket মেনুতে যান অথবা Rocket অ্যাপ খুলুন।",
+          "<b>Send Money</b> অপশন সিলেক্ট করুন।",
+          "উপরের পার্সোনাল নম্বরে নির্দিষ্ট পরিমাণ টাকা পাঠান।",
+          "আপনার Rocket PIN দিয়ে লেনদেন সম্পন্ন করুন।",
+          "প্রাপ্ত <b>TrxID</b> ও আপনার নম্বর উপরে লিখে <b>ভেরিফাই করুন</b> বাটনে চাপ দিন."
+        ]
+      }
+    };
+
+    let selectedPkg = null;
+    let selectedMethod = null;
+    let isAdminUnlocked = false;
+
+    function getOrders() {
+      return JSON.parse(localStorage.getItem("as_ff_orders") || "[]");
+    }
+
+    function saveOrders(orders) {
+      localStorage.setItem("as_ff_orders", JSON.stringify(orders));
+    }
+
+    function renderPackages() {
+      const list = document.getElementById("packageList");
+      list.innerHTML = "";
+      packages.forEach(pkg => {
+        const div = document.createElement("div");
+        div.className = "pkg-item" + (!pkg.stock ? " out-of-stock" : "");
+        div.id = "pkg_" + pkg.id;
+        div.innerHTML = `
+          <div class="pkg-name">${pkg.name}</div>
+          <div class="pkg-price">${pkg.price} TK</div>
+        `;
+        if (pkg.stock) {
+          div.onclick = () => selectPackage(pkg);
+        } else {
+          div.onclick = () => alert("দুঃখিত! এই প্যাকেজটি বর্তমানে আউট অফ স্টক রয়েছে।");
+        }
+        list.appendChild(div);
+      });
+    }
+
+    function selectPackage(pkg) {
+      selectedPkg = pkg;
+      document.querySelectorAll(".pkg-item").forEach(el => el.classList.remove("selected"));
+      document.getElementById("pkg_" + pkg.id).classList.add("selected");
+    }
+
+    function selectMethod(method) {
+      selectedMethod = method;
+      document.getElementById("methodBkash").classList.remove("selected-bkash");
+      document.getElementById("methodRocket").classList.remove("selected-rocket");
+      if (method === "bkash") {
+        document.getElementById("methodBkash").classList.add("selected-bkash");
+      } else {
+        document.getElementById("methodRocket").classList.add("selected-rocket");
+      }
+    }
+
+    function proceedToPayment() {
+      const uid = document.getElementById("playerUid").value.trim();
+      if (!selectedPkg) {
+        alert("দয়া করে প্রথমে একটি প্যাকেজ সিলেক্ট করুন!");
+        return;
+      }
+      if (!uid || uid.length < 5) {
+        alert("দয়া করে সঠিক Free Fire Player UID দিন!");
+        return;
+      }
+      if (!selectedMethod) {
+        alert("দয়া করে বিকাশ বা রকেট পেমেন্ট মেথড সিলেক্ট করুন!");
+        return;
+      }
+
+      const info = paymentDetails[selectedMethod];
+      document.getElementById("gatewayHeader").innerText = info.name + " Payment";
+      document.getElementById("gatewayHeader").style.background = info.color;
+      document.getElementById("verifyBtn").style.background = info.color;
+      document.getElementById("gatewayAmount").innerText = "৳ " + selectedPkg.price;
+      document.getElementById("merchantNumber").innerText = info.number;
+
+      const ul = document.getElementById("gatewayInstructions");
+      ul.innerHTML = info.steps.map(s => `<li>${s}</li>`).join("");
+
+      document.getElementById("homeView").classList.add("hidden");
+      document.getElementById("paymentView").classList.remove("hidden");
+      window.scrollTo(0, 0);
+    }
+
+    function copyNumber() {
+      const num = document.getElementById("merchantNumber").innerText;
+      navigator.clipboard.writeText(num);
+      alert("নম্বর কপি হয়েছে: " + num);
+    }
+
+    function submitPayment() {
+      const sender = document.getElementById("senderNumber").value.trim();
+      const trx = document.getElementById("trxIdInput").value.trim();
+      const uid = document.getElementById("playerUid").value.trim();
+
+      if (!sender || sender.length < 11) {
+        alert("দয়া করে যে নম্বর থেকে টাকা পাঠিয়েছেন সেই সঠিক ১১ ডিজিটের নম্বর দিন!");
+        return;
+      }
+      if (!trx || trx.length < 5) {
+        alert("দয়া করে সঠিক ট্রানজেকশন আইডি (TrxID) দিন!");
+        return;
+      }
+
+      const methodTitle = paymentDetails[selectedMethod].name;
+      const orderId = "ORD-" + Math.floor(100000 + Math.random() * 900000);
+      const timeNow = new Date().toLocaleString("bn-BD");
+
+      const orders = getOrders();
+      orders.unshift({
+        orderId,
+        pkg: selectedPkg.name,
+        price: selectedPkg.price,
+        uid,
+        method: methodTitle,
+        sender,
+        trx,
+        time: timeNow,
+        status: "Pending"
+      });
+      saveOrders(orders);
+
+      document.getElementById("confirmUid").innerText = uid;
+      document.getElementById("confirmPkg").innerText = `${selectedPkg.name} (${selectedPkg.price} TK)`;
+      document.getElementById("confirmMethod").innerText = methodTitle;
+      document.getElementById("confirmTrx").innerText = trx;
+
+      document.getElementById("paymentView").classList.add("hidden");
+      document.getElementById("statusView").classList.remove("hidden");
+      document.getElementById("trxIdInput").value = "";
+    }
+
+    function hideAllViews() {
+      document.getElementById("homeView").classList.add("hidden");
+      document.getElementById("paymentView").classList.add("hidden");
+      document.getElementById("statusView").classList.add("hidden");
+      document.getElementById("ordersView").classList.add("hidden");
+      document.getElementById("adminView").classList.add("hidden");
+    }
+
+    function switchTab(tab) {
+      hideAllViews();
+      document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
+
+      if (tab === "home") {
+        document.getElementById("homeView").classList.remove("hidden");
+        document.getElementById("navHome").classList.add("active");
+      } else if (tab === "orders") {
+        document.getElementById("ordersView").classList.remove("hidden");
+        document.getElementById("navOrders").classList.add("active");
+        renderOrders();
+      } else if (tab === "admin") {
+        document.getElementById("adminView").classList.remove("hidden");
+        document.getElementById("navAdmin").classList.add("active");
+        if (isAdminUnlocked) {
+          renderAdminOrders();
+        }
+      }
+    }
+
+    function getStatusBadge(status) {
+      if (status === "Completed") {
+        return `<span class="badge badge-completed">✅ সম্পন্ন হয়েছে</span>`;
+      }
+      if (status === "Rejected") {
+        return `<span class="badge badge-rejected">}
+      return `<span class="badge badge-pending">⏳ পেন্ডিং</span>`;
+    }
+
+    function renderOrders() {
+      const container = document.getElementById("ordersContainer");
+      const orders = getOrders();
+      if (orders.length === 0) {
+        container.innerHTML = `<p style="color:var(--muted); font-size:13px;">এখনো কোনো অর্ডার করা হয়নি.</p>`;
+        return;
+      }
+      container.innerHTML = orders.map(o => `
+        <div class="order-item">
+          <div class="order-top">
+            <span>${o.pkg} - ${o.price} TK</span>
+            ${getStatusBadge(o.status)}
+          </div>
+          <div style="color:var(--muted); line-height:1.6;">
+            <div>অর্ডার আইডি: <b>${o.orderId}</b></div>
+            <div>গেম UID: <b>${o.uid}</b></div>
+            <div>মাধ্যম: ${o.method} (${o.sender})</div>
+            <div>TrxID: <b>${o.trx}</b></div>
+            <div style="font-size:11px; margin-top:4px;">${o.time}</div>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function unlockAdmin() {
+      const pin = document.getElementById("adminPinInput").value.trim();
+      if (pin !== ADMIN_PIN) {
+        alert("ভুল Admin PIN! সঠিক PIN দিন।");
+        return;
+      }
+      isAdminUnlocked = true;
+      document.getElementById("adminPinInput").value = "";
+      document.getElementById("adminLoginBox").classList.add("hidden");
+      document.getElementById("adminDashboard").classList.remove("hidden");
+      renderAdminOrders();
+    }
+
+    function lockAdmin() {
+      isAdminUnlocked = false;
+      document.getElementById("adminDashboard").classList.add("hidden");
+      document.getElementById("adminLoginBox").classList.remove("hidden");
+    }
+
+    function updateOrderStatus(orderId, newStatus) {
+      const orders = getOrders();
+      const updated = orders.map(o => o.orderId === orderId ? { ...o, status: newStatus } : o);
+      saveOrders(updated);
+      renderAdminOrders();
+    }
+
+    function renderAdminOrders() {
+      const container = document.getElementById("adminOrdersContainer");
+      const orders = getOrders();
+      if (orders.length === 0) {
+        container.innerHTML = `<p style="color:var(--muted); font-size:13px;">কোনো অর্ডার পাওয়া যায়নি।</p>`;
+        return;
+      }
+      container.innerHTML = orders.map(o => `
+        <div class="order-item">
+          <div class="order-top">
+            <span>${o.orderId} • ${o.pkg} (${o.price} TK)</span>
+            ${getStatusBadge(o.status)}
+          </div>
+          <div style="color:var(--muted); line-height:1.6;">
+            <div>গেম UID: <b style="color:#fff;">${o.uid}</b></div>
+            <div>মাধ্যম: ${o.method} | সেন্ডার: <b>${o.sender}</b></div>
+            <div>TrxID: <b style="color:#fff;">${o.trx}</b></div>
+            <div style="font-size:11px; margin-top:4px;">${o.time}</div>
+          </div>
+          <div class="admin-actions">
+            <button class="btn-complete" onclick="updateOrderStatus('${o.orderId}', 'Completed')">✅ Complete</button>
+            <button class="btn-reject" onclick="updateOrderStatus('${o.orderId}', 'Rejected')">❌ Reject</button>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    renderPackages();
+  </script>
 </body>
 </html>
