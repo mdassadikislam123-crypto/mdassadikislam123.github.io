@@ -96,6 +96,9 @@
       color: var(--primary);
       border: 1px solid #bfdbfe;
       white-space: nowrap;
+      max-width: 170px;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .container {
@@ -136,10 +139,29 @@
       color: var(--muted);
     }
 
-    .grid-2 {
+    .mode-switch {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 14px;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 14px;
+      background: var(--surface-soft);
+      padding: 4px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+
+    .mode-btn {
+      margin-top: 0;
+      padding: 8px 10px;
+      font-size: 13px;
+      background: transparent;
+      color: var(--muted);
+      border-radius: 8px;
+    }
+
+    .mode-btn.active {
+      background: var(--primary);
+      color: #ffffff;
     }
 
     .stats-grid {
@@ -312,6 +334,28 @@
       font-size: 13px;
     }
 
+    .discreet-footer {
+      text-align: center;
+      margin-top: 20px;
+      padding-bottom: 10px;
+    }
+
+    .discreet-link {
+      display: inline-block;
+      width: auto;
+      margin-top: 0;
+      padding: 4px 10px;
+      background: transparent;
+      color: #94a3b8;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .discreet-link:hover {
+      background: transparent;
+      color: #64748b;
+    }
+
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -367,7 +411,7 @@
         </div>
       </div>
       <div class="header-actions">
-        <span id="sessionBadge" class="pill">Guest Mode</span>
+        <span id="sessionBadge" class="pill">Guest</span>
         <button type="button" id="logoutBtn" class="btn-secondary btn-sm hidden">লগআউট</button>
       </div>
     </div>
@@ -376,56 +420,60 @@
   <main class="container">
     <!-- Service & Support Notice -->
     <div class="notice-banner">
-      <span>সার্ভিস সময়: প্রতিদিন সকাল ০৮:০০টা থেকে রাত ১০:০০টা পর্যন্ত। অর্ডারের পর সঠিক TrxID ও UID মিলিয়ে দিন।</span>
+      <span>সার্ভিস সময়: প্রতিদিন সকাল ০৮:০০টা থেকে রাত ১০:০০টা পর্যন্ত। নিজের Gmail অ্যাকাউন্ট দিয়ে সাইন ইন করে অর্ডার ও সাপোর্ট নিন।</span>
     </div>
 
-    <!-- Login Section (Customer & Admin) -->
-    <section id="authSection" class="grid-2">
-      <!-- Customer Login / Register -->
-      <div class="card">
-        <h2>কাস্টমার লগইন / রেজিস্টার</h2>
-        <p class="card-desc">
-          নিজের অ্যাকাউন্ট তৈরি বা লগইন করে অর্ডার ও সাপোর্ট সুবিধা নিন।
-        </p>
-        <form id="customerAuthForm">
-          <label for="custUsername">কাস্টমার ইউজারনেম বা মোবাইল</label>
-          <input type="text" id="custUsername" placeholder="যেমন: 017XXXXXXXX বা rahim" required />
+    <!-- Customer Gmail Sign In / Create Account Section -->
+    <section id="authSection" class="card">
+      <h2 id="authHeading">Gmail দিয়ে অ্যাকাউন্ট তৈরি করুন</h2>
+      <p class="card-desc" id="authSubDesc">
+        আপনার নিজস্ব Gmail অ্যাকাউন্ট দিয়ে নতুন প্রোফাইল তৈরি করুন এবং অর্ডার ও সাপোর্ট সুবিধা নিন।
+      </p>
 
-          <label for="custPassword">পাসওয়ার্ড</label>
-          <input type="password" id="custPassword" placeholder="পাসওয়ার্ড লিখুন" required />
-
-          <button type="submit">কাস্টমার হিসেবে প্রবেশ করুন</button>
-        </form>
-        <div id="custAuthMsg" class="status-msg"></div>
+      <div class="mode-switch">
+        <button type="button" id="modeRegisterBtn" class="mode-btn active">নতুন অ্যাকাউন্ট</button>
+        <button type="button" id="modeLoginBtn" class="mode-btn">সাইন ইন (Gmail)</button>
       </div>
 
-      <!-- Admin Login -->
-      <div class="card">
-        <h2>অ্যাডমিন প্যানেল লগইন</h2>
-        <p class="card-desc">
-          অ্যাডমিন জিমেইল ও পাসওয়ার্ড দিয়ে লগইন করে অর্ডার ও সাপোর্ট নিয়ন্ত্রণ করুন।
-        </p>
-        <form id="adminAuthForm">
-          <label for="adminEmail">অ্যাডমিন জিমেইল</label>
-          <input type="text" id="adminEmail" placeholder="mdassadikislambd123@gmail" required />
+      <form id="customerAuthForm">
+        <label for="custGmail">আপনার Gmail ঠিকানা</label>
+        <input type="email" id="custGmail" placeholder="example@gmail.com" required />
 
-          <label for="adminPassword">অ্যাডমিন পাসওয়ার্ড</label>
-          <input type="password" id="adminPassword" placeholder="অ্যাডমিন পাসওয়ার্ড লিখুন" required />
+        <label for="custPassword">পাসওয়ার্ড</label>
+        <input type="password" id="custPassword" placeholder="পাসওয়ার্ড লিখুন" required />
 
-          <button type="submit">অ্যাডমিন প্যানেলে লগইন করুন</button>
-        </form>
-        <div id="adminAuthMsg" class="status-msg"></div>
+        <button type="submit" id="authSubmitBtn">Gmail দিয়ে অ্যাকাউন্ট তৈরি করুন</button>
+      </form>
+      <div id="custAuthMsg" class="status-msg"></div>
+    </section>
+
+    <!-- Hidden / Discreet Admin Login Box (Only opens when triggered) -->
+    <section id="adminAuthSection" class="card hidden">
+      <div class="item-top">
+        <h2>Admin Access</h2>
+        <button type="button" id="closeAdminBoxBtn" class="btn-secondary btn-sm">বন্ধ করুন</button>
       </div>
+      <p class="card-desc">অ্যাডমিন জিমেইল ও পাসওয়ার্ড দিয়ে প্রবেশ করুন।</p>
+      <form id="adminAuthForm">
+        <label for="adminEmail">অ্যাডমিন জিমেইল</label>
+        <input type="text" id="adminEmail" placeholder="mdassadikislambd123@gmail" required />
+
+        <label for="adminPassword">অ্যাডমিন পাসওয়ার্ড</label>
+        <input type="password" id="adminPassword" placeholder="অ্যাডমিন পাসওয়ার্ড লিখুন" required />
+
+        <button type="submit">অ্যাডমিন প্যানেলে প্রবেশ করুন</button>
+      </form>
+      <div id="adminAuthMsg" class="status-msg"></div>
     </section>
 
     <!-- Profile & Summary Card -->
     <section id="profileCard" class="card hidden">
       <div class="item-top">
         <div>
-          <h2 id="profileTitle">কাস্টমার অ্যাকাউন্ট</h2>
+          <h2 id="profileTitle">অ্যাকাউন্ট প্রোফাইল</h2>
           <p class="card-desc" id="profileSub">সাপোর্ট সময়: প্রতিদিন সকাল ৮:০০টা থেকে রাত ১০:০০টা পর্যন্ত।</p>
         </div>
-        <span class="pill" id="rolePill">Customer</span>
+        <span class="pill" id="rolePill">Gmail User</span>
       </div>
       <div class="stats-grid" id="customerStats">
         <div class="stat-box">
@@ -446,7 +494,7 @@
     <!-- Tab 1: Order Section -->
     <section id="tabOrder" class="card hidden">
       <h2>নতুন অর্ডার করুন</h2>
-      <p class="card-desc">সার্ভিস, প্যাকেজ, ইন-গেম UID এবং পেমেন্ট সিস্টেম নির্বাচন করে অর্ডার দিন।</p>
+      <p class="card-desc">প্যাকেজ তালিকা, ইন-গেম ইউআইডি কোড এবং পেমেন্ট সিস্টেম নির্বাচন করে অর্ডার দিন।</p>
       <form id="orderForm">
         <label for="serviceType">সার্ভিস নির্বাচন করুন</label>
         <select id="serviceType" required>
@@ -498,7 +546,7 @@
     <section id="tabSupport" class="card hidden">
       <h2>কাস্টমার সাপোর্ট ও হেল্প</h2>
       <p class="card-desc">
-        আমাদের ওয়েবসাইট ও সাপোর্ট প্রতিদিন <strong>সকাল ৮:০০টা থেকে রাত ১০:০০টা</strong> পর্যন্ত খোলা থাকে। কোনো সমস্যায় পড়লে আপনার লগইন অ্যাকাউন্টের তথ্যসহ মেসেজ পাঠান।
+        আমাদের ওয়েবসাইট ও সাপোর্ট প্রতিদিন <strong>সকাল ৮:০০টা থেকে রাত ১০:০০টা</strong> পর্যন্ত খোলা থাকে। কোনো সমস্যায় পড়লে আপনার Gmail অ্যাকাউন্টের তথ্যসহ সাপোর্ট রিকোয়েস্ট পাঠান।
       </p>
 
       <div id="supportFormBox">
@@ -517,6 +565,11 @@
       <h3 style="margin-top: 20px; margin-bottom: 6px; font-size: 16px;" id="ticketsHeading">সাপোর্ট টিকিটসমূহ</h3>
       <div id="ticketsList"></div>
     </section>
+
+    <!-- Discreet Admin Trigger -->
+    <div class="discreet-footer" id="discreetFooter">
+      <button type="button" id="openAdminBoxBtn" class="discreet-link">Admin</button>
+    </div>
   </main>
 
   <!-- Bottom Navigation -->
@@ -549,14 +602,27 @@
     const TELEGRAM_BOT_TOKEN = "";
     const TELEGRAM_CHAT_ID = "";
 
-    const SESSION_KEY = "as_ff_topup_session_v2";
+    const SESSION_KEY = "as_ff_topup_session_v3";
     let activeTab = "order";
+    let authMode = "register"; // "register" | "login"
+    let showAdminBox = false;
     let cachedState = { orders: [], users: [], tickets: [] };
 
     // DOM Elements
     const sessionBadge = document.getElementById("sessionBadge");
     const logoutBtn = document.getElementById("logoutBtn");
     const authSection = document.getElementById("authSection");
+    const adminAuthSection = document.getElementById("adminAuthSection");
+    const openAdminBoxBtn = document.getElementById("openAdminBoxBtn");
+    const closeAdminBoxBtn = document.getElementById("closeAdminBoxBtn");
+    const discreetFooter = document.getElementById("discreetFooter");
+
+    const modeRegisterBtn = document.getElementById("modeRegisterBtn");
+    const modeLoginBtn = document.getElementById("modeLoginBtn");
+    const authHeading = document.getElementById("authHeading");
+    const authSubDesc = document.getElementById("authSubDesc");
+    const authSubmitBtn = document.getElementById("authSubmitBtn");
+
     const profileCard = document.getElementById("profileCard");
     const profileTitle = document.getElementById("profileTitle");
     const profileSub = document.getElementById("profileSub");
@@ -601,6 +667,38 @@
       return String(val || "").trim().toLowerCase();
     }
 
+    function setAuthMode(mode) {
+      authMode = mode;
+      custAuthMsg.textContent = "";
+      if (mode === "register") {
+        modeRegisterBtn.classList.add("active");
+        modeLoginBtn.classList.remove("active");
+        authHeading.textContent = "Gmail দিয়ে অ্যাকাউন্ট তৈরি করুন";
+        authSubDesc.textContent = "নতুন গ্রাহক হিসেবে আপনার Gmail ও পাসওয়ার্ড দিয়ে অ্যাকাউন্ট ক্রিয়েট করুন।";
+        authSubmitBtn.textContent = "অ্যাকাউন্ট তৈরি করুন";
+      } else {
+        modeLoginBtn.classList.add("active");
+        modeRegisterBtn.classList.remove("active");
+        authHeading.textContent = "Gmail দিয়ে সাইন ইন করুন";
+        authSubDesc.textContent = "আগে তৈরি করা আপনার Gmail ও পাসওয়ার্ড দিয়ে সাইন ইন করুন।";
+        authSubmitBtn.textContent = "Gmail দিয়ে সাইন ইন করুন";
+      }
+    }
+
+    modeRegisterBtn.addEventListener("click", () => setAuthMode("register"));
+    modeLoginBtn.addEventListener("click", () => setAuthMode("login"));
+
+    openAdminBoxBtn.addEventListener("click", () => {
+      showAdminBox = true;
+      applySessionUI();
+    });
+
+    closeAdminBoxBtn.addEventListener("click", () => {
+      showAdminBox = false;
+      adminAuthMsg.textContent = "";
+      applySessionUI();
+    });
+
     function getSession() {
       try {
         return JSON.parse(localStorage.getItem(SESSION_KEY)) || null;
@@ -611,6 +709,7 @@
 
     function setSession(sessionObj) {
       localStorage.setItem(SESSION_KEY, JSON.stringify(sessionObj));
+      showAdminBox = false;
       activeTab = sessionObj.role === "admin" ? "orders" : "order";
       syncNavActive();
       applySessionUI();
@@ -619,6 +718,7 @@
 
     function clearSession() {
       localStorage.removeItem(SESSION_KEY);
+      showAdminBox = false;
       activeTab = "order";
       syncNavActive();
       applySessionUI();
@@ -632,31 +732,39 @@
 
     function applySessionUI() {
       const session = getSession();
-      custAuthMsg.textContent = "";
-      adminAuthMsg.textContent = "";
       formStatus.textContent = "";
       supportStatus.textContent = "";
 
       if (!session) {
-        sessionBadge.textContent = "Guest Mode";
+        sessionBadge.textContent = "Guest";
         logoutBtn.classList.add("hidden");
         profileCard.classList.add("hidden");
         tabOrder.classList.add("hidden");
         tabOrdersList.classList.add("hidden");
         tabSupport.classList.add("hidden");
-        authSection.classList.remove("hidden");
+        discreetFooter.classList.remove("hidden");
+
+        if (showAdminBox) {
+          authSection.classList.add("hidden");
+          adminAuthSection.classList.remove("hidden");
+        } else {
+          adminAuthSection.classList.add("hidden");
+          authSection.classList.remove("hidden");
+        }
         return;
       }
 
       logoutBtn.classList.remove("hidden");
       profileCard.classList.remove("hidden");
+      discreetFooter.classList.add("hidden");
+      adminAuthSection.classList.add("hidden");
 
       const isAdmin = session.role === "admin";
-      sessionBadge.textContent = isAdmin ? "Admin Panel" : session.username;
-      rolePill.textContent = isAdmin ? "ADMIN" : "CUSTOMER";
+      sessionBadge.textContent = isAdmin ? "Admin" : session.email;
+      rolePill.textContent = isAdmin ? "ADMIN" : "GMAIL ACCOUNT";
       profileTitle.textContent = isAdmin
-        ? `অ্যাডমিন অ্যাকাউন্ট (${session.email || ADMIN_EMAIL})`
-        : `অ্যাকাউন্ট: ${session.username}`;
+        ? `অ্যাডমিন অ্যাকাউন্ট (${session.email})`
+        : `Gmail অ্যাকাউন্ট: ${session.email}`;
       profileSub.textContent = "সাপোর্ট সময়: প্রতিদিন সকাল ৮:০০টা থেকে রাত ১০:০০টা পর্যন্ত।";
       customerStats.classList.toggle("hidden", isAdmin);
 
@@ -670,7 +778,11 @@
       tabSupport.classList.add("hidden");
 
       if (activeTab === "account") {
-        authSection.classList.remove("hidden");
+        if (isAdmin) {
+          tabOrdersList.classList.remove("hidden");
+        } else {
+          authSection.classList.remove("hidden");
+        }
       } else if (activeTab === "orders") {
         tabOrdersList.classList.remove("hidden");
       } else if (activeTab === "support") {
@@ -687,6 +799,7 @@
     navButtons.forEach((btn) => {
       btn.addEventListener("click", () => {
         activeTab = btn.dataset.tab;
+        showAdminBox = false;
         syncNavActive();
         applySessionUI();
         if (getSession()) {
@@ -758,8 +871,12 @@
       return "st-pending";
     }
 
-    function updateCustomerStats(orders, username) {
-      const myOrders = orders.filter((o) => o.customerUsername === username);
+    function matchesUser(itemEmail, sessionEmail) {
+      return normalizeEmail(itemEmail) === normalizeEmail(sessionEmail);
+    }
+
+    function updateCustomerStats(orders, email) {
+      const myOrders = orders.filter((o) => matchesUser(o.customerEmail || o.customerUsername, email));
       const totalSpend = myOrders
         .filter((o) => o.status !== "Cancelled")
         .reduce((sum, o) => sum + (Number(o.price) || 0), 0);
@@ -774,7 +891,7 @@
 
       const filtered = session.role === "admin"
         ? orders
-        : orders.filter((o) => o.customerUsername === session.username);
+        : orders.filter((o) => matchesUser(o.customerEmail || o.customerUsername, session.email));
 
       if (!filtered.length) {
         ordersList.innerHTML = "<p class='card-desc'>কোনো অর্ডার পাওয়া যায়নি।</p>";
@@ -790,7 +907,7 @@
               <strong>ID: ${escapeHtml(order.id)}</strong>
               <span class="status-tag ${statusClass(order.status)}">${escapeHtml(order.status)}</span>
             </div>
-            <div><strong>অ্যাকাউন্ট:</strong> ${escapeHtml(order.customerUsername || "N/A")}</div>
+            <div><strong>Gmail:</strong> ${escapeHtml(order.customerEmail || order.customerUsername || "N/A")}</div>
             <div><strong>সার্ভিস ও প্যাকেজ:</strong> ${escapeHtml(order.service)} — ${escapeHtml(order.package)}</div>
             <div><strong>UID:</strong> ${escapeHtml(order.uid)} | <strong>${escapeHtml(order.paymentMethod)}:</strong> ${escapeHtml(order.trxId)}</div>
             ${
@@ -812,7 +929,7 @@
 
       const filtered = session.role === "admin"
         ? tickets
-        : tickets.filter((t) => t.customerUsername === session.username);
+        : tickets.filter((t) => matchesUser(t.customerEmail || t.customerUsername, session.email));
 
       if (!filtered.length) {
         ticketsList.innerHTML = "<p class='card-desc'>কোনো সাপোর্ট টিকিট পাওয়া যায়নি।</p>";
@@ -828,7 +945,7 @@
               <strong>Ticket: ${escapeHtml(ticket.id)}</strong>
               <span class="status-tag ${statusClass(ticket.status)}">${escapeHtml(ticket.status)}</span>
             </div>
-            <div><strong>অ্যাকাউন্ট:</strong> ${escapeHtml(ticket.customerUsername)}</div>
+            <div><strong>Gmail:</strong> ${escapeHtml(ticket.customerEmail || ticket.customerUsername)}</div>
             <div><strong>Order ID:</strong> ${escapeHtml(ticket.orderId || "উল্লেখ নেই")}</div>
             <div><strong>বার্তা:</strong> ${escapeHtml(ticket.message)}</div>
             ${
@@ -847,7 +964,7 @@
       const session = getSession();
       if (!session) return;
       if (session.role === "customer") {
-        updateCustomerStats(state.orders, session.username);
+        updateCustomerStats(state.orders, session.email);
       }
       renderOrders(state.orders);
       renderTickets(state.tickets);
@@ -869,37 +986,52 @@
       }
     }
 
-    // Customer Login / Register
+    // Customer Gmail Register / Sign In
     customerAuthForm.addEventListener("submit", async (e) => {
       e.preventDefault();
-      const username = document.getElementById("custUsername").value.trim().toLowerCase();
+      const email = normalizeEmail(document.getElementById("custGmail").value);
       const password = document.getElementById("custPassword").value;
 
-      if (!username || !password) return;
+      if (!email.includes("@")) {
+        custAuthMsg.textContent = "সঠিক Gmail ঠিকানা লিখুন।";
+        return;
+      }
+
       custAuthMsg.textContent = "যাচাই করা হচ্ছে...";
 
       try {
         const state = await fetchCloudState();
-        const existingUser = state.users.find((u) => u.username === username);
+        const existingUser = state.users.find(
+          (u) => normalizeEmail(u.email || u.username) === email
+        );
 
-        if (existingUser) {
-          if (existingUser.password !== password) {
-            custAuthMsg.textContent = "ভুল পাসওয়ার্ড দিয়েছেন!";
+        if (authMode === "register") {
+          if (existingUser) {
+            custAuthMsg.textContent = "এই Gmail দিয়ে আগেই অ্যাকাউন্ট আছে। অনুগ্রহ করে সাইন ইন করুন।";
             return;
           }
-          setSession({ role: "customer", username });
-        } else {
           state.users.push({
-            username,
+            email,
             password,
             createdAt: new Date().toISOString()
           });
           await saveCloudState(state);
-          setSession({ role: "customer", username });
+          customerAuthForm.reset();
+          setSession({ role: "customer", email });
+        } else {
+          if (!existingUser) {
+            custAuthMsg.textContent = "এই Gmail দিয়ে কোনো অ্যাকাউন্ট পাওয়া যায়নি। আগে নতুন অ্যাকাউন্ট তৈরি করুন।";
+            return;
+          }
+          if (existingUser.password !== password) {
+            custAuthMsg.textContent = "পাসওয়ার্ড সঠিক নয়!";
+            return;
+          }
+          customerAuthForm.reset();
+          setSession({ role: "customer", email });
         }
-        customerAuthForm.reset();
       } catch (err) {
-        custAuthMsg.textContent = `লগইন সমস্যা: ${err.message}`;
+        custAuthMsg.textContent = `সমস্যা হয়েছে: ${err.message}`;
       }
     });
 
@@ -915,7 +1047,8 @@
       }
 
       adminAuthForm.reset();
-      setSession({ role: "admin", username: "admin", email: ADMIN_EMAIL });
+      adminAuthMsg.textContent = "";
+      setSession({ role: "admin", email: ADMIN_EMAIL });
     });
 
     logoutBtn.addEventListener("click", clearSession);
@@ -962,7 +1095,7 @@
       e.preventDefault();
       const session = getSession();
       if (!session || session.role !== "customer") {
-        formStatus.textContent = "অর্ডার করতে আগে কাস্টমার হিসেবে লগইন করুন।";
+        formStatus.textContent = "অর্ডার করতে আগে Gmail দিয়ে সাইন ইন করুন।";
         return;
       }
 
@@ -974,7 +1107,7 @@
 
       const newOrder = {
         id: "ORD" + Date.now(),
-        customerUsername: session.username,
+        customerEmail: session.email,
         service: document.getElementById("serviceType").value,
         package: pkgSelect.value,
         price: priceValue,
@@ -993,7 +1126,7 @@
         await sendTelegramMessage(
           `নতুন অর্ডার এসেছে!\n` +
           `Order ID: ${newOrder.id}\n` +
-          `Customer Account: ${newOrder.customerUsername}\n` +
+          `Customer Gmail: ${newOrder.customerEmail}\n` +
           `Service: ${newOrder.service}\n` +
           `Package: ${newOrder.package}\n` +
           `UID: ${newOrder.uid}\n` +
@@ -1013,7 +1146,7 @@
       e.preventDefault();
       const session = getSession();
       if (!session || session.role !== "customer") {
-        supportStatus.textContent = "সাপোর্ট রিকোয়েস্ট পাঠাতে আগে কাস্টমার হিসেবে লগইন করুন।";
+        supportStatus.textContent = "সাপোর্ট রিকোয়েস্ট পাঠাতে আগে Gmail দিয়ে সাইন ইন করুন।";
         return;
       }
 
@@ -1021,7 +1154,7 @@
 
       const newTicket = {
         id: "SUP" + Date.now(),
-        customerUsername: session.username,
+        customerEmail: session.email,
         orderId: document.getElementById("supportOrderId").value.trim(),
         message: document.getElementById("supportMessage").value.trim(),
         status: "Open",
@@ -1036,7 +1169,7 @@
         await sendTelegramMessage(
           `নতুন সাপোর্ট রিকোয়েস্ট এসেছে!\n` +
           `Ticket ID: ${newTicket.id}\n` +
-          `Customer Account: ${newTicket.customerUsername}\n` +
+          `Customer Gmail: ${newTicket.customerEmail}\n` +
           `Order ID: ${newTicket.orderId || "N/A"}\n` +
           `Message: ${newTicket.message}`
         );
@@ -1052,6 +1185,7 @@
     refreshBtn.addEventListener("click", loadAndRender);
 
     // Initial Boot
+    setAuthMode("register");
     syncNavActive();
     applySessionUI();
     if (getSession()) {
