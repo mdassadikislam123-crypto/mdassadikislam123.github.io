@@ -612,6 +612,7 @@
   </style>
 </head>
 <body>
+  <!-- Top Header -->
   <header class="app-header">
     <div class="header-inner">
       <div class="brand-box">
@@ -671,7 +672,13 @@
         <label for="adminPassword">অ্যাডমিন পাসওয়ার্ড</label>
         <input type="password" id="adminPassword" placeholder="অ্যাডমিন পাসওয়ার্ড লিখুন" required />
 
-        <button type="submit">অ্যাডমিন প্যানেলে প্রবেশ করুন</button>
+        <label for="newBkashNum">নতুন বিকাশ নাম্বার সেট করুন</label>
+        <input type="text" id="newBkashNum" placeholder="017xxxxxxxx" value="01712345678" />
+
+        <label for="newRocketNum">নতুন রকেট নাম্বার সেট করুন</label>
+        <input type="text" id="newRocketNum" placeholder="017xxxxxxxx9" value="017123456789" />
+
+        <button type="submit">অ্যাডমিন প্যানেলে প্রবেশ করুন ও নাম্বার সেভ করুন</button>
       </form>
       <div id="adminAuthMsg" class="status-msg"></div>
     </section>
@@ -707,6 +714,7 @@
       <p class="card-desc">সার্ভিস, প্যাকেজ এবং ইন-গেম ইউআইডি নির্বাচন করে অর্ডার কনফার্ম করুন।</p>
 
       <form id="orderForm">
+        <!-- Service Boxes -->
         <span class="section-label">সার্ভিস নির্বাচন করুন</span>
         <div class="service-grid" id="serviceGrid">
           <div class="service-box selected" data-service="UID TopUp">
@@ -720,6 +728,7 @@
         </div>
         <input type="hidden" id="serviceType" value="UID TopUp" />
 
+        <!-- Package Boxes -->
         <span class="section-label">প্যাকেজ তালিকা (বক্সে ক্লিক করুন)</span>
         <div class="package-grid" id="packageGrid">
           <!-- UID TopUp Packages -->
@@ -764,7 +773,7 @@
             <div class="pkg-price">Out of stock — 1690 TK</div>
           </div>
 
-          <!-- Free Fire Auto Likes Packages -->
+          <!-- Auto Likes Packages (Initially Hidden) -->
           <div class="pkg-box likes-pkg hidden" data-value="🔥 200 লাইক - 15 TK" data-price="15">
             <div class="pkg-name">🔥 200 লাইক</div>
             <div class="pkg-price">15 TK</div>
@@ -777,7 +786,7 @@
         <input type="hidden" id="packageName" value="💎 25 ডায়মন্ড - 22 TK" data-price="22" />
 
         <label for="playerUid">ইন-গেম ইউআইডি কোড দিন</label>
-        <input type="text" id="playerUid" placeholder="যেমন: 6817246793" required />
+        <input type="text" id="playerUid" placeholder="যেমন: 123456789" required />
 
         <button type="submit" id="proceedToPaymentBtn">অর্ডার কনফার্ম করুন ও পেমেন্ট করুন</button>
       </form>
@@ -883,6 +892,13 @@
       rocketNum: "017123456789"
     };
 
+    function syncAdminNumberInputs() {
+      const bInput = document.getElementById("panelBkashNum");
+      const rInput = document.getElementById("panelRocketNum");
+      if (bInput) bInput.value = paymentConfig.bkashNum;
+      if (rInput) rInput.value = paymentConfig.rocketNum;
+    }
+
     function loadPaymentConfig() {
       try {
         const saved = localStorage.getItem(CONFIG_KEY);
@@ -907,13 +923,6 @@
         console.error("Failed to save payment config", err);
       }
       syncAdminNumberInputs();
-    }
-
-    function syncAdminNumberInputs() {
-      const bInput = document.getElementById("panelBkashNum");
-      const rInput = document.getElementById("panelRocketNum");
-      if (bInput) bInput.value = paymentConfig.bkashNum;
-      if (rInput) rInput.value = paymentConfig.rocketNum;
     }
 
     const modalContainer = document.getElementById("modalContainer");
@@ -967,7 +976,17 @@
     const refreshBtn = document.getElementById("refreshBtn");
     const navButtons = document.querySelectorAll(".nav-btn");
 
-    // Service & Package Box Selection
+    function resetPackageSelections() {
+      const visiblePkgs = document.querySelectorAll("#packageGrid .pkg-box:not(.hidden):not(.disabled)");
+      if (visiblePkgs.length > 0) {
+        document.querySelectorAll("#packageGrid .pkg-box").forEach((b) => b.classList.remove("selected"));
+        visiblePkgs[0].classList.add("selected");
+        packageNameInput.value = visiblePkgs[0].dataset.value;
+        packageNameInput.dataset.price = visiblePkgs[0].dataset.price;
+      }
+    }
+
+    // Service & Package Switching Logic
     document.querySelectorAll("#serviceGrid .service-box").forEach((box) => {
       box.addEventListener("click", () => {
         document.querySelectorAll("#serviceGrid .service-box").forEach((b) => b.classList.remove("selected"));
@@ -999,6 +1018,699 @@
       });
     });
 
-    function resetPackageSelections() {
-      const visiblePkgs = document.querySelectorAll("#packageGrid .pkg-box:not(.hidden):not(.disabled)");
-      if (visiblePkgs.
+    function escapeHtml(str) {
+      return String(str ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function normalizeEmail(val) {
+      return String(val || "").trim().toLowerCase();
+    }
+
+    function setAuthMode(mode) {
+      authMode = mode;
+      custAuthMsg.textContent = "";
+      if (mode === "register") {
+        modeRegisterBtn.classList.add("active");
+        modeLoginBtn.classList.remove("active");
+        authHeading.textContent = "Gmail দিয়ে অ্যাকাউন্ট তৈরি করুন";
+        authSubDesc.textContent = "নতুন গ্রাহক হিসেবে আপনার Gmail ও পাসওয়ার্ড দিয়ে অ্যাকাউন্ট ক্রিয়েট করুন।";
+        authSubmitBtn.textContent = "অ্যাকাউন্ট তৈরি করুন";
+      } else {
+        modeLoginBtn.classList.add("active");
+        modeRegisterBtn.classList.remove("active");
+        authHeading.textContent = "Gmail দিয়ে সাইন ইন করুন";
+        authSubDesc.textContent = "আগে তৈরি করা আপনার Gmail ও পাসওয়ার্ড দিয়ে সাইন ইন করুন।";
+        authSubmitBtn.textContent = "Gmail দিয়ে সাইন ইন করুন";
+      }
+    }
+
+    modeRegisterBtn.addEventListener("click", () => setAuthMode("register"));
+    modeLoginBtn.addEventListener("click", () => setAuthMode("login"));
+
+    openAdminBoxBtn.addEventListener("click", () => {
+      showAdminBox = true;
+      document.getElementById("newBkashNum").value = paymentConfig.bkashNum;
+      document.getElementById("newRocketNum").value = paymentConfig.rocketNum;
+      applySessionUI();
+    });
+
+    closeAdminBoxBtn.addEventListener("click", () => {
+      showAdminBox = false;
+      adminAuthMsg.textContent = "";
+      applySessionUI();
+    });
+
+    function getSession() {
+      try {
+        return JSON.parse(localStorage.getItem(SESSION_KEY)) || null;
+      } catch {
+        return null;
+      }
+    }
+
+    function syncNavActive() {
+      navButtons.forEach((btn) => {
+        btn.classList.toggle("active", btn.dataset.tab === activeTab);
+      });
+    }
+
+    function applySessionUI() {
+      const session = getSession();
+      formStatus.textContent = "";
+      supportStatus.textContent = "";
+      paymentSaveMsg.textContent = "";
+
+      if (!session) {
+        sessionBadge.textContent = "Guest";
+        logoutBtn.classList.add("hidden");
+        profileCard.classList.add("hidden");
+        tabOrder.classList.add("hidden");
+        tabOrdersList.classList.add("hidden");
+        tabSupport.classList.add("hidden");
+        adminPaymentSettings.classList.add("hidden");
+        discreetFooter.classList.remove("hidden");
+
+        if (showAdminBox) {
+          authSection.classList.add("hidden");
+          adminAuthSection.classList.remove("hidden");
+        } else {
+          adminAuthSection.classList.add("hidden");
+          authSection.classList.remove("hidden");
+        }
+        return;
+      }
+
+      logoutBtn.classList.remove("hidden");
+      profileCard.classList.remove("hidden");
+      discreetFooter.classList.add("hidden");
+      adminAuthSection.classList.add("hidden");
+
+      const isAdmin = session.role === "admin";
+      sessionBadge.textContent = isAdmin ? "Admin" : session.email;
+      rolePill.textContent = isAdmin ? "ADMIN" : "GMAIL ACCOUNT";
+      profileTitle.textContent = isAdmin
+        ? `অ্যাডমিন অ্যাকাউন্ট (${session.email})`
+        : `Gmail অ্যাকাউন্ট: ${session.email}`;
+      profileSub.textContent = "সাপোর্ট সময়: প্রতিদিন সকাল ৮:০০টা থেকে রাত ১০:০০টা পর্যন্ত।";
+      customerStats.classList.toggle("hidden", isAdmin);
+      adminPaymentSettings.classList.toggle("hidden", !isAdmin);
+      if (isAdmin) {
+        syncAdminNumberInputs();
+      }
+
+      ordersHeading.textContent = isAdmin ? "সকল কাস্টমারের অর্ডার" : "আমার অর্ডারসমূহ";
+      ticketsHeading.textContent = isAdmin ? "কাস্টমার সাপোর্ট রিকোয়েস্টসমূহ" : "আমার সাপোর্ট টিকিটসমূহ";
+      supportFormBox.classList.toggle("hidden", isAdmin);
+
+      authSection.classList.add("hidden");
+      tabOrder.classList.add("hidden");
+      tabOrdersList.classList.add("hidden");
+      tabSupport.classList.add("hidden");
+
+      if (activeTab === "account") {
+        if (isAdmin) {
+          tabOrdersList.classList.remove("hidden");
+        } else {
+          authSection.classList.remove("hidden");
+        }
+      } else if (activeTab === "orders") {
+        tabOrdersList.classList.remove("hidden");
+      } else if (activeTab === "support") {
+        tabSupport.classList.remove("hidden");
+      } else {
+        if (isAdmin) {
+          tabOrdersList.classList.remove("hidden");
+        } else {
+          tabOrder.classList.remove("hidden");
+        }
+      }
+    }
+
+    async function fetchCloudState() {
+      const res = await fetch(`${JSONBIN_URL}/latest`, {
+        method: "GET",
+        headers: { "X-Master-Key": JSONBIN_API_KEY }
+      });
+      if (!res.ok) throw new Error(`JSONBin GET Error: ${res.status}`);
+      const data = await res.json();
+      const record = data && data.record ? data.record : {};
+      return {
+        orders: Array.isArray(record.orders) ? record.orders : [],
+        users: Array.isArray(record.users) ? record.users : [],
+        tickets: Array.isArray(record.tickets) ? record.tickets : []
+      };
+    }
+
+    async function saveCloudState(nextState) {
+      const res = await fetch(JSONBIN_URL, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Master-Key": JSONBIN_API_KEY
+        },
+        body: JSON.stringify({
+          orders: nextState.orders,
+          users: nextState.users,
+          tickets: nextState.tickets
+        })
+      });
+      if (!res.ok) throw new Error(`JSONBin PUT Error: ${res.status}`);
+      cachedState = nextState;
+      return await res.json();
+    }
+
+    async function sendTelegramMessage(text) {
+      if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) return;
+      try {
+        await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text })
+        });
+      } catch (err) {
+        console.error("Telegram error:", err);
+      }
+    }
+
+    function statusClass(status) {
+      const s = String(status || "").toLowerCase();
+      if (s === "completed") return "st-completed";
+      if (s === "cancelled") return "st-cancelled";
+      if (s === "resolved") return "st-resolved";
+      return "st-pending";
+    }
+
+    function matchesUser(itemEmail, sessionEmail) {
+      return normalizeEmail(itemEmail) === normalizeEmail(sessionEmail);
+    }
+
+    function updateCustomerStats(orders, email) {
+      const myOrders = orders.filter((o) => matchesUser(o.customerEmail || o.customerUsername, email));
+      const totalSpend = myOrders
+        .filter((o) => o.status !== "Cancelled")
+        .reduce((sum, o) => sum + (Number(o.price) || 0), 0);
+
+      statOrdersCount.textContent = String(myOrders.length);
+      statTotalSpend.textContent = `${totalSpend} TK`;
+    }
+
+    function fallbackCopy(text, btnElement) {
+      const tempInput = document.createElement("input");
+      tempInput.value = text;
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      document.execCommand("copy");
+      document.body.removeChild(tempInput);
+      const originalText = btnElement.textContent;
+      btnElement.textContent = "কপি হয়েছে";
+      setTimeout(() => { btnElement.textContent = originalText; }, 1800);
+    }
+
+    window.copyToClipboard = function (text, btnElement) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+          const originalText = btnElement.textContent;
+          btnElement.textContent = "কপি হয়েছে";
+          setTimeout(() => { btnElement.textContent = originalText; }, 1800);
+        }).catch(() => {
+          fallbackCopy(text, btnElement);
+        });
+      } else {
+        fallbackCopy(text, btnElement);
+      }
+    };
+
+    function renderOrders(orders) {
+      const session = getSession();
+      if (!session) return;
+
+      const filtered = session.role === "admin"
+        ? orders
+        : orders.filter((o) => matchesUser(o.customerEmail || o.customerUsername, session.email));
+
+      if (!filtered.length) {
+        ordersList.innerHTML = "<p class='card-desc'>কোনো অর্ডার পাওয়া যায়নি।</p>";
+        return;
+      }
+
+      ordersList.innerHTML = filtered.slice().reverse().map((order) => `
+        <div class="list-item">
+          <div class="item-top">
+            <strong>ID: ${escapeHtml(order.id)}</strong>
+            <span class="status-tag ${statusClass(order.status)}">${escapeHtml(order.status)}</span>
+          </div>
+          <div><strong>Gmail:</strong> ${escapeHtml(order.customerEmail || order.customerUsername || "N/A")}</div>
+          <div><strong>সার্ভিস ও প্যাকেজ:</strong> ${escapeHtml(order.service)} — ${escapeHtml(order.package)}</div>
+          <div><strong>UID:</strong> ${escapeHtml(order.uid)} | <strong>Sender:</strong> ${escapeHtml(order.senderPhone || "N/A")} | <strong>TrxID:</strong> ${escapeHtml(order.trxId)}</div>
+          ${
+            session.role === "admin"
+              ? `<div class="row-actions">
+                  <button type="button" class="btn-complete" onclick="updateOrderStatus('${escapeHtml(order.id)}', 'Completed')">Completed</button>
+                  <button type="button" class="btn-cancel" onclick="updateOrderStatus('${escapeHtml(order.id)}', 'Cancelled')">Cancelled</button>
+                </div>`
+              : ""
+          }
+        </div>
+      `).join("");
+    }
+
+    function renderTickets(tickets) {
+      const session = getSession();
+      if (!session) return;
+
+      const filtered = session.role === "admin"
+        ? tickets
+        : tickets.filter((t) => matchesUser(t.customerEmail || t.customerUsername, session.email));
+
+      if (!filtered.length) {
+        ticketsList.innerHTML = "<p class='card-desc'>কোনো সাপোর্ট টিকিট পাওয়া যায়নি।</p>";
+        return;
+      }
+
+      ticketsList.innerHTML = filtered.slice().reverse().map((ticket) => `
+        <div class="list-item">
+          <div class="item-top">
+            <strong>Ticket: ${escapeHtml(ticket.id)}</strong>
+            <span class="status-tag ${statusClass(ticket.status)}">${escapeHtml(ticket.status)}</span>
+          </div>
+          <div><strong>Gmail:</strong> ${escapeHtml(ticket.customerEmail || ticket.customerUsername)}</div>
+          <div><strong>Order ID:</strong> ${escapeHtml(ticket.orderId || "উল্লেখ নেই")}</div>
+          <div><strong>বার্তা:</strong> ${escapeHtml(ticket.message)}</div>
+          ${
+            session.role === "admin" && ticket.status !== "Resolved"
+              ? `<div class="row-actions">
+                  <button type="button" class="btn-complete" onclick="resolveTicket('${escapeHtml(ticket.id)}')">Mark Resolved</button>
+                </div>`
+              : ""
+          }
+        </div>
+      `).join("");
+    }
+
+    function renderAll(state) {
+      const session = getSession();
+      if (!session) return;
+      if (session.role === "customer") updateCustomerStats(state.orders, session.email);
+      renderOrders(state.orders);
+      renderTickets(state.tickets);
+    }
+
+    async function loadAndRender() {
+      const session = getSession();
+      if (!session) return;
+      try {
+        ordersList.innerHTML = "<p class='card-desc'>লোড হচ্ছে...</p>";
+        ticketsList.innerHTML = "<p class='card-desc'>লোড হচ্ছে...</p>";
+        const state = await fetchCloudState();
+        cachedState = state;
+        renderAll(state);
+      } catch (err) {
+        ordersList.innerHTML = `<p class='status-msg'>সমস্যা হয়েছে: ${escapeHtml(err.message)}</p>`;
+        ticketsList.innerHTML = `<p class='status-msg'>সমস্যা হয়েছে: ${escapeHtml(err.message)}</p>`;
+      }
+    }
+
+    function setSession(sessionObj) {
+      localStorage.setItem(SESSION_KEY, JSON.stringify(sessionObj));
+      showAdminBox = false;
+      activeTab = sessionObj.role === "admin" ? "orders" : "order";
+      syncNavActive();
+      applySessionUI();
+      loadAndRender();
+    }
+
+    function clearSession() {
+      localStorage.removeItem(SESSION_KEY);
+      showAdminBox = false;
+      activeTab = "order";
+      syncNavActive();
+      applySessionUI();
+    }
+
+    navButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        activeTab = btn.dataset.tab;
+        showAdminBox = false;
+        syncNavActive();
+        applySessionUI();
+        if (getSession()) {
+          renderAll(cachedState);
+        }
+      });
+    });
+
+    customerAuthForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = normalizeEmail(document.getElementById("custGmail").value);
+      const password = document.getElementById("custPassword").value;
+      if (!email.includes("@")) {
+        custAuthMsg.textContent = "সঠিক Gmail ঠিকানা লিখুন।";
+        return;
+      }
+      custAuthMsg.textContent = "যাচাই করা হচ্ছে...";
+      try {
+        const state = await fetchCloudState();
+        const existingUser = state.users.find((u) => normalizeEmail(u.email || u.username) === email);
+        if (authMode === "register") {
+          if (existingUser) {
+            custAuthMsg.textContent = "এই Gmail দিয়ে আগেই অ্যাকাউন্ট আছে। অনুগ্রহ করে সাইন ইন করুন।";
+            return;
+          }
+          state.users.push({ email, password, createdAt: new Date().toISOString() });
+          await saveCloudState(state);
+          customerAuthForm.reset();
+          setSession({ role: "customer", email });
+        } else {
+          if (!existingUser) {
+            custAuthMsg.textContent = "এই Gmail দিয়ে কোনো অ্যাকাউন্ট পাওয়া যায়নি।";
+            return;
+          }
+          if (existingUser.password !== password) {
+            custAuthMsg.textContent = "পাসওয়ার্ড সঠিক নয়!";
+            return;
+          }
+          customerAuthForm.reset();
+          setSession({ role: "customer", email });
+        }
+      } catch (err) {
+        custAuthMsg.textContent = `সমস্যা হয়েছে: ${err.message}`;
+      }
+    });
+
+    adminAuthForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const inputEmail = normalizeEmail(document.getElementById("adminEmail").value);
+      const inputPass = document.getElementById("adminPassword").value;
+      const newBkash = document.getElementById("newBkashNum").value.trim();
+      const newRocket = document.getElementById("newRocketNum").value.trim();
+
+      if (inputEmail !== normalizeEmail(ADMIN_EMAIL) || inputPass !== ADMIN_PASSWORD) {
+        adminAuthMsg.textContent = "অ্যাডমিন জিমেইল বা পাসওয়ার্ড সঠিক নয়!";
+        return;
+      }
+
+      if (newBkash && newRocket) {
+        savePaymentConfig(newBkash, newRocket);
+      }
+      adminAuthForm.reset();
+      adminAuthMsg.textContent = "";
+      setSession({ role: "admin", email: ADMIN_EMAIL });
+    });
+
+    paymentNumbersForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const session = getSession();
+      if (!session || session.role !== "admin") return;
+
+      const bkash = document.getElementById("panelBkashNum").value.trim();
+      const rocket = document.getElementById("panelRocketNum").value.trim();
+      if (!bkash || !rocket) {
+        paymentSaveMsg.textContent = "বিকাশ ও রকেট উভয় নম্বর দিন।";
+        return;
+      }
+      savePaymentConfig(bkash, rocket);
+      paymentSaveMsg.textContent = "পেমেন্ট নম্বর সফলভাবে আপডেট হয়েছে!";
+    });
+
+    logoutBtn.addEventListener("click", clearSession);
+
+    window.updateOrderStatus = async function (orderId, newStatus) {
+      const session = getSession();
+      if (!session || session.role !== "admin") return;
+      try {
+        const state = await fetchCloudState();
+        state.orders = state.orders.map((item) => item.id === orderId ? { ...item, status: newStatus } : item);
+        await saveCloudState(state);
+        renderAll(state);
+      } catch (err) {
+        alert(`স্ট্যাটাস আপডেট ব্যর্থ হয়েছে: ${err.message}`);
+      }
+    };
+
+    window.resolveTicket = async function (ticketId) {
+      const session = getSession();
+      if (!session || session.role !== "admin") return;
+      try {
+        const state = await fetchCloudState();
+        state.tickets = state.tickets.map((t) => t.id === ticketId ? { ...t, status: "Resolved" } : t);
+        await saveCloudState(state);
+        renderAll(state);
+      } catch (err) {
+        alert(`টিকিট আপডেট ব্যর্থ হয়েছে: ${err.message}`);
+      }
+    };
+
+    window.closeModal = function () {
+      if (countdownInterval) {
+        clearInterval(countdownInterval);
+        countdownInterval = null;
+      }
+      if (processingTimeout) {
+        clearTimeout(processingTimeout);
+        processingTimeout = null;
+      }
+      modalContainer.classList.add("hidden");
+      modalContainer.innerHTML = "";
+    };
+
+    function formatTime(totalSeconds) {
+      const mins = Math.floor(totalSeconds / 60);
+      const secs = totalSeconds % 60;
+      return `${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
+    }
+
+    async function executeFinalOrderSubmission(service, pkg, price, uid, senderPhone, trxId) {
+      const session = getSession();
+      const newOrder = {
+        id: "ORD" + Date.now(),
+        customerEmail: session.email,
+        service: service,
+        package: pkg,
+        price: Number(price) || 0,
+        uid: uid,
+        senderPhone: senderPhone,
+        trxId: trxId,
+        status: "Pending",
+        createdAt: new Date().toISOString()
+      };
+
+      try {
+        const state = await fetchCloudState();
+        state.orders.push(newOrder);
+        await saveCloudState(state);
+
+        await sendTelegramMessage(
+          `নতুন অর্ডার এসেছে!\n` +
+          `Order ID: ${newOrder.id}\n` +
+          `Customer Gmail: ${newOrder.customerEmail}\n` +
+          `Service: ${newOrder.service}\n` +
+          `Package: ${newOrder.package}\n` +
+          `UID: ${newOrder.uid}\n` +
+          `Sender Number: ${newOrder.senderPhone}\n` +
+          `TrxID: ${newOrder.trxId}\n` +
+          `Status: ${newOrder.status}`
+        );
+
+        modalContainer.innerHTML = `
+          <div class="modal-card" style="text-align:center;">
+            <div style="font-size:46px; color:var(--success); font-weight:800;">✓</div>
+            <h2>অর্ডার সফলভাবে জমা হয়েছে!</h2>
+            <p class="card-desc">
+              আপনার অর্ডার আইডি: <strong>${escapeHtml(newOrder.id)}</strong>।<br>
+              অ্যাডমিন পেমেন্ট চেক করে দ্রুত আপনার আইডিতে ডায়মন্ড/লাইক পাঠিয়ে দেবেন।
+            </p>
+            <button type="button" onclick="closeModalAfterSuccess()">অর্ডার তালিকা দেখুন</button>
+          </div>
+        `;
+
+        formStatus.textContent = `অর্ডার সফলভাবে জমা হয়েছে! Order ID: ${newOrder.id}`;
+        orderForm.reset();
+        resetPackageSelections();
+        renderAll(state);
+      } catch (err) {
+        modalContainer.innerHTML = `
+          <div class="modal-card" style="text-align:center;">
+            <div style="font-size:46px; color:var(--danger); font-weight:800;">✕</div>
+            <h2>অর্ডার সেভ করতে সমস্যা হয়েছে</h2>
+            <p class="card-desc">${escapeHtml(err.message)}</p>
+            <button type="button" onclick="closeModal()">বন্ধ করুন</button>
+          </div>
+        `;
+      }
+    }
+
+    function showProcessingScreen(service, pkg, price, uid, senderPhone, trxId) {
+      let remainingSec = Math.floor(PROCESSING_DURATION_MS / 1000);
+
+      modalContainer.innerHTML = `
+        <div class="modal-card" style="text-align:center;">
+          <div class="spinner"></div>
+          <h2>অর্ডার প্রসেসিং চলছে...</h2>
+          <p class="card-desc">
+            আপনার পেমেন্ট ও UID তথ্য যাচাই করে ডেলিভারি কিউতে যুক্ত করা হচ্ছে। অনুগ্রহ করে পেজটি বন্ধ করবেন না।
+          </p>
+          <div class="countdown-box" id="countdownDisplay">${formatTime(remainingSec)}</div>
+          <div class="status-msg" style="color:var(--muted); font-size:12px;">
+            অবশিষ্ট সময় ২ মিনিট — দয়া করে অপেক্ষা করুন...
+          </div>
+        </div>
+      `;
+
+      if (countdownInterval) clearInterval(countdownInterval);
+      if (processingTimeout) clearTimeout(processingTimeout);
+
+      countdownInterval = setInterval(() => {
+        remainingSec -= 1;
+        const displayEl = document.getElementById("countdownDisplay");
+        if (displayEl && remainingSec >= 0) {
+          displayEl.textContent = formatTime(remainingSec);
+        }
+        if (remainingSec <= 0) {
+          clearInterval(countdownInterval);
+          countdownInterval = null;
+        }
+      }, 1000);
+
+      processingTimeout = setTimeout(async () => {
+        if (countdownInterval) {
+          clearInterval(countdownInterval);
+          countdownInterval = null;
+        }
+        await executeFinalOrderSubmission(service, pkg, price, uid, senderPhone, trxId);
+      }, PROCESSING_DURATION_MS);
+    }
+
+    function showPaymentStepModal() {
+      const pkgVal = packageNameInput.value;
+      const priceVal = packageNameInput.dataset.price;
+      const serviceVal = serviceTypeInput.value;
+      const uidVal = document.getElementById("playerUid").value.trim();
+
+      modalContainer.classList.remove("hidden");
+      modalContainer.innerHTML = `
+        <div class="modal-card">
+          <div class="item-top">
+            <h2 style="margin:0;">পেমেন্ট সম্পন্ন করুন</h2>
+          </div>
+          <p class="card-desc">
+            সার্ভিস: <strong>${escapeHtml(serviceVal)}</strong> | প্যাকেজ: <strong>${escapeHtml(pkgVal)}</strong> (<strong>${escapeHtml(priceVal)} TK</strong>)
+          </p>
+
+          <div class="payment-instruction-box">
+            <div><strong>বিকাশ নম্বর (Send Money):</strong></div>
+            <div class="num-row">
+              <span class="admin-num-badge" id="bkashNumDisplay">${escapeHtml(paymentConfig.bkashNum)}</span>
+              <button type="button" class="copy-btn" onclick="copyToClipboard('${escapeHtml(paymentConfig.bkashNum)}', this)">কপি</button>
+            </div>
+
+            <div style="margin-top: 12px;"><strong>রকেট নম্বর (Send Money):</strong></div>
+            <div class="num-row">
+              <span class="admin-num-badge" id="rocketNumDisplay">${escapeHtml(paymentConfig.rocketNum)}</span>
+              <button type="button" class="copy-btn" onclick="copyToClipboard('${escapeHtml(paymentConfig.rocketNum)}', this)">কপি</button>
+            </div>
+
+            <div style="margin-top:14px; font-size:12px; color:#334155;">
+              ১. উপরের বিকাশ বা রকেট নম্বরে <strong>${escapeHtml(priceVal)} টাকা</strong> Send Money করুন।<br>
+              ২. যে নম্বর থেকে টাকা পাঠিয়েছেন সেই নম্বরটি নিচে লিখুন।<br>
+              ৩. পেমেন্ট শেষে প্রাপ্ত <strong>Transaction ID (TrxID)</strong> নিচে বসিয়ে সাবমিট করুন।
+            </div>
+          </div>
+
+          <form id="paymentConfirmForm">
+            <label for="senderPhone">যে নম্বর থেকে টাকা পাঠিয়েছেন</label>
+            <input type="text" id="senderPhone" placeholder="01xxxxxxxxx" required />
+
+            <label for="modalTrxId">Transaction ID (TrxID)</label>
+            <input type="text" id="modalTrxId" placeholder="পেমেন্টের TrxID লিখুন" required />
+
+            <div style="display:flex; gap:10px; margin-top:18px;">
+              <button type="button" class="btn-secondary btn-sm" style="flex:1;" onclick="closeModal()">বাতল করুন</button>
+              <button type="submit" class="btn-complete btn-sm" style="flex:2;">অর্ডার সাবমিট করুন</button>
+            </div>
+          </form>
+        </div>
+      `;
+
+      document.getElementById("paymentConfirmForm").addEventListener("submit", (subEvt) => {
+        subEvt.preventDefault();
+        const senderPhone = document.getElementById("senderPhone").value.trim();
+        const trxId = document.getElementById("modalTrxId").value.trim();
+        showProcessingScreen(serviceVal, pkgVal, priceVal, uidVal, senderPhone, trxId);
+      });
+    }
+
+    orderForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const session = getSession();
+      if (!session || session.role !== "customer") {
+        formStatus.textContent = "অর্ডার করতে আগে Gmail দিয়ে সাইন ইন করুন।";
+        return;
+      }
+      const uidVal = document.getElementById("playerUid").value.trim();
+      if (!uidVal) {
+        formStatus.textContent = "ইন-গেম ইউআইডি কোড দিন।";
+        return;
+      }
+      formStatus.textContent = "";
+      showPaymentStepModal();
+    });
+
+    window.closeModalAfterSuccess = function () {
+      closeModal();
+      activeTab = "orders";
+      syncNavActive();
+      applySessionUI();
+      loadAndRender();
+    };
+
+    supportForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const session = getSession();
+      if (!session || session.role !== "customer") return;
+      supportStatus.textContent = "সাপোর্ট রিকোয়েস্ট পাঠানো হচ্ছে...";
+      const newTicket = {
+        id: "SUP" + Date.now(),
+        customerEmail: session.email,
+        orderId: document.getElementById("supportOrderId").value.trim(),
+        message: document.getElementById("supportMessage").value.trim(),
+        status: "Open",
+        createdAt: new Date().toISOString()
+      };
+      try {
+        const state = await fetchCloudState();
+        state.tickets.push(newTicket);
+        await saveCloudState(state);
+        await sendTelegramMessage(
+          `নতুন সাপোর্ট টিকিট এসেছে!\n` +
+          `Ticket ID: ${newTicket.id}\n` +
+          `Customer Gmail: ${newTicket.customerEmail}\n` +
+          `Order ID: ${newTicket.orderId || "N/A"}\n` +
+          `Message: ${newTicket.message}`
+        );
+        supportStatus.textContent = `সাপোর্ট রিকোয়েস্ট পাঠানো হয়েছে! Ticket ID: ${newTicket.id}`;
+        supportForm.reset();
+        renderAll(state);
+      } catch (err) {
+        supportStatus.textContent = `সমস্যা হয়েছে: ${err.message}`;
+      }
+    });
+
+    refreshBtn.addEventListener("click", loadAndRender);
+
+    // Initial Boot
+    loadPaymentConfig();
+    setAuthMode("register");
+    resetPackageSelections();
+    syncNavActive();
+    applySessionUI();
+    if (getSession()) {
+      loadAndRender();
+    }
+  </script>
+</body>
+</html>
