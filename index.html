@@ -6,33 +6,19 @@
   <title>A.S FF TopUp — Official Store</title>
   <style>
     :root {
-      --bg: #f4f6fb;
-      --surface: #ffffff;
-      --surface-soft: #f8fafc;
-      --text: #0f172a;
-      --muted: #64748b;
-      --border: #e2e8f0<!DOCTYPE html>
-<html lang="bn">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>A.S FF TopUp — Official Store</title>
-  <style>
-    :root {
-      --bg: #f4f6fb;
-      --surface: #ffffff;
-      --surface-soft: #f8fafc;
-      --text: #0f172a;
-      --muted: #64748b;
-      --border: #e2e8f0;
-      --primary: #2563eb;
-      --primary-dark: #1d4ed8;
-      --success: #16a34a;
-      --danger: #dc2626;
-      --bkash: #e2136e;
-      --rocket: #8c3494;
-      --shadow: 0 4px 18px rgba(15, 23, 42, 0.06);
-      --radius: 12px;
+      --bg: #0b1020;
+      --surface: #121a2f;
+      --surface-2: #18223d;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --border: rgba(148, 163, 184, 0.16);
+      --primary: #3b82f6;
+      --primary-hover: #2563eb;
+      --accent: #06b6d4;
+      --success: #22c55e;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --radius: 16px;
     }
 
     * {
@@ -42,529 +28,529 @@
 
     body {
       margin: 0;
-      padding: 0 0 88px 0;
-      background: var(--bg);
+      padding: 0 0 92px 0;
+      background: radial-gradient(circle at top, #162242 0%, var(--bg) 55%);
       color: var(--text);
+      min-height: 100vh;
       line-height: 1.5;
     }
 
-    .app-header {
+    .topbar {
       position: sticky;
       top: 0;
       z-index: 30;
-      background: var(--surface);
+      backdrop-filter: blur(12px);
+      background: rgba(11, 16, 32, 0.85);
       border-bottom: 1px solid var(--border);
       padding: 12px 16px;
-      box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
     }
 
-    .header-inner {
-      max-width: 920px;
+    .topbar-inner {
+      max-width: 880px;
       margin: 0 auto;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
-    }
-
-    .brand-box {
-      display: flex;
-      align-items: center;
       gap: 10px;
     }
 
-    .brand-logo {
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
-      background: linear-gradient(135deg, #2563eb, #0ea5e9);
-      color: #ffffff;
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
       display: grid;
       place-items: center;
-      font-weight: 800;
+      font-weight: 900;
       font-size: 16px;
+      color: #fff;
+      box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
     }
 
-    .brand-title {
+    .brand h1 {
       margin: 0;
-      font-size: 18px;
+      font-size: 17px;
       font-weight: 800;
+      letter-spacing: 0.2px;
     }
 
-    .brand-sub {
-      font-size: 12px;
+    .brand p {
+      margin: 2px 0 0;
+      font-size: 11px;
       color: var(--muted);
     }
 
-    .header-actions {
+    .top-right {
       display: flex;
       align-items: center;
       gap: 8px;
     }
 
-    .pill {
+    .badge {
+      background: rgba(59, 130, 246, 0.14);
+      color: #93c5fd;
+      border: 1px solid rgba(59, 130, 246, 0.3);
       padding: 5px 11px;
       border-radius: 999px;
       font-size: 12px;
       font-weight: 700;
-      background: #eff6ff;
-      color: var(--primary);
-      border: 1px solid #bfdbfe;
-      white-space: nowrap;
-      max-width: 170px;
+      max-width: 155px;
       overflow: hidden;
       text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
-    .container {
-      max-width: 920px;
-      margin: 16px auto;
+    .wrap {
+      max-width: 880px;
+      margin: 18px auto;
       padding: 0 14px;
     }
 
-    .notice-banner {
-      background: linear-gradient(90deg, #eff6ff, #f0fdf4);
-      border: 1px solid #cbd5e1;
+    .hero-strip {
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.18), rgba(6, 182, 212, 0.1));
+      border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 12px 14px;
-      margin-bottom: 14px;
-      font-size: 13px;
-      font-weight: 600;
-      color: #1e293b;
+      padding: 14px 16px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
     }
 
-    .card {
+    .hero-strip strong {
+      font-size: 13px;
+      color: #e2e8f0;
+    }
+
+    .hero-strip span {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .panel {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 18px;
+      padding: 20px;
       margin-bottom: 16px;
-      box-shadow: var(--shadow);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.28);
     }
 
-    .card h2 {
-      margin: 0 0 6px 0;
+    .panel-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+
+    .panel h2 {
+      margin: 0;
       font-size: 18px;
-      font-weight: 700;
+      font-weight: 800;
     }
 
-    .card-desc {
-      margin: 0 0 14px 0;
+    .panel-sub {
+      margin: 4px 0 0;
       font-size: 13px;
       color: var(--muted);
     }
 
-    .section-label {
-      display: block;
-      margin: 14px 0 8px;
+    .seg-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      background: var(--surface-2);
+      padding: 4px;
+      border-radius: 12px;
+      margin-bottom: 16px;
+      border: 1px solid var(--border);
+    }
+
+    .seg-btn {
+      margin: 0;
+      padding: 9px 10px;
+      border-radius: 9px;
+      background: transparent;
+      color: var(--muted);
       font-size: 13px;
       font-weight: 700;
-      color: #334155;
     }
 
-    .service-grid {
+    .seg-btn.active {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .field-label {
+      display: block;
+      margin: 14px 0 7px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #cbd5e1;
+    }
+
+    .service-boxes {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
+      gap: 12px;
     }
 
-    .service-box {
-      border: 2px solid var(--border);
-      background: var(--surface-soft);
-      border-radius: 10px;
-      padding: 14px 12px;
-      text-align: center;
+    .srv-card {
+      background: var(--surface-2);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      padding: 15px 12px;
       cursor: pointer;
-      transition: 0.15s ease;
+      transition: 0.16s ease;
+      text-align: center;
     }
 
-    .service-box:hover {
-      border-color: #93c5fd;
-      background: #ffffff;
+    .srv-card:hover {
+      border-color: rgba(59, 130, 246, 0.55);
     }
 
-    .service-box.selected {
+    .srv-card.active {
       border-color: var(--primary);
-      background: #eff6ff;
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+      background: rgba(59, 130, 246, 0.14);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.18);
     }
 
-    .service-title {
+    .srv-name {
       font-size: 14px;
       font-weight: 800;
-      color: var(--text);
     }
 
-    .service-sub {
+    .srv-hint {
       font-size: 12px;
       color: var(--muted);
       margin-top: 3px;
     }
 
-    .package-grid {
+    .pkg-boxes {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 10px;
     }
 
     @media (min-width: 640px) {
-      .package-grid {
+      .pkg-boxes {
         grid-template-columns: repeat(3, 1fr);
       }
     }
 
-    .pkg-box {
-      position: relative;
-      border: 2px solid var(--border);
-      background: var(--surface-soft);
-      border-radius: 10px;
-      padding: 12px;
-      text-align: left;
+    .pkg-card {
+      background: var(--surface-2);
+      border: 1.5px solid var(--border);
+      border-radius: 13px;
+      padding: 13px;
       cursor: pointer;
-      transition: 0.15s ease;
+      transition: 0.16s ease;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      min-height: 86px;
+      min-height: 82px;
     }
 
-    .pkg-box:hover:not(.disabled) {
-      border-color: #93c5fd;
-      background: #ffffff;
+    .pkg-card:hover:not(.soldout) {
+      border-color: rgba(59, 130, 246, 0.55);
       transform: translateY(-1px);
     }
 
-    .pkg-box.selected {
+    .pkg-card.active {
       border-color: var(--primary);
-      background: #eff6ff;
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+      background: rgba(59, 130, 246, 0.15);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.18);
     }
 
-    .pkg-box.disabled {
-      opacity: 0.55;
-      background: #f1f5f9;
+    .pkg-card.soldout {
+      opacity: 0.45;
       cursor: not-allowed;
     }
 
-    .pkg-name {
+    .pkg-title {
       font-size: 13px;
       font-weight: 700;
-      color: var(--text);
     }
 
-    .pkg-price {
+    .pkg-cost {
       margin-top: 8px;
       font-size: 15px;
       font-weight: 800;
-      color: var(--primary);
+      color: #60a5fa;
     }
 
-    .pkg-box.disabled .pkg-price {
-      color: var(--danger);
+    .pkg-card.soldout .pkg-cost {
+      color: #f87171;
       font-size: 12px;
     }
 
-    .mode-switch {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      margin-bottom: 14px;
-      background: var(--surface-soft);
-      padding: 4px;
-      border-radius: 10px;
+    input, textarea, button {
+      width: 100%;
+      border-radius: 11px;
+      font-size: 14px;
+    }
+
+    input, textarea {
+      background: var(--surface-2);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 12px 14px;
+    }
+
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    textarea {
+      min-height: 92px;
+      resize: vertical;
+    }
+
+    button {
+      margin-top: 14px;
+      padding: 12px 14px;
+      border: none;
+      font-weight: 700;
+      color: #fff;
+      background: var(--primary);
+      cursor: pointer;
+      transition: 0.15s ease;
+    }
+
+    button:hover:not(:disabled) {
+      background: var(--primary-hover);
+    }
+
+    button:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    .btn-mini {
+      width: auto;
+      margin: 0;
+      padding: 7px 12px;
+      font-size: 12px;
+      border-radius: 9px;
+    }
+
+    .btn-ghost {
+      background: var(--surface-2);
+      color: var(--text);
       border: 1px solid var(--border);
     }
 
-    .mode-btn {
-      margin-top: 0;
-      padding: 8px 10px;
-      font-size: 13px;
-      background: transparent;
-      color: var(--muted);
-      border-radius: 8px;
+    .btn-ghost:hover:not(:disabled) {
+      background: #233054;
     }
 
-    .mode-btn.active {
-      background: var(--primary);
-      color: #ffffff;
+    .btn-ok {
+      background: var(--success);
     }
 
-    .stats-grid {
+    .btn-no {
+      background: var(--danger);
+    }
+
+    .stats-row {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 10px;
       margin-top: 12px;
     }
 
-    .stat-box {
-      background: var(--surface-soft);
+    .stat-tile {
+      background: var(--surface-2);
       border: 1px solid var(--border);
-      border-radius: 10px;
+      border-radius: 12px;
       padding: 12px;
       text-align: center;
     }
 
-    .stat-label {
-      font-size: 12px;
+    .stat-tile small {
       color: var(--muted);
-    }
-
-    .stat-value {
-      font-size: 17px;
-      font-weight: 800;
-      margin-top: 4px;
-      color: var(--text);
-    }
-
-    label {
-      display: block;
-      margin: 12px 0 6px;
-      font-size: 13px;
-      font-weight: 700;
-      color: #334155;
-    }
-
-    input, select, textarea, button {
-      width: 100%;
-      padding: 11px 13px;
-      border-radius: 10px;
-      border: 1px solid #cbd5e1;
-      font-size: 14px;
-    }
-
-    input, select, textarea {
-      background: var(--surface-soft);
-      color: var(--text);
-    }
-
-    input:focus, select:focus, textarea:focus {
-      outline: none;
-      border-color: var(--primary);
-      background: #ffffff;
-    }
-
-    textarea {
-      min-height: 90px;
-      resize: vertical;
-    }
-
-    button {
-      margin-top: 14px;
-      background: var(--primary);
-      color: #ffffff;
-      border: none;
-      font-weight: 700;
-      cursor: pointer;
-      transition: 0.15s ease;
-    }
-
-    button:hover:not(:disabled) {
-      background: var(--primary-dark);
-    }
-
-    button:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-
-    .btn-sm {
-      width: auto;
-      margin-top: 0;
-      padding: 7px 12px;
       font-size: 12px;
-      border-radius: 8px;
+      display: block;
     }
 
-    .btn-secondary {
-      background: #e2e8f0;
-      color: #0f172a;
+    .stat-tile strong {
+      font-size: 16px;
+      margin-top: 4px;
+      display: block;
     }
 
-    .btn-secondary:hover:not(:disabled) {
-      background: #cbd5e1;
-    }
-
-    .btn-complete {
-      background: var(--success);
-    }
-
-    .btn-complete:hover:not(:disabled) {
-      background: #15803d;
-    }
-
-    .btn-cancel {
-      background: var(--danger);
-    }
-
-    .btn-cancel:hover:not(:disabled) {
-      background: #b91c1c;
-    }
-
-    .status-msg {
+    .msg-line {
       margin-top: 10px;
       font-size: 13px;
       font-weight: 600;
-      color: var(--primary);
+      color: #60a5fa;
       min-height: 18px;
     }
 
-    .list-item {
-      background: var(--surface-soft);
+    .order-box {
+      background: var(--surface-2);
       border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 13px;
+      border-radius: 13px;
+      padding: 14px;
       margin-top: 10px;
+      font-size: 13px;
     }
 
-    .item-top {
+    .order-head {
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 8px;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
       flex-wrap: wrap;
     }
 
-    .status-tag {
-      padding: 3px 9px;
+    .tag {
+      padding: 3px 10px;
       border-radius: 999px;
-      font-size: 12px;
-      font-weight: 700;
+      font-size: 11px;
+      font-weight: 800;
     }
 
-    .st-pending, .st-open {
-      background: #fef3c7;
-      color: #92400e;
+    .tag-pending {
+      background: rgba(245, 158, 11, 0.18);
+      color: #fbbf24;
     }
 
-    .st-completed, .st-resolved {
-      background: #dcfce7;
-      color: #166534;
+    .tag-done {
+      background: rgba(34, 197, 94, 0.18);
+      color: #4ade80;
     }
 
-    .st-cancelled {
-      background: #fee2e2;
-      color: #991b1b;
+    .tag-cancel {
+      background: rgba(239, 68, 68, 0.18);
+      color: #f87171;
     }
 
-    .row-actions {
+    .action-pair {
       display: flex;
       gap: 8px;
       margin-top: 10px;
     }
 
-    .row-actions button {
-      margin-top: 0;
+    .action-pair button {
+      margin: 0;
       padding: 8px 10px;
       font-size: 13px;
     }
 
-    .admin-settings-box {
-      background: #f8fafc;
-      border: 1px solid #cbd5e1;
-      border-radius: 10px;
+    .admin-box {
+      background: var(--surface-2);
+      border: 1px solid rgba(59, 130, 246, 0.35);
+      border-radius: 13px;
       padding: 14px;
       margin-bottom: 16px;
     }
 
-    .discreet-footer {
-      text-align: center;
-      margin-top: 20px;
-      padding-bottom: 10px;
+    .admin-box h3 {
+      margin: 0 0 6px;
+      font-size: 15px;
     }
 
-    .discreet-link {
+    .footer-admin {
+      text-align: center;
+      margin-top: 18px;
+    }
+
+    .admin-trigger {
       display: inline-block;
       width: auto;
-      margin-top: 0;
-      padding: 4px 10px;
+      margin: 0;
+      padding: 5px 12px;
       background: transparent;
-      color: #94a3b8;
+      color: var(--muted);
       font-size: 11px;
-      font-weight: 600;
     }
 
-    .discreet-link:hover {
+    .admin-trigger:hover {
       background: transparent;
-      color: #64748b;
+      color: var(--text);
     }
 
-    .bottom-nav {
+    .dock-nav {
       position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
       z-index: 40;
-      background: var(--surface);
+      backdrop-filter: blur(12px);
+      background: rgba(11, 16, 32, 0.9);
       border-top: 1px solid var(--border);
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       padding: 6px 8px;
-      box-shadow: 0 -4px 16px rgba(15, 23, 42, 0.06);
+      gap: 4px;
     }
 
-    .nav-btn {
-      margin-top: 0;
-      padding: 7px 4px;
+    .dock-btn {
+      margin: 0;
+      padding: 8px 4px;
+      border-radius: 10px;
       background: transparent;
       color: var(--muted);
       font-size: 12px;
       font-weight: 700;
-      border-radius: 10px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 2px;
     }
 
-    .nav-btn:hover:not(:disabled) {
-      background: var(--surface-soft);
-      color: var(--text);
-    }
-
-    .nav-btn.active {
-      background: #eff6ff;
-      color: var(--primary);
+    .dock-btn.active {
+      background: rgba(59, 130, 246, 0.18);
+      color: #93c5fd;
     }
 
     .hidden {
       display: none !important;
     }
 
-    /* Modal Styling */
-    .modal-backdrop {
+    /* Modal */
+    .modal-bg {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(15, 23, 42, 0.65);
+      inset: 0;
+      background: rgba(2, 6, 23, 0.78);
+      backdrop-filter: blur(5px);
       z-index: 100;
       display: grid;
       place-items: center;
       padding: 16px;
     }
 
-    .modal-card {
+    .modal-sheet {
       background: var(--surface);
-      width: 100%;
-      max-width: 500px;
+      border: 1px solid var(--border);
       border-radius: var(--radius);
+      width: 100%;
+      max-width: 480px;
       padding: 22px;
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15);
       max-height: 92vh;
       overflow-y: auto;
+      box-shadow: 0 24px 50px rgba(0, 0, 0, 0.5);
     }
 
-    .payment-instruction-box {
-      background: #f1f5f9;
+    .pay-box {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
       padding: 14px;
-      border-radius: 10px;
-      margin-bottom: 16px;
+      margin: 14px 0;
       font-size: 13px;
     }
 
-    .num-row {
+    .pay-line {
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -572,310 +558,296 @@
       margin-top: 6px;
     }
 
-    .admin-num-badge {
+    .num-pill {
+      background: rgba(59, 130, 246, 0.18);
+      color: #93c5fd;
+      padding: 6px 12px;
+      border-radius: 9px;
       font-weight: 800;
-      color: var(--primary);
-      background: #e0e7ff;
-      padding: 6px 10px;
-      border-radius: 8px;
       font-size: 15px;
-      letter-spacing: 0.4px;
+      letter-spacing: 0.5px;
     }
 
-    .copy-btn {
+    .copy-chip {
       width: auto;
-      margin-top: 0;
-      background: #0f172a;
-      color: #ffffff;
+      margin: 0;
       padding: 7px 12px;
       font-size: 12px;
       border-radius: 8px;
+      background: var(--primary);
     }
 
-    .copy-btn:hover {
-      background: #1e293b;
-    }
-
-    .spinner {
-      border: 4px solid #e2e8f0;
-      border-top: 4px solid var(--primary);
-      border-radius: 50%;
+    .ring {
       width: 44px;
       height: 44px;
+      border-radius: 50%;
+      border: 4px solid rgba(148, 163, 184, 0.25);
+      border-top-color: var(--accent);
       animation: spin 1s linear infinite;
       margin: 0 auto 14px;
     }
 
-    .countdown-box {
-      font-size: 24px;
-      font-weight: 800;
-      color: var(--primary);
-      background: #eff6ff;
-      border: 1px solid #bfdbfe;
+    .timer-pill {
       display: inline-block;
-      padding: 6px 16px;
+      margin: 10px 0;
+      padding: 7px 16px;
       border-radius: 10px;
-      margin: 8px 0;
+      background: rgba(6, 182, 212, 0.15);
+      border: 1px solid rgba(6, 182, 212, 0.35);
+      color: #67e8f9;
+      font-size: 22px;
+      font-weight: 800;
     }
 
     @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+      to { transform: rotate(360deg); }
     }
   </style>
 </head>
 <body>
-  <!-- Top Header -->
-  <header class="app-header">
-    <div class="header-inner">
-      <div class="brand-box">
-        <div class="brand-logo">AS</div>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-mark">AS</div>
         <div>
-          <h1 class="brand-title">A.S FF TopUp</h1>
-          <div class="brand-sub">সকাল ৮:০০ – রাত ১০:০০ সাপোর্ট খোলা</div>
+          <h1>A.S FF TopUp</h1>
+          <p>সকাল ৮:০০ – রাত ১০:০০ সাপোর্ট খোলা</p>
         </div>
       </div>
-      <div class="header-actions">
-        <span id="sessionBadge" class="pill">Guest</span>
-        <button type="button" id="logoutBtn" class="btn-secondary btn-sm hidden">লগআউট</button>
+      <div class="top-right">
+        <span id="sessionBadge" class="badge">Guest</span>
+        <button type="button" id="logoutBtn" class="btn-ghost btn-mini hidden">লগআউট</button>
       </div>
     </div>
   </header>
 
-  <main class="container">
-    <div class="notice-banner">
-      <span>সার্ভিস সময়: প্রতিদিন সকাল ০৮:০০টা থেকে রাত ১০:০০টা পর্যন্ত। নিজের Gmail অ্যাকাউন্ট দিয়ে সাইন ইন করে অর্ডার ও সাপোর্ট নিন।</span>
+  <main class="wrap">
+    <div class="hero-strip">
+      <strong>দ্রুত ও নিরাপদ গেম টপ-আপ ও লাইক স্টোর</strong>
+      <span>সার্ভিস সময়: সকাল ০৮:০০ – রাত ১০:০০</span>
     </div>
 
-    <!-- Customer Gmail Sign In / Create Account Section -->
-    <section id="authSection" class="card">
-      <h2 id="authHeading">Gmail দিয়ে অ্যাকাউন্ট তৈরি করুন</h2>
-      <p class="card-desc" id="authSubDesc">
-        আপনার নিজস্ব Gmail অ্যাকাউন্ট দিয়ে নতুন প্রোফাইল তৈরি করুন এবং অর্ডার ও সাপোর্ট সুবিধা নিন।
-      </p>
+    <!-- Customer Auth -->
+    <section id="authSection" class="panel">
+      <div class="panel-head">
+        <div>
+          <h2 id="authHeading">অ্যাকাউন্ট তৈরি করুন</h2>
+          <p id="authSubDesc" class="panel-sub">Gmail ও পাসওয়ার্ড দিয়ে অ্যাকাউন্ট তৈরি বা সাইন ইন করুন।</p>
+        </div>
+      </div>
 
-      <div class="mode-switch">
-        <button type="button" id="modeRegisterBtn" class="mode-btn active">নতুন অ্যাকাউন্ট</button>
-        <button type="button" id="modeLoginBtn" class="mode-btn">সাইন ইন (Gmail)</button>
+      <div class="seg-tabs">
+        <button type="button" id="modeRegisterBtn" class="seg-btn active">নতুন অ্যাকাউন্ট</button>
+        <button type="button" id="modeLoginBtn" class="seg-btn">সাইন ইন</button>
       </div>
 
       <form id="customerAuthForm">
-        <label for="custGmail">আপনার Gmail ঠিকানা</label>
+        <label for="custGmail" class="field-label">আপনার Gmail ঠিকানা</label>
         <input type="email" id="custGmail" placeholder="example@gmail.com" required />
 
-        <label for="custPassword">পাসওয়ার্ড</label>
+        <label for="custPassword" class="field-label">পাসওয়ার্ড</label>
         <input type="password" id="custPassword" placeholder="পাসওয়ার্ড লিখুন" required />
 
-        <button type="submit" id="authSubmitBtn">Gmail দিয়ে অ্যাকাউন্ট তৈরি করুন</button>
+        <button type="submit" id="authSubmitBtn">অ্যাকাউন্ট তৈরি করুন</button>
       </form>
-      <div id="custAuthMsg" class="status-msg"></div>
+      <div id="custAuthMsg" class="msg-line"></div>
     </section>
 
-    <!-- Admin Login Box -->
-    <section id="adminAuthSection" class="card hidden">
-      <div class="item-top">
+    <!-- Admin Login -->
+    <section id="adminAuthSection" class="panel hidden">
+      <div class="panel-head">
         <h2>Admin Access</h2>
-        <button type="button" id="closeAdminBoxBtn" class="btn-secondary btn-sm">বন্ধ করুন</button>
+        <button type="button" id="closeAdminBoxBtn" class="btn-ghost btn-mini">বন্ধ করুন</button>
       </div>
-      <p class="card-desc">অ্যাডমিন জিমেইল ও পাসওয়ার্ড দিয়ে প্রবেশ করুন।</p>
       <form id="adminAuthForm">
-        <label for="adminEmail">অ্যাডমিন জিমেইল</label>
+        <label for="adminEmail" class="field-label">অ্যাডমিন জিমেইল</label>
         <input type="text" id="adminEmail" placeholder="mdassadikislambd123@gmail" required />
 
-        <label for="adminPassword">অ্যাডমিন পাসওয়ার্ড</label>
-        <input type="password" id="adminPassword" placeholder="অ্যাডমিন পাসওয়ার্ড লিখুন" required />
+        <label for="adminPassword" class="field-label">অ্যাডমিন পাসওয়ার্ড</label>
+        <input type="password" id="adminPassword" placeholder="পাসওয়ার্ড লিখুন" required />
 
-        <label for="newBkashNum">নতুন বিকাশ নাম্বার সেট করুন (পার্সোনাল)</label>
-        <input type="text" id="newBkashNum" placeholder="01820313593" value="01820313593" />
+        <label for="newBkashNum" class="field-label">বিকাশ পার্সোনাল নম্বর</label>
+        <input type="text" id="newBkashNum" value="01820313593" />
 
-        <label for="newRocketNum">নতুন রকেট নাম্বার সেট করুন (পার্সোনাল)</label>
-        <input type="text" id="newRocketNum" placeholder="01820313593" value="01820313593" />
+        <label for="newRocketNum" class="field-label">রকেট পার্সোনাল নম্বর</label>
+        <input type="text" id="newRocketNum" value="01820313593" />
 
-        <button type="submit">অ্যাডমিন প্যানেলে প্রবেশ করুন ও নাম্বার সেভ করুন</button>
+        <button type="submit">অ্যাডমিন প্যানেলে প্রবেশ করুন</button>
       </form>
-      <div id="adminAuthMsg" class="status-msg"></div>
+      <div id="adminAuthMsg" class="msg-line"></div>
     </section>
 
-    <!-- Profile & Summary Card -->
-    <section id="profileCard" class="card hidden">
-      <div class="item-top">
+    <!-- Profile Summary -->
+    <section id="profileCard" class="panel hidden">
+      <div class="panel-head">
         <div>
           <h2 id="profileTitle">অ্যাকাউন্ট প্রোফাইল</h2>
-          <p class="card-desc" id="profileSub">সাপোর্ট সময়: প্রতিদিন সকাল ৮:০০টা থেকে রাত ১০:০০টা পর্যন্ত।</p>
+          <p id="profileSub" class="panel-sub">সাপোর্ট সময়: প্রতিদিন সকাল ৮:০০টা থেকে রাত ১০:০০টা পর্যন্ত।</p>
         </div>
-        <span class="pill" id="rolePill">Gmail User</span>
+        <span id="rolePill" class="badge">Gmail User</span>
       </div>
-      <div class="stats-grid" id="customerStats">
-        <div class="stat-box">
-          <div class="stat-label">মোট অর্ডার</div>
-          <div class="stat-value" id="statOrdersCount">0</div>
+      <div id="customerStats" class="stats-row">
+        <div class="stat-tile">
+          <small>মোট অর্ডার</small>
+          <strong id="statOrdersCount">0</strong>
         </div>
-        <div class="stat-box">
-          <div class="stat-label">মোট খরচ</div>
-          <div class="stat-value" id="statTotalSpend">0 TK</div>
+        <div class="stat-tile">
+          <small>মোট খরচ</small>
+          <strong id="statTotalSpend">0 TK</strong>
         </div>
-        <div class="stat-box">
-          <div class="stat-label">সাপোর্ট সময়</div>
-          <div class="stat-value" style="font-size: 13px;">8 AM – 10 PM</div>
+        <div class="stat-tile">
+          <small>সাপোর্ট সময়</small>
+          <strong>8 AM – 10 PM</strong>
         </div>
       </div>
     </section>
 
-    <!-- Tab 1: Order Section -->
-    <section id="tabOrder" class="card hidden">
-      <h2>নতুন অর্ডার করুন</h2>
-      <p class="card-desc">সার্ভিস, প্যাকেজ এবং ইন-গেম ইউআইডি নির্বাচন করে অর্ডার কনফার্ম করুন।</p>
+    <!-- Tab 1: Order -->
+    <section id="tabOrder" class="panel hidden">
+      <div class="panel-head">
+        <div>
+          <h2>নতুন অর্ডার</h2>
+          <p class="panel-sub">সার্ভিস ও প্যাকেজ বক্স সিলেক্ট করে UID দিন।</p>
+        </div>
+      </div>
 
       <form id="orderForm">
-        <!-- Service Boxes -->
-        <span class="section-label">সার্ভিস নির্বাচন করুন</span>
-        <div class="service-grid" id="serviceGrid">
-          <div class="service-box selected" data-service="UID TopUp">
-            <div class="service-title">UID TopUp</div>
-            <div class="service-sub">ডায়মন্ড ও মেম্বারশিপ</div>
+        <span class="field-label">সার্ভিস নির্বাচন করুন</span>
+        <div id="serviceGrid" class="service-boxes">
+          <div class="srv-card active" data-service="UID TopUp">
+            <div class="srv-name">UID TopUp</div>
+            <div class="srv-hint">ডায়মন্ড ও মেম্বারশিপ</div>
           </div>
-          <div class="service-box" data-service="Free Fire Auto Likes">
-            <div class="service-title">Free Fire Auto Likes</div>
-            <div class="service-sub">ইন-গেম প্রোফাইল লাইক</div>
+          <div class="srv-card" data-service="Free Fire Auto Likes">
+            <div class="srv-name">Free Fire Auto Likes</div>
+            <div class="srv-hint">ইন-গেম প্রোফাইল লাইক</div>
           </div>
         </div>
         <input type="hidden" id="serviceType" value="UID TopUp" />
 
-        <!-- Package Boxes -->
-        <span class="section-label">প্যাকেজ তালিকা (বক্সে ক্লিক করুন)</span>
-        <div class="package-grid" id="packageGrid">
-          <!-- UID TopUp Packages -->
-          <div class="pkg-box uid-pkg selected" data-value="💎 25 ডায়মন্ড - 22 TK" data-price="22">
-            <div class="pkg-name">💎 25 ডায়মন্ড</div>
-            <div class="pkg-price">22 TK</div>
+        <span class="field-label">প্যাকেজ নির্বাচন করুন</span>
+        <div id="packageGrid" class="pkg-boxes">
+          <div class="pkg-card uid-pkg active" data-value="💎 25 ডায়মন্ড - 22 TK" data-price="22">
+            <div class="pkg-title">💎 25 ডায়মন্ড</div>
+            <div class="pkg-cost">22 TK</div>
           </div>
-          <div class="pkg-box uid-pkg" data-value="💎 50 ডায়মন্ড - 37 TK" data-price="37">
-            <div class="pkg-name">💎 50 ডায়মন্ড</div>
-            <div class="pkg-price">37 TK</div>
+          <div class="pkg-card uid-pkg" data-value="💎 50 ডায়মন্ড - 37 TK" data-price="37">
+            <div class="pkg-title">💎 50 ডায়মন্ড</div>
+            <div class="pkg-cost">37 TK</div>
           </div>
-          <div class="pkg-box uid-pkg" data-value="💎 115 ডায়মন্ড - 80 TK" data-price="80">
-            <div class="pkg-name">💎 115 ডায়মন্ড</div>
-            <div class="pkg-price">80 TK</div>
+          <div class="pkg-card uid-pkg" data-value="💎 115 ডায়মন্ড - 80 TK" data-price="80">
+            <div class="pkg-title">💎 115 ডায়মন্ড</div>
+            <div class="pkg-cost">80 TK</div>
           </div>
-          <div class="pkg-box uid-pkg" data-value="💎 240 ডায়মন্ড - 156 TK" data-price="156">
-            <div class="pkg-name">💎 240 ডায়মন্ড</div>
-            <div class="pkg-price">156 TK</div>
+          <div class="pkg-card uid-pkg" data-value="💎 240 ডায়মন্ড - 156 TK" data-price="156">
+            <div class="pkg-title">💎 240 ডায়মন্ড</div>
+            <div class="pkg-cost">156 TK</div>
           </div>
-          <div class="pkg-box uid-pkg" data-value="💎 610 ডায়মন্ড - 395 TK" data-price="395">
-            <div class="pkg-name">💎 610 ডায়মন্ড</div>
-            <div class="pkg-price">395 TK</div>
+          <div class="pkg-card uid-pkg" data-value="💎 610 ডায়মন্ড - 395 TK" data-price="395">
+            <div class="pkg-title">💎 610 ডায়মন্ড</div>
+            <div class="pkg-cost">395 TK</div>
           </div>
-          <div class="pkg-box uid-pkg" data-value="💎 1240 ডায়মন্ড - 785 TK" data-price="785">
-            <div class="pkg-name">💎 1240 ডায়মন্ড</div>
-            <div class="pkg-price">785 TK</div>
+          <div class="pkg-card uid-pkg" data-value="💎 1240 ডায়মন্ড - 785 TK" data-price="785">
+            <div class="pkg-title">💎 1240 ডায়মন্ড</div>
+            <div class="pkg-cost">785 TK</div>
           </div>
-          <div class="pkg-box uid-pkg" data-value="💎 2530 ডায়মন্ড - 1570 TK" data-price="1570">
-            <div class="pkg-name">💎 2530 ডায়মন্ড</div>
-            <div class="pkg-price">1570 TK</div>
+          <div class="pkg-card uid-pkg" data-value="💎 2530 ডায়মন্ড - 1570 TK" data-price="1570">
+            <div class="pkg-title">💎 2530 ডায়মন্ড</div>
+            <div class="pkg-cost">1570 TK</div>
           </div>
-          <div class="pkg-box uid-pkg" data-value="Weekly - 160 TK" data-price="160">
-            <div class="pkg-name">Weekly</div>
-            <div class="pkg-price">160 TK</div>
+          <div class="pkg-card uid-pkg" data-value="Weekly - 160 TK" data-price="160">
+            <div class="pkg-title">Weekly</div>
+            <div class="pkg-cost">160 TK</div>
           </div>
-          <div class="pkg-box uid-pkg" data-value="Monthly - 780 TK" data-price="780">
-            <div class="pkg-name">Monthly</div>
-            <div class="pkg-price">780 TK</div>
+          <div class="pkg-card uid-pkg" data-value="Monthly - 780 TK" data-price="780">
+            <div class="pkg-title">Monthly</div>
+            <div class="pkg-cost">780 TK</div>
           </div>
-          <div class="pkg-box uid-pkg disabled" data-value="❌ ২০০০ Unipin (Out of stock) - 1690 TK" data-price="1690" data-disabled="true">
-            <div class="pkg-name">❌ ২০০০ Unipin</div>
-            <div class="pkg-price">Out of stock — 1690 TK</div>
+          <div class="pkg-card uid-pkg soldout" data-value="❌ ২০০০ Unipin (Out of stock) - 1690 TK" data-price="1690" data-disabled="true">
+            <div class="pkg-title">❌ ২০০০ Unipin</div>
+            <div class="pkg-cost">Out of stock — 1690 TK</div>
           </div>
 
-          <!-- Auto Likes Packages (Initially Hidden) -->
-          <div class="pkg-box likes-pkg hidden" data-value="🔥 200 লাইক - 15 TK" data-price="15">
-            <div class="pkg-name">🔥 200 লাইক</div>
-            <div class="pkg-price">15 TK</div>
+          <div class="pkg-card likes-pkg hidden" data-value="🔥 200 লাইক - 15 TK" data-price="15">
+            <div class="pkg-title">🔥 200 লাইক</div>
+            <div class="pkg-cost">15 TK</div>
           </div>
-          <div class="pkg-box likes-pkg hidden" data-value="🔥 220 লাইক - 15 TK" data-price="15">
-            <div class="pkg-name">🔥 220 লাইক</div>
-            <div class="pkg-price">15 TK</div>
+          <div class="pkg-card likes-pkg hidden" data-value="🔥 220 লাইক - 15 TK" data-price="15">
+            <div class="pkg-title">🔥 220 লাইক</div>
+            <div class="pkg-cost">15 TK</div>
           </div>
         </div>
         <input type="hidden" id="packageName" value="💎 25 ডায়মন্ড - 22 TK" data-price="22" />
 
-        <label for="playerUid">ইন-গেম ইউআইডি কোড দিন</label>
-        <input type="text" id="playerUid" placeholder="যেমন: 123456789" required />
+        <label for="playerUid" class="field-label">ইন-গেম UID কোড</label>
+        <input type="text" id="playerUid" placeholder="যেমন: 6817246793" required />
 
-        <button type="submit" id="proceedToPaymentBtn">অর্ডার কনফার্ম করুন ও পেমেন্ট করুন</button>
+        <button type="submit">পেমেন্টে যান</button>
       </form>
-      <div id="formStatus" class="status-msg"></div>
+      <div id="formStatus" class="msg-line"></div>
     </section>
 
-    <!-- Tab 2: Orders List Section -->
-    <section id="tabOrdersList" class="card hidden">
-      <!-- Admin Payment Number Settings Box -->
-      <div id="adminPaymentSettings" class="admin-settings-box hidden">
-        <h3 style="margin: 0 0 8px 0; font-size: 16px;">পেমেন্ট নম্বর আপডেট করুন (পার্সোনাল)</h3>
+    <!-- Tab 2: Orders -->
+    <section id="tabOrdersList" class="panel hidden">
+      <div id="adminPaymentSettings" class="admin-box hidden">
+        <h3>পেমেন্ট নম্বর আপডেট (পার্সোনাল)</h3>
         <form id="paymentNumbersForm">
-          <label for="panelBkashNum" style="margin-top: 6px;">বিকাশ নম্বর</label>
+          <label for="panelBkashNum" class="field-label">বিকাশ নম্বর</label>
           <input type="text" id="panelBkashNum" placeholder="01820313593" required />
 
-          <label for="panelRocketNum" style="margin-top: 8px;">রকেট নম্বর</label>
+          <label for="panelRocketNum" class="field-label">রকেট নম্বর</label>
           <input type="text" id="panelRocketNum" placeholder="01820313593" required />
 
-          <button type="submit" class="btn-complete">নম্বর সেভ করুন</button>
+          <button type="submit" class="btn-ok">নম্বর সেভ করুন</button>
         </form>
-        <div id="paymentSaveMsg" class="status-msg"></div>
+        <div id="paymentSaveMsg" class="msg-line"></div>
       </div>
 
-      <div class="item-top">
-        <h2 id="ordersHeading">অর্ডার তালিকা</h2>
-        <button type="button" id="refreshBtn" class="btn-secondary btn-sm">রিফ্রেশ</button>
+      <div class="panel-head">
+        <h2 id="ordersHeading">অর্ডারসমূহ</h2>
+        <button type="button" id="refreshBtn" class="btn-ghost btn-mini">রিফ্রেশ</button>
       </div>
       <div id="ordersList"></div>
     </section>
 
-    <!-- Tab 3: Customer Support Section -->
-    <section id="tabSupport" class="card hidden">
-      <h2>কাস্টমার সাপোর্ট ও হেল্প</h2>
-      <p class="card-desc">
-        আমাদের ওয়েবসাইট ও সাপোর্ট প্রতিদিন <strong>সকাল ৮:০০টা থেকে রাত ১০:০০টা পর্যন্ত</strong> খোলা থাকে। কোনো সমস্যায় পড়লে আপনার Gmail অ্যাকাউন্টের তথ্যসহ সাপোর্ট রিকোয়েস্ট পাঠান।
-      </p>
+    <!-- Tab 3: Support -->
+    <section id="tabSupport" class="panel hidden">
+      <div class="panel-head">
+        <div>
+          <h2>কাস্টমার সাপোর্ট</h2>
+          <p class="panel-sub">সাপোর্ট সময়: প্রতিদিন সকাল ৮:০০টা থেকে রাত ১০:০০টা পর্যন্ত।</p>
+        </div>
+      </div>
 
       <div id="supportFormBox">
         <form id="supportForm">
-          <label for="supportOrderId">সম্পর্কিত Order ID (ঐচ্ছিক)</label>
+          <label for="supportOrderId" class="field-label">Order ID (ঐচ্ছিক)</label>
           <input type="text" id="supportOrderId" placeholder="যেমন: ORD1732512345678" />
 
-          <label for="supportMessage">সমস্যার বিবরণ</label>
-          <textarea id="supportMessage" placeholder="আপনার সমস্যা বা প্রয়োজনীয় তথ্য বিস্তারিত লিখুন..." required></textarea>
+          <label for="supportMessage" class="field-label">সমস্যার বিবরণ</label>
+          <textarea id="supportMessage" placeholder="আপনার সমস্যা বিস্তারিত লিখুন..." required></textarea>
 
-          <button type="submit">সাপোর্ট রিকোয়েস্ট পাঠান</button>
+          <button type="submit">রিকোয়েস্ট পাঠান</button>
         </form>
-        <div id="supportStatus" class="status-msg"></div>
+        <div id="supportStatus" class="msg-line"></div>
       </div>
 
-      <h3 style="margin-top: 20px; margin-bottom: 6px; font-size: 16px;" id="ticketsHeading">সাপোর্ট টিকিটসমূহ</h3>
+      <h3 id="ticketsHeading" style="margin-top: 20px; font-size: 15px;">সাপোর্ট টিকিটসমূহ</h3>
       <div id="ticketsList"></div>
     </section>
 
-    <div class="discreet-footer" id="discreetFooter">
-      <button type="button" id="openAdminBoxBtn" class="discreet-link">Admin</button>
+    <div id="discreetFooter" class="footer-admin">
+      <button type="button" id="openAdminBoxBtn" class="admin-trigger">Admin</button>
     </div>
   </main>
 
-  <!-- Modal Container for Payment & 2-Minute Processing -->
-  <div id="modalContainer" class="modal-backdrop hidden"></div>
+  <div id="modalContainer" class="modal-bg hidden"></div>
 
-  <!-- Bottom Navigation -->
-  <nav class="bottom-nav" id="bottomNav">
-    <button type="button" class="nav-btn active" data-tab="order">
-      <span>হোম / অর্ডার</span>
-    </button>
-    <button type="button" class="nav-btn" data-tab="orders">
-      <span>অর্ডারসমূহ</span>
-    </button>
-    <button type="button" class="nav-btn" data-tab="support">
-      <span>সাপোর্ট</span>
-    </button>
-    <button type="button" class="nav-btn" data-tab="account">
-      <span>অ্যাকাউন্ট</span>
-    </button>
+  <nav id="bottomNav" class="dock-nav">
+    <button type="button" class="dock-btn active" data-tab="order">হোম / অর্ডার</button>
+    <button type="button" class="dock-btn" data-tab="orders">অর্ডারসমূহ</button>
+    <button type="button" class="dock-btn" data-tab="support">সাপোর্ট</button>
+    <button type="button" class="dock-btn" data-tab="account">অ্যাকাউন্ট</button>
   </nav>
 
   <script>
@@ -891,7 +863,7 @@
 
     const SESSION_KEY = "as_ff_topup_session_v6";
     const CONFIG_KEY = "as_ff_topup_config_v3";
-    const PROCESSING_DURATION_MS = 120000; // 2 minutes (120 seconds)
+    const PROCESSING_DURATION_MS = 120000;
 
     const DEFAULT_BKASH_NUM = "01820313593";
     const DEFAULT_ROCKET_NUM = "01820313593";
@@ -907,39 +879,6 @@
       bkashNum: DEFAULT_BKASH_NUM,
       rocketNum: DEFAULT_ROCKET_NUM
     };
-
-    function syncAdminNumberInputs() {
-      const bInput = document.getElementById("panelBkashNum");
-      const rInput = document.getElementById("panelRocketNum");
-      if (bInput) bInput.value = paymentConfig.bkashNum;
-      if (rInput) rInput.value = paymentConfig.rocketNum;
-    }
-
-    function loadPaymentConfig() {
-      try {
-        const saved = localStorage.getItem(CONFIG_KEY);
-        if (saved) {
-          const parsed = JSON.parse(saved);
-          paymentConfig = {
-            bkashNum: parsed.bkashNum || DEFAULT_BKASH_NUM,
-            rocketNum: parsed.rocketNum || DEFAULT_ROCKET_NUM
-          };
-        }
-      } catch (err) {
-        console.error("Failed to load payment config", err);
-      }
-      syncAdminNumberInputs();
-    }
-
-    function savePaymentConfig(bkash, rocket) {
-      paymentConfig = { bkashNum: bkash, rocketNum: rocket };
-      try {
-        localStorage.setItem(CONFIG_KEY, JSON.stringify(paymentConfig));
-      } catch (err) {
-        console.error("Failed to save payment config", err);
-      }
-      syncAdminNumberInputs();
-    }
 
     const modalContainer = document.getElementById("modalContainer");
     const sessionBadge = document.getElementById("sessionBadge");
@@ -990,45 +929,77 @@
     const ordersList = document.getElementById("ordersList");
     const ticketsList = document.getElementById("ticketsList");
     const refreshBtn = document.getElementById("refreshBtn");
-    const navButtons = document.querySelectorAll(".nav-btn");
+    const navButtons = document.querySelectorAll(".dock-btn");
+
+    function syncAdminNumberInputs() {
+      const bInput = document.getElementById("panelBkashNum");
+      const rInput = document.getElementById("panelRocketNum");
+      if (bInput) bInput.value = paymentConfig.bkashNum;
+      if (rInput) rInput.value = paymentConfig.rocketNum;
+    }
+
+    function loadPaymentConfig() {
+      try {
+        const saved = localStorage.getItem(CONFIG_KEY);
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          paymentConfig = {
+            bkashNum: parsed.bkashNum || DEFAULT_BKASH_NUM,
+            rocketNum: parsed.rocketNum || DEFAULT_ROCKET_NUM
+          };
+        }
+      } catch (err) {
+        console.error(err);
+      }
+      syncAdminNumberInputs();
+    }
+
+    function savePaymentConfig(bkash, rocket) {
+      paymentConfig = { bkashNum: bkash, rocketNum: rocket };
+      try {
+        localStorage.setItem(CONFIG_KEY, JSON.stringify(paymentConfig));
+      } catch (err) {
+        console.error(err);
+      }
+      syncAdminNumberInputs();
+    }
 
     function resetPackageSelections() {
-      const visiblePkgs = document.querySelectorAll("#packageGrid .pkg-box:not(.hidden):not(.disabled)");
+      const visiblePkgs = document.querySelectorAll("#packageGrid .pkg-card:not(.hidden):not(.soldout)");
       if (visiblePkgs.length > 0) {
-        document.querySelectorAll("#packageGrid .pkg-box").forEach((b) => b.classList.remove("selected"));
-        visiblePkgs[0].classList.add("selected");
+        document.querySelectorAll("#packageGrid .pkg-card").forEach((b) => b.classList.remove("active"));
+        visiblePkgs[0].classList.add("active");
         packageNameInput.value = visiblePkgs[0].dataset.value;
         packageNameInput.dataset.price = visiblePkgs[0].dataset.price;
       }
     }
 
-    // Service & Package Switching Logic
-    document.querySelectorAll("#serviceGrid .service-box").forEach((box) => {
+    document.querySelectorAll("#serviceGrid .srv-card").forEach((box) => {
       box.addEventListener("click", () => {
-        document.querySelectorAll("#serviceGrid .service-box").forEach((b) => b.classList.remove("selected"));
-        box.classList.add("selected");
+        document.querySelectorAll("#serviceGrid .srv-card").forEach((b) => b.classList.remove("active"));
+        box.classList.add("active");
         const selectedService = box.dataset.service;
         serviceTypeInput.value = selectedService;
 
-        const uidPkgs = document.querySelectorAll(".pkg-box.uid-pkg");
-        const likesPkgs = document.querySelectorAll(".pkg-box.likes-pkg");
+        const uidPkgs = document.querySelectorAll(".pkg-card.uid-pkg");
+        const likesPkgs = document.querySelectorAll(".pkg-card.likes-pkg");
 
         if (selectedService === "Free Fire Auto Likes") {
-          uidPkgs.forEach(p => p.classList.add("hidden"));
-          likesPkgs.forEach(p => p.classList.remove("hidden"));
+          uidPkgs.forEach((p) => p.classList.add("hidden"));
+          likesPkgs.forEach((p) => p.classList.remove("hidden"));
         } else {
-          likesPkgs.forEach(p => p.classList.add("hidden"));
-          uidPkgs.forEach(p => p.classList.remove("hidden"));
+          likesPkgs.forEach((p) => p.classList.add("hidden"));
+          uidPkgs.forEach((p) => p.classList.remove("hidden"));
         }
         resetPackageSelections();
       });
     });
 
-    document.querySelectorAll("#packageGrid .pkg-box").forEach((box) => {
+    document.querySelectorAll("#packageGrid .pkg-card").forEach((box) => {
       box.addEventListener("click", () => {
-        if (box.classList.contains("disabled") || box.classList.contains("hidden")) return;
-        document.querySelectorAll("#packageGrid .pkg-box").forEach((b) => b.classList.remove("selected"));
-        box.classList.add("selected");
+        if (box.classList.contains("soldout") || box.classList.contains("hidden")) return;
+        document.querySelectorAll("#packageGrid .pkg-card").forEach((b) => b.classList.remove("active"));
+        box.classList.add("active");
         packageNameInput.value = box.dataset.value;
         packageNameInput.dataset.price = box.dataset.price;
       });
@@ -1053,15 +1024,15 @@
       if (mode === "register") {
         modeRegisterBtn.classList.add("active");
         modeLoginBtn.classList.remove("active");
-        authHeading.textContent = "Gmail দিয়ে অ্যাকাউন্ট তৈরি করুন";
-        authSubDesc.textContent = "নতুন গ্রাহক হিসেবে আপনার Gmail ও পাসওয়ার্ড দিয়ে অ্যাকাউন্ট ক্রিয়েট করুন।";
+        authHeading.textContent = "অ্যাকাউন্ট তৈরি করুন";
+        authSubDesc.textContent = "Gmail ও পাসওয়ার্ড দিয়ে নতুন অ্যাকাউন্ট তৈরি করুন।";
         authSubmitBtn.textContent = "অ্যাকাউন্ট তৈরি করুন";
       } else {
         modeLoginBtn.classList.add("active");
         modeRegisterBtn.classList.remove("active");
-        authHeading.textContent = "Gmail দিয়ে সাইন ইন করুন";
-        authSubDesc.textContent = "আগে তৈরি করা আপনার Gmail ও পাসওয়ার্ড দিয়ে সাইন ইন করুন।";
-        authSubmitBtn.textContent = "Gmail দিয়ে সাইন ইন করুন";
+        authHeading.textContent = "সাইন ইন করুন";
+        authSubDesc.textContent = "আপনার Gmail ও পাসওয়ার্ড দিয়ে সাইন ইন করুন।";
+        authSubmitBtn.textContent = "সাইন ইন করুন";
       }
     }
 
@@ -1128,19 +1099,15 @@
 
       const isAdmin = session.role === "admin";
       sessionBadge.textContent = isAdmin ? "Admin" : session.email;
-      rolePill.textContent = isAdmin ? "ADMIN" : "GMAIL ACCOUNT";
-      profileTitle.textContent = isAdmin
-        ? `অ্যাডমিন অ্যাকাউন্ট (${session.email})`
-        : `Gmail অ্যাকাউন্ট: ${session.email}`;
+      rolePill.textContent = isAdmin ? "ADMIN" : "GMAIL USER";
+      profileTitle.textContent = isAdmin ? `Admin (${session.email})` : session.email;
       profileSub.textContent = "সাপোর্ট সময়: প্রতিদিন সকাল ৮:০০টা থেকে রাত ১০:০০টা পর্যন্ত।";
       customerStats.classList.toggle("hidden", isAdmin);
       adminPaymentSettings.classList.toggle("hidden", !isAdmin);
-      if (isAdmin) {
-        syncAdminNumberInputs();
-      }
+      if (isAdmin) syncAdminNumberInputs();
 
-      ordersHeading.textContent = isAdmin ? "সকল কাস্টমারের অর্ডার" : "আমার অর্ডারসমূহ";
-      ticketsHeading.textContent = isAdmin ? "কাস্টমার সাপোর্ট রিকোয়েস্টসমূহ" : "আমার সাপোর্ট টিকিটসমূহ";
+      ordersHeading.textContent = isAdmin ? "সকল অর্ডার" : "আমার অর্ডারসমূহ";
+      ticketsHeading.textContent = isAdmin ? "সাপোর্ট টিকিটসমূহ" : "আমার টিকিটসমূহ";
       supportFormBox.classList.toggle("hidden", isAdmin);
 
       authSection.classList.add("hidden");
@@ -1149,21 +1116,15 @@
       tabSupport.classList.add("hidden");
 
       if (activeTab === "account") {
-        if (isAdmin) {
-          tabOrdersList.classList.remove("hidden");
-        } else {
-          authSection.classList.remove("hidden");
-        }
+        if (isAdmin) tabOrdersList.classList.remove("hidden");
+        else authSection.classList.remove("hidden");
       } else if (activeTab === "orders") {
         tabOrdersList.classList.remove("hidden");
       } else if (activeTab === "support") {
         tabSupport.classList.remove("hidden");
       } else {
-        if (isAdmin) {
-          tabOrdersList.classList.remove("hidden");
-        } else {
-          tabOrder.classList.remove("hidden");
-        }
+        if (isAdmin) tabOrdersList.classList.remove("hidden");
+        else tabOrder.classList.remove("hidden");
       }
     }
 
@@ -1209,16 +1170,15 @@
           body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text })
         });
       } catch (err) {
-        console.error("Telegram error:", err);
+        console.error(err);
       }
     }
 
     function statusClass(status) {
       const s = String(status || "").toLowerCase();
-      if (s === "completed") return "st-completed";
-      if (s === "cancelled") return "st-cancelled";
-      if (s === "resolved") return "st-resolved";
-      return "st-pending";
+      if (s === "completed" || s === "resolved") return "tag-done";
+      if (s === "cancelled") return "tag-cancel";
+      return "tag-pending";
     }
 
     function matchesUser(itemEmail, sessionEmail) {
@@ -1253,9 +1213,7 @@
           const originalText = btnElement.textContent;
           btnElement.textContent = "কপি হয়েছে";
           setTimeout(() => { btnElement.textContent = originalText; }, 1800);
-        }).catch(() => {
-          fallbackCopy(text, btnElement);
-        });
+        }).catch(() => fallbackCopy(text, btnElement));
       } else {
         fallbackCopy(text, btnElement);
       }
@@ -1270,24 +1228,23 @@
         : orders.filter((o) => matchesUser(o.customerEmail || o.customerUsername, session.email));
 
       if (!filtered.length) {
-        ordersList.innerHTML = "<p class='card-desc'>কোনো অর্ডার পাওয়া যায়নি।</p>";
+        ordersList.innerHTML = "<p class='panel-sub'>কোনো অর্ডার নেই।</p>";
         return;
       }
 
       ordersList.innerHTML = filtered.slice().reverse().map((order) => `
-        <div class="list-item">
-          <div class="item-top">
-            <strong>ID: ${escapeHtml(order.id)}</strong>
-            <span class="status-tag ${statusClass(order.status)}">${escapeHtml(order.status)}</span>
+        <div class="order-box">
+          <div class="order-head">
+            <strong>${escapeHtml(order.id)}</strong>
+            <span class="tag ${statusClass(order.status)}">${escapeHtml(order.status)}</span>
           </div>
-          <div><strong>Gmail:</strong> ${escapeHtml(order.customerEmail || order.customerUsername || "N/A")}</div>
-          <div><strong>সার্ভিস ও প্যাকেজ:</strong> ${escapeHtml(order.service)} — ${escapeHtml(order.package)}</div>
-          <div><strong>UID:</strong> ${escapeHtml(order.uid)} | <strong>Sender:</strong> ${escapeHtml(order.senderPhone || "N/A")} | <strong>TrxID:</strong> ${escapeHtml(order.trxId)}</div>
+          <div>${escapeHtml(order.service)} — <strong>${escapeHtml(order.package)}</strong></div>
+          <div>UID: <strong>${escapeHtml(order.uid)}</strong> | Sender: ${escapeHtml(order.senderPhone || "N/A")} | TrxID: ${escapeHtml(order.trxId)}</div>
           ${
             session.role === "admin"
-              ? `<div class="row-actions">
-                  <button type="button" class="btn-complete" onclick="updateOrderStatus('${escapeHtml(order.id)}', 'Completed')">Completed</button>
-                  <button type="button" class="btn-cancel" onclick="updateOrderStatus('${escapeHtml(order.id)}', 'Cancelled')">Cancelled</button>
+              ? `<div class="action-pair">
+                  <button type="button" class="btn-ok" onclick="updateOrderStatus('${escapeHtml(order.id)}', 'Completed')">Completed</button>
+                  <button type="button" class="btn-no" onclick="updateOrderStatus('${escapeHtml(order.id)}', 'Cancelled')">Cancelled</button>
                 </div>`
               : ""
           }
@@ -1304,23 +1261,22 @@
         : tickets.filter((t) => matchesUser(t.customerEmail || t.customerUsername, session.email));
 
       if (!filtered.length) {
-        ticketsList.innerHTML = "<p class='card-desc'>কোনো সাপোর্ট টিকিট পাওয়া যায়নি।</p>";
+        ticketsList.innerHTML = "<p class='panel-sub'>কোনো সাপোর্ট টিকিট নেই।</p>";
         return;
       }
 
       ticketsList.innerHTML = filtered.slice().reverse().map((ticket) => `
-        <div class="list-item">
-          <div class="item-top">
-            <strong>Ticket: ${escapeHtml(ticket.id)}</strong>
-            <span class="status-tag ${statusClass(ticket.status)}">${escapeHtml(ticket.status)}</span>
+        <div class="order-box">
+          <div class="order-head">
+            <strong>${escapeHtml(ticket.id)}</strong>
+            <span class="tag ${statusClass(ticket.status)}">${escapeHtml(ticket.status)}</span>
           </div>
-          <div><strong>Gmail:</strong> ${escapeHtml(ticket.customerEmail || ticket.customerUsername)}</div>
-          <div><strong>Order ID:</strong> ${escapeHtml(ticket.orderId || "উল্লেখ নেই")}</div>
-          <div><strong>বার্তা:</strong> ${escapeHtml(ticket.message)}</div>
+          <div>Order ID: ${escapeHtml(ticket.orderId || "N/A")}</div>
+          <div>${escapeHtml(ticket.message)}</div>
           ${
             session.role === "admin" && ticket.status !== "Resolved"
-              ? `<div class="row-actions">
-                  <button type="button" class="btn-complete" onclick="resolveTicket('${escapeHtml(ticket.id)}')">Mark Resolved</button>
+              ? `<div class="action-pair">
+                  <button type="button" class="btn-ok" onclick="resolveTicket('${escapeHtml(ticket.id)}')">Mark Resolved</button>
                 </div>`
               : ""
           }
@@ -1340,14 +1296,14 @@
       const session = getSession();
       if (!session) return;
       try {
-        ordersList.innerHTML = "<p class='card-desc'>লোড হচ্ছে...</p>";
-        ticketsList.innerHTML = "<p class='card-desc'>লোড হচ্ছে...</p>";
+        ordersList.innerHTML = "<p class='panel-sub'>লোড হচ্ছে...</p>";
+        ticketsList.innerHTML = "<p class='panel-sub'>লোড হচ্ছে...</p>";
         const state = await fetchCloudState();
         cachedState = state;
         renderAll(state);
       } catch (err) {
-        ordersList.innerHTML = `<p class='status-msg'>সমস্যা হয়েছে: ${escapeHtml(err.message)}</p>`;
-        ticketsList.innerHTML = `<p class='status-msg'>সমস্যা হয়েছে: ${escapeHtml(err.message)}</p>`;
+        ordersList.innerHTML = `<p class='msg-line'>${escapeHtml(err.message)}</p>`;
+        ticketsList.innerHTML = `<p class='msg-line'>${escapeHtml(err.message)}</p>`;
       }
     }
 
@@ -1374,9 +1330,7 @@
         showAdminBox = false;
         syncNavActive();
         applySessionUI();
-        if (getSession()) {
-          renderAll(cachedState);
-        }
+        if (getSession()) renderAll(cachedState);
       });
     });
 
@@ -1388,13 +1342,13 @@
         custAuthMsg.textContent = "সঠিক Gmail ঠিকানা লিখুন।";
         return;
       }
-      custAuthMsg.textContent = "যাচাই করা হচ্ছে...";
+      custAuthMsg.textContent = "অপেক্ষা করুন...";
       try {
         const state = await fetchCloudState();
         const existingUser = state.users.find((u) => normalizeEmail(u.email || u.username) === email);
         if (authMode === "register") {
           if (existingUser) {
-            custAuthMsg.textContent = "এই Gmail দিয়ে আগেই অ্যাকাউন্ট আছে। অনুগ্রহ করে সাইন ইন করুন।";
+            custAuthMsg.textContent = "এই Gmail দিয়ে আগেই অ্যাকাউন্ট আছে। সাইন ইন করুন।";
             return;
           }
           state.users.push({ email, password, createdAt: new Date().toISOString() });
@@ -1403,7 +1357,7 @@
           setSession({ role: "customer", email });
         } else {
           if (!existingUser) {
-            custAuthMsg.textContent = "এই Gmail দিয়ে কোনো অ্যাকাউন্ট পাওয়া যায়নি।";
+            custAuthMsg.textContent = "এই Gmail দিয়ে কোনো অ্যাকাউন্ট নেই।";
             return;
           }
           if (existingUser.password !== password) {
@@ -1414,7 +1368,7 @@
           setSession({ role: "customer", email });
         }
       } catch (err) {
-        custAuthMsg.textContent = `সমস্যা হয়েছে: ${err.message}`;
+        custAuthMsg.textContent = err.message;
       }
     });
 
@@ -1430,9 +1384,7 @@
         return;
       }
 
-      if (newBkash && newRocket) {
-        savePaymentConfig(newBkash, newRocket);
-      }
+      if (newBkash && newRocket) savePaymentConfig(newBkash, newRocket);
       adminAuthForm.reset();
       adminAuthMsg.textContent = "";
       setSession({ role: "admin", email: ADMIN_EMAIL });
@@ -1446,11 +1398,11 @@
       const bkash = document.getElementById("panelBkashNum").value.trim();
       const rocket = document.getElementById("panelRocketNum").value.trim();
       if (!bkash || !rocket) {
-        paymentSaveMsg.textContent = "বিকাশ ও রকেট উভয় নম্বর দিন।";
+        paymentSaveMsg.textContent = "উভয় নম্বর দিন।";
         return;
       }
       savePaymentConfig(bkash, rocket);
-      paymentSaveMsg.textContent = "পেমেন্ট নম্বর সফলভাবে আপডেট হয়েছে!";
+      paymentSaveMsg.textContent = "নম্বর আপডেট হয়েছে!";
     });
 
     logoutBtn.addEventListener("click", clearSession);
@@ -1464,7 +1416,7 @@
         await saveCloudState(state);
         renderAll(state);
       } catch (err) {
-        alert(`স্ট্যাটাস আপডেট ব্যর্থ হয়েছে: ${err.message}`);
+        alert(err.message);
       }
     };
 
@@ -1477,19 +1429,13 @@
         await saveCloudState(state);
         renderAll(state);
       } catch (err) {
-        alert(`টিকিট আপডেট ব্যর্থ হয়েছে: ${err.message}`);
+        alert(err.message);
       }
     };
 
     window.closeModal = function () {
-      if (countdownInterval) {
-        clearInterval(countdownInterval);
-        countdownInterval = null;
-      }
-      if (processingTimeout) {
-        clearTimeout(processingTimeout);
-        processingTimeout = null;
-      }
+      if (countdownInterval) { clearInterval(countdownInterval); countdownInterval = null; }
+      if (processingTimeout) { clearTimeout(processingTimeout); processingTimeout = null; }
       modalContainer.classList.add("hidden");
       modalContainer.innerHTML = "";
     };
@@ -1505,12 +1451,12 @@
       const newOrder = {
         id: "ORD" + Date.now(),
         customerEmail: session.email,
-        service: service,
+        service,
         package: pkg,
         price: Number(price) || 0,
-        uid: uid,
-        senderPhone: senderPhone,
-        trxId: trxId,
+        uid,
+        senderPhone,
+        trxId,
         status: "Pending",
         createdAt: new Date().toISOString()
       };
@@ -1523,37 +1469,34 @@
         await sendTelegramMessage(
           `নতুন অর্ডার এসেছে!\n` +
           `Order ID: ${newOrder.id}\n` +
-          `Customer Gmail: ${newOrder.customerEmail}\n` +
+          `Gmail: ${newOrder.customerEmail}\n` +
           `Service: ${newOrder.service}\n` +
           `Package: ${newOrder.package}\n` +
           `UID: ${newOrder.uid}\n` +
-          `Sender Number: ${newOrder.senderPhone}\n` +
+          `Sender: ${newOrder.senderPhone}\n` +
           `TrxID: ${newOrder.trxId}\n` +
           `Status: ${newOrder.status}`
         );
 
         modalContainer.innerHTML = `
-          <div class="modal-card" style="text-align:center;">
-            <div style="font-size:46px; color:var(--success); font-weight:800;">✓</div>
-            <h2>অর্ডার সফলভাবে জমা হয়েছে!</h2>
-            <p class="card-desc">
-              আপনার অর্ডার আইডি: <strong>${escapeHtml(newOrder.id)}</strong>।<br>
-              অ্যাডমিন পেমেন্ট চেক করে দ্রুত আপনার আইডিতে ডায়মন্ড/লাইক পাঠিয়ে দেবেন।
-            </p>
-            <button type="button" onclick="closeModalAfterSuccess()">অর্ডার তালিকা দেখুন</button>
+          <div class="modal-sheet" style="text-align:center;">
+            <div style="font-size:44px; color:var(--success); font-weight:800;">✓</div>
+            <h2 style="margin:6px 0;">অর্ডার জমা হয়েছে</h2>
+            <p class="panel-sub">Order ID: <strong>${escapeHtml(newOrder.id)}</strong></p>
+            <button type="button" class="btn-ok" onclick="closeModalAfterSuccess()">অর্ডার দেখুন</button>
           </div>
         `;
 
-        formStatus.textContent = `অর্ডার সফলভাবে জমা হয়েছে! Order ID: ${newOrder.id}`;
+        formStatus.textContent = `অর্ডার জমা হয়েছে (${newOrder.id})`;
         orderForm.reset();
         resetPackageSelections();
         renderAll(state);
       } catch (err) {
         modalContainer.innerHTML = `
-          <div class="modal-card" style="text-align:center;">
-            <div style="font-size:46px; color:var(--danger); font-weight:800;">✕</div>
-            <h2>অর্ডার সেভ করতে সমস্যা হয়েছে</h2>
-            <p class="card-desc">${escapeHtml(err.message)}</p>
+          <div class="modal-sheet" style="text-align:center;">
+            <div style="font-size:44px; color:var(--danger); font-weight:800;">✕</div>
+            <h2 style="margin:6px 0;">সমস্যা হয়েছে</h2>
+            <p class="panel-sub">${escapeHtml(err.message)}</p>
             <button type="button" onclick="closeModal()">বন্ধ করুন</button>
           </div>
         `;
@@ -1564,16 +1507,11 @@
       let remainingSec = Math.floor(PROCESSING_DURATION_MS / 1000);
 
       modalContainer.innerHTML = `
-        <div class="modal-card" style="text-align:center;">
-          <div class="spinner"></div>
-          <h2>অর্ডার প্রসেসিং চলছে...</h2>
-          <p class="card-desc">
-            আপনার পেমেন্ট ও UID তথ্য যাচাই করে ডেলিভারি কিউতে যুক্ত করা হচ্ছে। অনুগ্রহ করে পেজটি বন্ধ করবেন না।
-          </p>
-          <div class="countdown-box" id="countdownDisplay">${formatTime(remainingSec)}</div>
-          <div class="status-msg" style="color:var(--muted); font-size:12px;">
-            অবশিষ্ট সময় ২ মিনিট — দয়া করে অপেক্ষা করুন...
-          </div>
+        <div class="modal-sheet" style="text-align:center;">
+          <div class="ring"></div>
+          <h2 style="margin:0;">অর্ডার প্রসেসিং হচ্ছে</h2>
+          <p class="panel-sub">পেজটি বন্ধ করবেন না, ২ মিনিট অপেক্ষা করুন।</p>
+          <div id="countdownDisplay" class="timer-pill">${formatTime(remainingSec)}</div>
         </div>
       `;
 
@@ -1582,21 +1520,13 @@
 
       countdownInterval = setInterval(() => {
         remainingSec -= 1;
-        const displayEl = document.getElementById("countdownDisplay");
-        if (displayEl && remainingSec >= 0) {
-          displayEl.textContent = formatTime(remainingSec);
-        }
-        if (remainingSec <= 0) {
-          clearInterval(countdownInterval);
-          countdownInterval = null;
-        }
+        const el = document.getElementById("countdownDisplay");
+        if (el && remainingSec >= 0) el.textContent = formatTime(remainingSec);
+        if (remainingSec <= 0) { clearInterval(countdownInterval); countdownInterval = null; }
       }, 1000);
 
       processingTimeout = setTimeout(async () => {
-        if (countdownInterval) {
-          clearInterval(countdownInterval);
-          countdownInterval = null;
-        }
+        if (countdownInterval) { clearInterval(countdownInterval); countdownInterval = null; }
         await executeFinalOrderSubmission(service, pkg, price, uid, senderPhone, trxId);
       }, PROCESSING_DURATION_MS);
     }
@@ -1609,44 +1539,34 @@
 
       modalContainer.classList.remove("hidden");
       modalContainer.innerHTML = `
-        <div class="modal-card">
-          <div class="item-top">
-            <h2 style="margin:0;">পেমেন্ট সম্পন্ন করুন</h2>
-          </div>
-          <p class="card-desc">
-            সার্ভিস: <strong>${escapeHtml(serviceVal)}</strong> | প্যাকেজ: <strong>${escapeHtml(pkgVal)}</strong> (<strong>${escapeHtml(priceVal)} TK</strong>)
-          </p>
+        <div class="modal-sheet">
+          <h2 style="margin:0 0 6px;">পেমেন্ট করুন — ${escapeHtml(priceVal)} TK</h2>
+          <p class="panel-sub">${escapeHtml(serviceVal)} • ${escapeHtml(pkgVal)}</p>
 
-          <div class="payment-instruction-box">
-            <div><strong>বিকাশ পার্সোনাল নম্বর (Send Money):</strong></div>
-            <div class="num-row">
-              <span class="admin-num-badge" id="bkashNumDisplay">${escapeHtml(paymentConfig.bkashNum)}</span>
-              <button type="button" class="copy-btn" onclick="copyToClipboard('${escapeHtml(paymentConfig.bkashNum)}', this)">কপি</button>
+          <div class="pay-box">
+            <div><strong>বিকাশ পার্সোনাল (Send Money)</strong></div>
+            <div class="pay-line">
+              <span class="num-pill">${escapeHtml(paymentConfig.bkashNum)}</span>
+              <button type="button" class="copy-chip" onclick="copyToClipboard('${escapeHtml(paymentConfig.bkashNum)}', this)">কপি</button>
             </div>
 
-            <div style="margin-top: 12px;"><strong>রকেট পার্সোনাল নম্বর (Send Money):</strong></div>
-            <div class="num-row">
-              <span class="admin-num-badge" id="rocketNumDisplay">${escapeHtml(paymentConfig.rocketNum)}</span>
-              <button type="button" class="copy-btn" onclick="copyToClipboard('${escapeHtml(paymentConfig.rocketNum)}', this)">কপি</button>
-            </div>
-
-            <div style="margin-top:14px; font-size:12px; color:#334155;">
-              ১. উপরের বিকাশ বা রকেট পার্সোনাল নম্বরে <strong>${escapeHtml(priceVal)} টাকা</strong> Send Money করুন।<br>
-              ২. যে নম্বর থেকে টাকা পাঠিয়েছেন সেই নম্বরটি নিচে লিখুন।<br>
-              ৩. পেমেন্ট শেষে প্রাপ্ত <strong>Transaction ID (TrxID)</strong> নিচে বসিয়ে সাবমিট করুন।
+            <div style="margin-top:12px;"><strong>রকেট পার্সোনাল (Send Money)</strong></div>
+            <div class="pay-line">
+              <span class="num-pill">${escapeHtml(paymentConfig.rocketNum)}</span>
+              <button type="button" class="copy-chip" onclick="copyToClipboard('${escapeHtml(paymentConfig.rocketNum)}', this)">কপি</button>
             </div>
           </div>
 
           <form id="paymentConfirmForm">
-            <label for="senderPhone">যে নম্বর থেকে টাকা পাঠিয়েছেন</label>
+            <label for="senderPhone" class="field-label">যে নম্বর থেকে টাকা পাঠিয়েছেন</label>
             <input type="text" id="senderPhone" placeholder="01xxxxxxxxx" required />
 
-            <label for="modalTrxId">Transaction ID (TrxID)</label>
-            <input type="text" id="modalTrxId" placeholder="পেমেন্টের TrxID লিখুন" required />
+            <label for="modalTrxId" class="field-label">Transaction ID (TrxID)</label>
+            <input type="text" id="modalTrxId" placeholder="TrxID লিখুন" required />
 
-            <div style="display:flex; gap:10px; margin-top:18px;">
-              <button type="button" class="btn-secondary btn-sm" style="flex:1;" onclick="closeModal()">বাতল করুন</button>
-              <button type="submit" class="btn-complete btn-sm" style="flex:2;">অর্ডার সাবমিট করুন</button>
+            <div class="action-pair" style="margin-top:16px;">
+              <button type="button" class="btn-ghost" onclick="closeModal()">বাতিল</button>
+              <button type="submit" class="btn-ok">সাবমিট করুন</button>
             </div>
           </form>
         </div>
@@ -1664,12 +1584,12 @@
       e.preventDefault();
       const session = getSession();
       if (!session || session.role !== "customer") {
-        formStatus.textContent = "অর্ডার করতে আগে Gmail দিয়ে সাইন ইন করুন।";
+        formStatus.textContent = "আগে Gmail দিয়ে সাইন ইন করুন।";
         return;
       }
       const uidVal = document.getElementById("playerUid").value.trim();
       if (!uidVal) {
-        formStatus.textContent = "ইন-গেম ইউআইডি কোড দিন।";
+        formStatus.textContent = "UID কোড দিন।";
         return;
       }
       formStatus.textContent = "";
@@ -1688,7 +1608,7 @@
       e.preventDefault();
       const session = getSession();
       if (!session || session.role !== "customer") return;
-      supportStatus.textContent = "সাপোর্ট রিকোয়েস্ট পাঠানো হচ্ছে...";
+      supportStatus.textContent = "পাঠানো হচ্ছে...";
       const newTicket = {
         id: "SUP" + Date.now(),
         customerEmail: session.email,
@@ -1702,23 +1622,22 @@
         state.tickets.push(newTicket);
         await saveCloudState(state);
         await sendTelegramMessage(
-          `নতুন সাপোর্ট টিকিট এসেছে!\n` +
+          `নতুন সাপোর্ট টিকিট!\n` +
           `Ticket ID: ${newTicket.id}\n` +
-          `Customer Gmail: ${newTicket.customerEmail}\n` +
+          `Gmail: ${newTicket.customerEmail}\n` +
           `Order ID: ${newTicket.orderId || "N/A"}\n` +
           `Message: ${newTicket.message}`
         );
-        supportStatus.textContent = `সাপোর্ট রিকোয়েস্ট পাঠানো হয়েছে! Ticket ID: ${newTicket.id}`;
+        supportStatus.textContent = `পাঠানো হয়েছে (${newTicket.id})`;
         supportForm.reset();
         renderAll(state);
       } catch (err) {
-        supportStatus.textContent = `সমস্যা হয়েছে: ${err.message}`;
+        supportStatus.textContent = err.message;
       }
     });
 
     refreshBtn.addEventListener("click", loadAndRender);
 
-    // Initial Boot
     loadPaymentConfig();
     setAuthMode("register");
     resetPackageSelections();
