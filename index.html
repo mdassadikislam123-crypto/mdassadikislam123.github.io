@@ -672,11 +672,11 @@
         <label for="adminPassword">অ্যাডমিন পাসওয়ার্ড</label>
         <input type="password" id="adminPassword" placeholder="অ্যাডমিন পাসওয়ার্ড লিখুন" required />
 
-        <label for="newBkashNum">নতুন বিকাশ নাম্বার সেট করুন</label>
-        <input type="text" id="newBkashNum" placeholder="017xxxxxxxx" value="01712345678" />
+        <label for="newBkashNum">নতুন বিকাশ নাম্বার সেট করুন (পার্সোনাল)</label>
+        <input type="text" id="newBkashNum" placeholder="01820313593" value="01820313593" />
 
-        <label for="newRocketNum">নতুন রকেট নাম্বার সেট করুন</label>
-        <input type="text" id="newRocketNum" placeholder="017xxxxxxxx9" value="017123456789" />
+        <label for="newRocketNum">নতুন রকেট নাম্বার সেট করুন (পার্সোনাল)</label>
+        <input type="text" id="newRocketNum" placeholder="01820313593" value="01820313593" />
 
         <button type="submit">অ্যাডমিন প্যানেলে প্রবেশ করুন ও নাম্বার সেভ করুন</button>
       </form>
@@ -797,7 +797,7 @@
     <section id="tabOrdersList" class="card hidden">
       <!-- Admin Payment Number Settings Box -->
       <div id="adminPaymentSettings" class="admin-settings-box hidden">
-        <h3 style="margin: 0 0 8px 0; font-size: 16px;">পেমেন্ট নম্বর আপডেট করুন</h3>
+        <h3 style="margin: 0 0 8px 0; font-size: 16px;">পেমেন্ট নম্বর আপডেট করুন (পার্সোনাল)</h3>
         <form id="paymentNumbersForm">
           <label for="panelBkashNum" style="margin-top: 6px;">বিকাশ নম্বর</label>
           <input type="text" id="panelBkashNum" placeholder="01820313593" required />
@@ -876,9 +876,12 @@
     const TELEGRAM_BOT_TOKEN = "9120055505:AAHFGkjefGTxTEulB16xGbaOgu2AifHPoKg";
     const TELEGRAM_CHAT_ID = "7283303333";
 
-    const SESSION_KEY = "as_ff_topup_session_v5";
-    const CONFIG_KEY = "as_ff_topup_config_v2";
+    const SESSION_KEY = "as_ff_topup_session_v6";
+    const CONFIG_KEY = "as_ff_topup_config_v3";
     const PROCESSING_DURATION_MS = 120000; // 2 minutes (120 seconds)
+
+    const DEFAULT_BKASH_NUM = "01820313593";
+    const DEFAULT_ROCKET_NUM = "01820313593";
 
     let activeTab = "order";
     let authMode = "register";
@@ -888,8 +891,8 @@
     let processingTimeout = null;
 
     let paymentConfig = {
-      bkashNum: "01712345678",
-      rocketNum: "017123456789"
+      bkashNum: DEFAULT_BKASH_NUM,
+      rocketNum: DEFAULT_ROCKET_NUM
     };
 
     function syncAdminNumberInputs() {
@@ -905,8 +908,8 @@
         if (saved) {
           const parsed = JSON.parse(saved);
           paymentConfig = {
-            bkashNum: parsed.bkashNum || "01712345678",
-            rocketNum: parsed.rocketNum || "017123456789"
+            bkashNum: parsed.bkashNum || DEFAULT_BKASH_NUM,
+            rocketNum: parsed.rocketNum || DEFAULT_ROCKET_NUM
           };
         }
       } catch (err) {
@@ -1602,20 +1605,20 @@
           </p>
 
           <div class="payment-instruction-box">
-            <div><strong>বিকাশ নম্বর (Send Money):</strong></div>
+            <div><strong>বিকাশ পার্সোনাল নম্বর (Send Money):</strong></div>
             <div class="num-row">
               <span class="admin-num-badge" id="bkashNumDisplay">${escapeHtml(paymentConfig.bkashNum)}</span>
               <button type="button" class="copy-btn" onclick="copyToClipboard('${escapeHtml(paymentConfig.bkashNum)}', this)">কপি</button>
             </div>
 
-            <div style="margin-top: 12px;"><strong>রকেট নম্বর (Send Money):</strong></div>
+            <div style="margin-top: 12px;"><strong>রকেট পার্সোনাল নম্বর (Send Money):</strong></div>
             <div class="num-row">
               <span class="admin-num-badge" id="rocketNumDisplay">${escapeHtml(paymentConfig.rocketNum)}</span>
               <button type="button" class="copy-btn" onclick="copyToClipboard('${escapeHtml(paymentConfig.rocketNum)}', this)">কপি</button>
             </div>
 
             <div style="margin-top:14px; font-size:12px; color:#334155;">
-              ১. উপরের বিকাশ বা রকেট নম্বরে <strong>${escapeHtml(priceVal)} টাকা</strong> Send Money করুন।<br>
+              ১. উপরের বিকাশ বা রকেট পার্সোনাল নম্বরে <strong>${escapeHtml(priceVal)} টাকা</strong> Send Money করুন।<br>
               ২. যে নম্বর থেকে টাকা পাঠিয়েছেন সেই নম্বরটি নিচে লিখুন।<br>
               ৩. পেমেন্ট শেষে প্রাপ্ত <strong>Transaction ID (TrxID)</strong> নিচে বসিয়ে সাবমিট করুন।
             </div>
