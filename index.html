@@ -3,128 +3,388 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>A.S FF TopUp</title>
+  <title>A.S FF TopUp — Official Store</title>
   <style>
-    * { box-sizing: border-box; font-family: Arial, sans-serif; }
+    :root {
+      --bg: #f4f6fb;
+      --surface: #ffffff;
+      --surface-soft: #f8fafc;
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --success: #16a34a;
+      --danger: #dc2626;
+      --shadow: 0 4px 18px rgba(15, 23, 42, 0.06);
+      --radius: 14px;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: "Segoe UI", Roboto, Arial, sans-serif;
+    }
+
     body {
       margin: 0;
-      padding: 16px;
-      background: #0f172a;
-      color: #f8fafc;
+      padding: 0 0 84px 0;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
     }
-    .container {
+
+    .app-header {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 16px;
+      box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
+    }
+
+    .header-inner {
       max-width: 920px;
       margin: 0 auto;
-    }
-    .card {
-      background: #1e293b;
-      border: 1px solid #334155;
-      border-radius: 12px;
-      padding: 16px;
-      margin-bottom: 16px;
-    }
-    .header-row {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .brand-box {
+      display: flex;
+      align-items: center;
       gap: 10px;
     }
-    .badge {
-      display: inline-block;
-      padding: 4px 10px;
+
+    .brand-logo {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #2563eb, #0ea5e9);
+      color: #ffffff;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 16px;
+    }
+
+    .brand-title {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .brand-sub {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pill {
+      padding: 5px 11px;
       border-radius: 999px;
       font-size: 12px;
-      font-weight: bold;
-      background: #334155;
-      color: #e2e8f0;
+      font-weight: 700;
+      background: #eff6ff;
+      color: var(--primary);
+      border: 1px solid #bfdbfe;
+      white-space: nowrap;
     }
-    h1, h2, h3 { margin-top: 0; }
+
+    .container {
+      max-width: 920px;
+      margin: 16px auto;
+      padding: 0 14px;
+    }
+
+    .notice-banner {
+      background: linear-gradient(90deg, #eff6ff, #f0fdf4);
+      border: 1px solid #cbd5e1;
+      border-radius: var(--radius);
+      padding: 12px 14px;
+      margin-bottom: 14px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #1e293b;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .card h2 {
+      margin: 0 0 6px 0;
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .card-desc {
+      margin: 0 0 14px 0;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .stat-box {
+      background: var(--surface-soft);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      text-align: center;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .stat-value {
+      font-size: 17px;
+      font-weight: 800;
+      margin-top: 4px;
+      color: var(--text);
+    }
+
     label {
       display: block;
       margin: 10px 0 6px;
-      font-size: 14px;
-      color: #cbd5e1;
+      font-size: 13px;
+      font-weight: 700;
+      color: #334155;
     }
+
     input, select, textarea, button {
       width: 100%;
-      padding: 10px 12px;
-      border-radius: 8px;
-      border: 1px solid #475569;
+      padding: 11px 13px;
+      border-radius: 10px;
+      border: 1px solid #cbd5e1;
       font-size: 14px;
     }
+
     input, select, textarea {
-      background: #0f172a;
-      color: #f8fafc;
+      background: var(--surface-soft);
+      color: var(--text);
     }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: #ffffff;
+    }
+
     textarea {
-      min-height: 85px;
+      min-height: 90px;
       resize: vertical;
     }
+
     button {
       margin-top: 12px;
-      background: #2563eb;
+      background: var(--primary);
       color: #ffffff;
       border: none;
-      font-weight: bold;
+      font-weight: 700;
       cursor: pointer;
+      transition: 0.15s ease;
     }
-    button:hover { background: #1d4ed8; }
-    .btn-secondary { background: #475569; }
-    .btn-secondary:hover { background: #334155; }
-    .btn-complete { background: #16a34a; }
-    .btn-complete:hover { background: #15803d; }
-    .btn-cancel { background: #dc2626; }
-    .btn-cancel:hover { background: #b91c1c; }
+
+    button:hover:not(:disabled) {
+      background: var(--primary-dark);
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .btn-sm {
+      width: auto;
+      margin-top: 0;
+      padding: 7px 12px;
+      font-size: 12px;
+      border-radius: 8px;
+    }
+
+    .btn-secondary {
+      background: #e2e8f0;
+      color: #0f172a;
+    }
+
+    .btn-secondary:hover:not(:disabled) {
+      background: #cbd5e1;
+    }
+
+    .btn-complete {
+      background: var(--success);
+    }
+
+    .btn-complete:hover:not(:disabled) {
+      background: #15803d;
+    }
+
+    .btn-cancel {
+      background: var(--danger);
+    }
+
+    .btn-cancel:hover:not(:disabled) {
+      background: #b91c1c;
+    }
+
     .status-msg {
       margin-top: 10px;
-      font-size: 14px;
-      color: #38bdf8;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--primary);
+      min-height: 18px;
     }
-    .item-box {
-      background: #0f172a;
-      border: 1px solid #334155;
-      border-radius: 8px;
-      padding: 12px;
+
+    .list-item {
+      background: var(--surface-soft);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 13px;
       margin-top: 10px;
     }
+
+    .item-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+      flex-wrap: wrap;
+    }
+
+    .status-tag {
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .st-pending, .st-open {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .st-completed, .st-resolved {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .st-cancelled {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
     .row-actions {
       display: flex;
       gap: 8px;
       margin-top: 10px;
     }
+
     .row-actions button {
       margin-top: 0;
-      padding: 8px;
+      padding: 8px 10px;
       font-size: 13px;
     }
-    .hidden { display: none; }
-    .grid-2 {
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 40;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 16px;
+      grid-template-columns: repeat(4, 1fr);
+      padding: 6px 8px;
+      box-shadow: 0 -4px 16px rgba(15, 23, 42, 0.06);
+    }
+
+    .nav-btn {
+      margin-top: 0;
+      padding: 7px 4px;
+      background: transparent;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .nav-btn:hover:not(:disabled) {
+      background: var(--surface-soft);
+      color: var(--text);
+    }
+
+    .nav-btn.active {
+      background: #eff6ff;
+      color: var(--primary);
+    }
+
+    .hidden {
+      display: none !important;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <!-- Top Header -->
-    <div class="card header-row">
-      <div>
-        <h1>A.S FF TopUp</h1>
-        <span id="sessionBadge" class="badge">Guest Mode</span>
+  <!-- Top Header -->
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="brand-box">
+        <div class="brand-logo">AS</div>
+        <div>
+          <h1 class="brand-title">A.S FF TopUp</h1>
+          <div class="brand-sub">সকাল ৮:০০ – রাত ১০:০০ সাপোর্ট খোলা</div>
+        </div>
       </div>
-      <div style="min-width: 140px;">
-        <button type="button" id="logoutBtn" class="btn-secondary hidden">লগআউট</button>
+      <div class="header-actions">
+        <span id="sessionBadge" class="pill">Guest Mode</span>
+        <button type="button" id="logoutBtn" class="btn-secondary btn-sm hidden">লগআউট</button>
       </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Service & Support Notice -->
+    <div class="notice-banner">
+      <span>সার্ভিস সময়: প্রতিদিন সকাল ০৮:০০টা থেকে রাত ১০:০০টা পর্যন্ত। অর্ডারের পর সঠিক TrxID ও UID মিলিয়ে দিন।</span>
     </div>
 
     <!-- Login Section (Customer & Admin) -->
-    <div id="authSection" class="grid-2">
+    <section id="authSection" class="grid-2">
       <!-- Customer Login / Register -->
       <div class="card">
         <h2>কাস্টমার লগইন / রেজিস্টার</h2>
-        <p style="font-size: 13px; color: #cbd5e1;">
+        <p class="card-desc">
           নিজের অ্যাকাউন্ট তৈরি বা লগইন করে অর্ডার ও সাপোর্ট সুবিধা নিন।
         </p>
         <form id="customerAuthForm">
@@ -142,10 +402,13 @@
       <!-- Admin Login -->
       <div class="card">
         <h2>অ্যাডমিন প্যানেল লগইন</h2>
-        <p style="font-size: 13px; color: #cbd5e1;">
-          শুধুমাত্র অ্যাডমিন সব অর্ডার, সাপোর্ট মেসেজ ও স্ট্যাটাস নিয়ন্ত্রণ করতে পারবেন।
+        <p class="card-desc">
+          অ্যাডমিন জিমেইল ও পাসওয়ার্ড দিয়ে লগইন করে অর্ডার ও সাপোর্ট নিয়ন্ত্রণ করুন।
         </p>
         <form id="adminAuthForm">
+          <label for="adminEmail">অ্যাডমিন জিমেইল</label>
+          <input type="text" id="adminEmail" placeholder="mdassadikislambd123@gmail" required />
+
           <label for="adminPassword">অ্যাডমিন পাসওয়ার্ড</label>
           <input type="password" id="adminPassword" placeholder="অ্যাডমিন পাসওয়ার্ড লিখুন" required />
 
@@ -153,11 +416,37 @@
         </form>
         <div id="adminAuthMsg" class="status-msg"></div>
       </div>
-    </div>
+    </section>
 
-    <!-- Customer Order Section -->
-    <div id="customerSection" class="card hidden">
-      <h2>নতুন অর্ডার করুন (Customer Panel)</h2>
+    <!-- Profile & Summary Card -->
+    <section id="profileCard" class="card hidden">
+      <div class="item-top">
+        <div>
+          <h2 id="profileTitle">কাস্টমার অ্যাকাউন্ট</h2>
+          <p class="card-desc" id="profileSub">সাপোর্ট সময়: প্রতিদিন সকাল ৮:০০টা থেকে রাত ১০:০০টা পর্যন্ত।</p>
+        </div>
+        <span class="pill" id="rolePill">Customer</span>
+      </div>
+      <div class="stats-grid" id="customerStats">
+        <div class="stat-box">
+          <div class="stat-label">মোট অর্ডার</div>
+          <div class="stat-value" id="statOrdersCount">0</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">মোট খরচ</div>
+          <div class="stat-value" id="statTotalSpend">0 TK</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">সাপোর্ট সময়</div>
+          <div class="stat-value" style="font-size: 13px;">8 AM – 10 PM</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab 1: Order Section -->
+    <section id="tabOrder" class="card hidden">
+      <h2>নতুন অর্ডার করুন</h2>
+      <p class="card-desc">সার্ভিস, প্যাকেজ, ইন-গেম UID এবং পেমেন্ট সিস্টেম নির্বাচন করে অর্ডার দিন।</p>
       <form id="orderForm">
         <label for="serviceType">সার্ভিস নির্বাচন করুন</label>
         <select id="serviceType" required>
@@ -165,24 +454,24 @@
           <option value="200 Like Auto Like">200 Like Auto Like</option>
         </select>
 
-        <label for="packageName">প্যাকেজ নির্বাচন করুন</label>
+        <label for="packageName">প্যাকেজ তালিকা</label>
         <select id="packageName" required>
-          <option value="💎 25 ডায়মন্ড - 22 TK">💎 25 ডায়মন্ড — 22 TK</option>
-          <option value="💎 50 ডায়মন্ড - 37 TK">💎 50 ডায়মন্ড — 37 TK</option>
-          <option value="💎 115 ডায়মন্ড - 80 TK">💎 115 ডায়মন্ড — 80 TK</option>
-          <option value="💎 240 ডায়মন্ড - 156 TK">💎 240 ডায়মন্ড — 156 TK</option>
-          <option value="💎 610 ডায়মন্ড - 395 TK">💎 610 ডায়মন্ড — 395 TK</option>
-          <option value="💎 1240 ডায়মন্ড - 785 TK">💎 1240 ডায়মন্ড — 785 TK</option>
-          <option value="💎 2530 ডায়মন্ড - 1570 TK">💎 2530 ডায়মন্ড — 1570 TK</option>
-          <option value="Weekly - 160 TK">Weekly — 160 TK</option>
-          <option value="Monthly - 780 TK">Monthly — 780 TK</option>
-          <option value="❌২০০০ Unipin (Out of stock) - 1690 TK" disabled>❌২০০০ Unipin (Out of stock) — 1690 TK</option>
+          <option value="💎 25 ডায়মন্ড - 22 TK" data-price="22">💎 25 ডায়মন্ড — 22 TK</option>
+          <option value="💎 50 ডায়মন্ড - 37 TK" data-price="37">💎 50 ডায়মন্ড — 37 TK</option>
+          <option value="💎 115 ডায়মন্ড - 80 TK" data-price="80">💎 115 ডায়মন্ড — 80 TK</option>
+          <option value="💎 240 ডায়মন্ড - 156 TK" data-price="156">💎 240 ডায়মন্ড — 156 TK</option>
+          <option value="💎 610 ডায়মন্ড - 395 TK" data-price="395">💎 610 ডায়মন্ড — 395 TK</option>
+          <option value="💎 1240 ডায়মন্ড - 785 TK" data-price="785">💎 1240 ডায়মন্ড — 785 TK</option>
+          <option value="💎 2530 ডায়মন্ড - 1570 TK" data-price="1570">💎 2530 ডায়মন্ড — 1570 TK</option>
+          <option value="Weekly - 160 TK" data-price="160">Weekly — 160 TK</option>
+          <option value="Monthly - 780 TK" data-price="780">Monthly — 780 TK</option>
+          <option value="❌২০০০ Unipin (Out of stock) - 1690 TK" data-price="1690" disabled>❌২০০০ Unipin (Out of stock) — 1690 TK</option>
         </select>
 
-        <label for="playerUid">প্লেয়ার UID</label>
+        <label for="playerUid">ইন-গেম ইউআইডি কোড দিন</label>
         <input type="text" id="playerUid" placeholder="যেমন: 123456789" required />
 
-        <label for="paymentMethod">পেমেন্ট মাধ্যম</label>
+        <label for="paymentMethod">পেমেন্ট সিস্টেম নির্বাচন করুন</label>
         <select id="paymentMethod" required>
           <option value="bKash">bKash</option>
           <option value="Rocket">Rocket</option>
@@ -194,39 +483,57 @@
         <button type="submit">অর্ডার সাবমিট করুন</button>
       </form>
       <div id="formStatus" class="status-msg"></div>
-    </div>
+    </section>
 
-    <!-- Customer Support Request Form -->
-    <div id="supportFormSection" class="card hidden">
-      <h2>কাস্টমার সাপোর্ট / সমস্যা জানান</h2>
-      <p style="font-size: 13px; color: #cbd5e1;">
-        কোনো সমস্যায় পড়লে আপনার লগইন অ্যাকাউন্টের তথ্যসহ সাপোর্ট রিকোয়েস্ট পাঠান।
-      </p>
-      <form id="supportForm">
-        <label for="supportOrderId">সম্পর্কিত Order ID (ঐচ্ছিক)</label>
-        <input type="text" id="supportOrderId" placeholder="যেমন: ORD1732512345678" />
-
-        <label for="supportMessage">সমস্যার বিবরণ</label>
-        <textarea id="supportMessage" placeholder="আপনার সমস্যা বা প্রয়োজনীয় তথ্য বিস্তারিত লিখুন..." required></textarea>
-
-        <button type="submit">সাপোর্ট রিকোয়েস্ট পাঠান</button>
-      </form>
-      <div id="supportStatus" class="status-msg"></div>
-    </div>
-
-    <!-- Orders List Section (Shows own orders for Customer, all orders for Admin) -->
-    <div id="ordersSection" class="card hidden">
-      <h2 id="ordersHeading">অর্ডার তালিকা</h2>
-      <button type="button" id="refreshBtn" class="btn-secondary">অর্ডার রিফ্রেশ করুন</button>
+    <!-- Tab 2: Orders List Section -->
+    <section id="tabOrdersList" class="card hidden">
+      <div class="item-top">
+        <h2 id="ordersHeading">অর্ডার তালিকা</h2>
+        <button type="button" id="refreshBtn" class="btn-secondary btn-sm">রিফ্রেশ</button>
+      </div>
       <div id="ordersList"></div>
-    </div>
+    </section>
 
-    <!-- Support Tickets Section (Shows own tickets for Customer, all tickets for Admin) -->
-    <div id="ticketsSection" class="card hidden">
-      <h2 id="ticketsHeading">সাপোর্ট টিকিট</h2>
+    <!-- Tab 3: Customer Support Section -->
+    <section id="tabSupport" class="card hidden">
+      <h2>কাস্টমার সাপোর্ট ও হেল্প</h2>
+      <p class="card-desc">
+        আমাদের ওয়েবসাইট ও সাপোর্ট প্রতিদিন <strong>সকাল ৮:০০টা থেকে রাত ১০:০০টা</strong> পর্যন্ত খোলা থাকে। কোনো সমস্যায় পড়লে আপনার লগইন অ্যাকাউন্টের তথ্যসহ মেসেজ পাঠান।
+      </p>
+
+      <div id="supportFormBox">
+        <form id="supportForm">
+          <label for="supportOrderId">সম্পর্কিত Order ID (ঐচ্ছিক)</label>
+          <input type="text" id="supportOrderId" placeholder="যেমন: ORD1732512345678" />
+
+          <label for="supportMessage">সমস্যার বিবরণ</label>
+          <textarea id="supportMessage" placeholder="আপনার সমস্যা বা প্রয়োজনীয় তথ্য বিস্তারিত লিখুন..." required></textarea>
+
+          <button type="submit">সাপোর্ট রিকোয়েস্ট পাঠান</button>
+        </form>
+        <div id="supportStatus" class="status-msg"></div>
+      </div>
+
+      <h3 style="margin-top: 20px; margin-bottom: 6px; font-size: 16px;" id="ticketsHeading">সাপোর্ট টিকিটসমূহ</h3>
       <div id="ticketsList"></div>
-    </div>
-  </div>
+    </section>
+  </main>
+
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav" id="bottomNav">
+    <button type="button" class="nav-btn active" data-tab="order">
+      <span>হোম / অর্ডার</span>
+    </button>
+    <button type="button" class="nav-btn" data-tab="orders">
+      <span>অর্ডারসমূহ</span>
+    </button>
+    <button type="button" class="nav-btn" data-tab="support">
+      <span>সাপোর্ট</span>
+    </button>
+    <button type="button" class="nav-btn" data-tab="account">
+      <span>অ্যাকাউন্ট</span>
+    </button>
+  </nav>
 
   <script>
     // JSONBin Credentials
@@ -234,23 +541,35 @@
     const JSONBIN_API_KEY = "$2a$10$AhZsafNeOZouWRx4.UglpOBFprt4lAhYP9a11LA8MMO5OIkaeMWm6";
     const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`;
 
-    // Admin Password
+    // Admin Credentials
+    const ADMIN_EMAIL = "mdassadikislambd123@gmail";
     const ADMIN_PASSWORD = "/like bd 6817246793";
 
-    // Optional Telegram Config (প্রয়োজনে নিজের Token ও Chat ID বসান)
+    // Optional Telegram Config
     const TELEGRAM_BOT_TOKEN = "";
     const TELEGRAM_CHAT_ID = "";
 
-    const SESSION_KEY = "as_ff_topup_session_v1";
+    const SESSION_KEY = "as_ff_topup_session_v2";
+    let activeTab = "order";
+    let cachedState = { orders: [], users: [], tickets: [] };
 
     // DOM Elements
     const sessionBadge = document.getElementById("sessionBadge");
     const logoutBtn = document.getElementById("logoutBtn");
     const authSection = document.getElementById("authSection");
-    const customerSection = document.getElementById("customerSection");
-    const supportFormSection = document.getElementById("supportFormSection");
-    const ordersSection = document.getElementById("ordersSection");
-    const ticketsSection = document.getElementById("ticketsSection");
+    const profileCard = document.getElementById("profileCard");
+    const profileTitle = document.getElementById("profileTitle");
+    const profileSub = document.getElementById("profileSub");
+    const rolePill = document.getElementById("rolePill");
+    const customerStats = document.getElementById("customerStats");
+    const statOrdersCount = document.getElementById("statOrdersCount");
+    const statTotalSpend = document.getElementById("statTotalSpend");
+
+    const tabOrder = document.getElementById("tabOrder");
+    const tabOrdersList = document.getElementById("tabOrdersList");
+    const tabSupport = document.getElementById("tabSupport");
+    const supportFormBox = document.getElementById("supportFormBox");
+
     const ordersHeading = document.getElementById("ordersHeading");
     const ticketsHeading = document.getElementById("ticketsHeading");
 
@@ -267,6 +586,20 @@
     const ordersList = document.getElementById("ordersList");
     const ticketsList = document.getElementById("ticketsList");
     const refreshBtn = document.getElementById("refreshBtn");
+    const navButtons = document.querySelectorAll(".nav-btn");
+
+    function escapeHtml(str) {
+      return String(str ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function normalizeEmail(val) {
+      return String(val || "").trim().toLowerCase();
+    }
 
     function getSession() {
       try {
@@ -278,13 +611,23 @@
 
     function setSession(sessionObj) {
       localStorage.setItem(SESSION_KEY, JSON.stringify(sessionObj));
+      activeTab = sessionObj.role === "admin" ? "orders" : "order";
+      syncNavActive();
       applySessionUI();
       loadAndRender();
     }
 
     function clearSession() {
       localStorage.removeItem(SESSION_KEY);
+      activeTab = "order";
+      syncNavActive();
       applySessionUI();
+    }
+
+    function syncNavActive() {
+      navButtons.forEach((btn) => {
+        btn.classList.toggle("active", btn.dataset.tab === activeTab);
+      });
     }
 
     function applySessionUI() {
@@ -297,37 +640,61 @@
       if (!session) {
         sessionBadge.textContent = "Guest Mode";
         logoutBtn.classList.add("hidden");
+        profileCard.classList.add("hidden");
+        tabOrder.classList.add("hidden");
+        tabOrdersList.classList.add("hidden");
+        tabSupport.classList.add("hidden");
         authSection.classList.remove("hidden");
-        customerSection.classList.add("hidden");
-        supportFormSection.classList.add("hidden");
-        ordersSection.classList.add("hidden");
-        ticketsSection.classList.add("hidden");
-        ordersList.innerHTML = "";
-        ticketsList.innerHTML = "";
         return;
       }
 
       logoutBtn.classList.remove("hidden");
-      authSection.classList.add("hidden");
-      ordersSection.classList.remove("hidden");
-      ticketsSection.classList.remove("hidden");
+      profileCard.classList.remove("hidden");
 
-      if (session.role === "admin") {
-        sessionBadge.textContent = "Logged in as: Admin";
-        customerSection.classList.add("hidden");
-        supportFormSection.classList.add("hidden");
-        ordersHeading.textContent = "সকল কাস্টমারের অর্ডার (Admin Panel)";
-        ticketsHeading.textContent = "কাস্টমার সাপোর্ট রিকোয়েস্টসমূহ (Admin Panel)";
+      const isAdmin = session.role === "admin";
+      sessionBadge.textContent = isAdmin ? "Admin Panel" : session.username;
+      rolePill.textContent = isAdmin ? "ADMIN" : "CUSTOMER";
+      profileTitle.textContent = isAdmin
+        ? `অ্যাডমিন অ্যাকাউন্ট (${session.email || ADMIN_EMAIL})`
+        : `অ্যাকাউন্ট: ${session.username}`;
+      profileSub.textContent = "সাপোর্ট সময়: প্রতিদিন সকাল ৮:০০টা থেকে রাত ১০:০০টা পর্যন্ত।";
+      customerStats.classList.toggle("hidden", isAdmin);
+
+      ordersHeading.textContent = isAdmin ? "সকল কাস্টমারের অর্ডার" : "আমার অর্ডারসমূহ";
+      ticketsHeading.textContent = isAdmin ? "কাস্টমার সাপোর্ট রিকোয়েস্টসমূহ" : "আমার সাপোর্ট টিকিটসমূহ";
+      supportFormBox.classList.toggle("hidden", isAdmin);
+
+      authSection.classList.add("hidden");
+      tabOrder.classList.add("hidden");
+      tabOrdersList.classList.add("hidden");
+      tabSupport.classList.add("hidden");
+
+      if (activeTab === "account") {
+        authSection.classList.remove("hidden");
+      } else if (activeTab === "orders") {
+        tabOrdersList.classList.remove("hidden");
+      } else if (activeTab === "support") {
+        tabSupport.classList.remove("hidden");
       } else {
-        sessionBadge.textContent = `Customer Account: ${session.username}`;
-        customerSection.classList.remove("hidden");
-        supportFormSection.classList.remove("hidden");
-        ordersHeading.textContent = "আমার অর্ডারসমূহ";
-        ticketsHeading.textContent = "আমার সাপোর্ট টিকিটসমূহ";
+        if (isAdmin) {
+          tabOrdersList.classList.remove("hidden");
+        } else {
+          tabOrder.classList.remove("hidden");
+        }
       }
     }
 
-    // Fetch & Save Cloud Data ({ orders: [], users: [], tickets: [] })
+    navButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        activeTab = btn.dataset.tab;
+        syncNavActive();
+        applySessionUI();
+        if (getSession()) {
+          renderAll(cachedState);
+        }
+      });
+    });
+
     async function fetchCloudState() {
       const res = await fetch(`${JSONBIN_URL}/latest`, {
         method: "GET",
@@ -363,19 +730,143 @@
       if (!res.ok) {
         throw new Error(`JSONBin PUT Error: ${res.status}`);
       }
+      cachedState = nextState;
       return await res.json();
     }
 
     async function sendTelegramMessage(text) {
       if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) return;
-      await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          chat_id: TELEGRAM_CHAT_ID,
-          text
-        })
-      });
+      try {
+        await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            chat_id: TELEGRAM_CHAT_ID,
+            text
+          })
+        });
+      } catch (err) {
+        console.error("Telegram notification error:", err);
+      }
+    }
+
+    function statusClass(status) {
+      const s = String(status || "").toLowerCase();
+      if (s === "completed") return "st-completed";
+      if (s === "cancelled") return "st-cancelled";
+      if (s === "resolved") return "st-resolved";
+      return "st-pending";
+    }
+
+    function updateCustomerStats(orders, username) {
+      const myOrders = orders.filter((o) => o.customerUsername === username);
+      const totalSpend = myOrders
+        .filter((o) => o.status !== "Cancelled")
+        .reduce((sum, o) => sum + (Number(o.price) || 0), 0);
+
+      statOrdersCount.textContent = String(myOrders.length);
+      statTotalSpend.textContent = `${totalSpend} TK`;
+    }
+
+    function renderOrders(orders) {
+      const session = getSession();
+      if (!session) return;
+
+      const filtered = session.role === "admin"
+        ? orders
+        : orders.filter((o) => o.customerUsername === session.username);
+
+      if (!filtered.length) {
+        ordersList.innerHTML = "<p class='card-desc'>কোনো অর্ডার পাওয়া যায়নি।</p>";
+        return;
+      }
+
+      ordersList.innerHTML = filtered
+        .slice()
+        .reverse()
+        .map((order) => `
+          <div class="list-item">
+            <div class="item-top">
+              <strong>ID: ${escapeHtml(order.id)}</strong>
+              <span class="status-tag ${statusClass(order.status)}">${escapeHtml(order.status)}</span>
+            </div>
+            <div><strong>অ্যাকাউন্ট:</strong> ${escapeHtml(order.customerUsername || "N/A")}</div>
+            <div><strong>সার্ভিস ও প্যাকেজ:</strong> ${escapeHtml(order.service)} — ${escapeHtml(order.package)}</div>
+            <div><strong>UID:</strong> ${escapeHtml(order.uid)} | <strong>${escapeHtml(order.paymentMethod)}:</strong> ${escapeHtml(order.trxId)}</div>
+            ${
+              session.role === "admin"
+                ? `<div class="row-actions">
+                    <button type="button" class="btn-complete" onclick="updateOrderStatus('${escapeHtml(order.id)}', 'Completed')">Completed</button>
+                    <button type="button" class="btn-cancel" onclick="updateOrderStatus('${escapeHtml(order.id)}', 'Cancelled')">Cancelled</button>
+                  </div>`
+                : ""
+            }
+          </div>
+        `)
+        .join("");
+    }
+
+    function renderTickets(tickets) {
+      const session = getSession();
+      if (!session) return;
+
+      const filtered = session.role === "admin"
+        ? tickets
+        : tickets.filter((t) => t.customerUsername === session.username);
+
+      if (!filtered.length) {
+        ticketsList.innerHTML = "<p class='card-desc'>কোনো সাপোর্ট টিকিট পাওয়া যায়নি।</p>";
+        return;
+      }
+
+      ticketsList.innerHTML = filtered
+        .slice()
+        .reverse()
+        .map((ticket) => `
+          <div class="list-item">
+            <div class="item-top">
+              <strong>Ticket: ${escapeHtml(ticket.id)}</strong>
+              <span class="status-tag ${statusClass(ticket.status)}">${escapeHtml(ticket.status)}</span>
+            </div>
+            <div><strong>অ্যাকাউন্ট:</strong> ${escapeHtml(ticket.customerUsername)}</div>
+            <div><strong>Order ID:</strong> ${escapeHtml(ticket.orderId || "উল্লেখ নেই")}</div>
+            <div><strong>বার্তা:</strong> ${escapeHtml(ticket.message)}</div>
+            ${
+              session.role === "admin" && ticket.status !== "Resolved"
+                ? `<div class="row-actions">
+                    <button type="button" class="btn-complete" onclick="resolveTicket('${escapeHtml(ticket.id)}')">Mark Resolved</button>
+                  </div>`
+                : ""
+            }
+          </div>
+        `)
+        .join("");
+    }
+
+    function renderAll(state) {
+      const session = getSession();
+      if (!session) return;
+      if (session.role === "customer") {
+        updateCustomerStats(state.orders, session.username);
+      }
+      renderOrders(state.orders);
+      renderTickets(state.tickets);
+    }
+
+    async function loadAndRender() {
+      const session = getSession();
+      if (!session) return;
+
+      try {
+        ordersList.innerHTML = "<p class='card-desc'>লোড হচ্ছে...</p>";
+        ticketsList.innerHTML = "<p class='card-desc'>লোড হচ্ছে...</p>";
+        const state = await fetchCloudState();
+        cachedState = state;
+        renderAll(state);
+      } catch (err) {
+        ordersList.innerHTML = `<p class='status-msg'>অর্ডার লোড করতে সমস্যা হয়েছে: ${escapeHtml(err.message)}</p>`;
+        ticketsList.innerHTML = `<p class='status-msg'>সাপোর্ট টিকিট লোড করতে সমস্যা হয়েছে: ${escapeHtml(err.message)}</p>`;
+      }
     }
 
     // Customer Login / Register
@@ -384,7 +875,9 @@
       const username = document.getElementById("custUsername").value.trim().toLowerCase();
       const password = document.getElementById("custPassword").value;
 
+      if (!username || !password) return;
       custAuthMsg.textContent = "যাচাই করা হচ্ছে...";
+
       try {
         const state = await fetchCloudState();
         const existingUser = state.users.find((u) => u.username === username);
@@ -413,103 +906,19 @@
     // Admin Login
     adminAuthForm.addEventListener("submit", (e) => {
       e.preventDefault();
+      const inputEmail = normalizeEmail(document.getElementById("adminEmail").value);
       const inputPass = document.getElementById("adminPassword").value;
 
-      if (inputPass !== ADMIN_PASSWORD) {
-        adminAuthMsg.textContent = "অ্যাডমিন পাসওয়ার্ড সঠিক নয়!";
+      if (inputEmail !== normalizeEmail(ADMIN_EMAIL) || inputPass !== ADMIN_PASSWORD) {
+        adminAuthMsg.textContent = "অ্যাডমিন জিমেইল বা পাসওয়ার্ড সঠিক নয়!";
         return;
       }
 
       adminAuthForm.reset();
-      setSession({ role: "admin", username: "admin" });
+      setSession({ role: "admin", username: "admin", email: ADMIN_EMAIL });
     });
 
     logoutBtn.addEventListener("click", clearSession);
-
-    function renderOrders(orders) {
-      const session = getSession();
-      if (!session) return;
-
-      const filtered = session.role === "admin"
-        ? orders
-        : orders.filter((o) => o.customerUsername === session.username);
-
-      if (!filtered.length) {
-        ordersList.innerHTML = "<p>কোনো অর্ডার পাওয়া যায়নি।</p>";
-        return;
-      }
-
-      ordersList.innerHTML = filtered
-        .slice()
-        .reverse()
-        .map((order) => `
-          <div class="item-box">
-            <div><strong>ID:</strong> ${order.id} | <strong>Status:</strong> ${order.status}</div>
-            <div><strong>Customer Account:</strong> ${order.customerUsername || "N/A"}</div>
-            <div><strong>Service:</strong> ${order.service} — ${order.package}</div>
-            <div><strong>UID:</strong> ${order.uid} | <strong>${order.paymentMethod}:</strong> ${order.trxId}</div>
-            ${
-              session.role === "admin"
-                ? `<div class="row-actions">
-                    <button type="button" class="btn-complete" onclick="updateOrderStatus('${order.id}', 'Completed')">Completed</button>
-                    <button type="button" class="btn-cancel" onclick="updateOrderStatus('${order.id}', 'Cancelled')">Cancelled</button>
-                  </div>`
-                : ""
-            }
-          </div>
-        `)
-        .join("");
-    }
-
-    function renderTickets(tickets) {
-      const session = getSession();
-      if (!session) return;
-
-      const filtered = session.role === "admin"
-        ? tickets
-        : tickets.filter((t) => t.customerUsername === session.username);
-
-      if (!filtered.length) {
-        ticketsList.innerHTML = "<p>কোনো সাপোর্ট টিকিট পাওয়া যায়নি।</p>";
-        return;
-      }
-
-      ticketsList.innerHTML = filtered
-        .slice()
-        .reverse()
-        .map((ticket) => `
-          <div class="item-box">
-            <div><strong>Ticket ID:</strong> ${ticket.id} | <strong>Status:</strong> ${ticket.status}</div>
-            <div><strong>Customer Account:</strong> ${ticket.customerUsername}</div>
-            <div><strong>Order ID:</strong> ${ticket.orderId || "উল্লেখ নেই"}</div>
-            <div><strong>Message:</strong> ${ticket.message}</div>
-            ${
-              session.role === "admin" && ticket.status !== "Resolved"
-                ? `<div class="row-actions">
-                    <button type="button" class="btn-complete" onclick="resolveTicket('${ticket.id}')">Mark Resolved</button>
-                  </div>`
-                : ""
-            }
-          </div>
-        `)
-        .join("");
-    }
-
-    async function loadAndRender() {
-      const session = getSession();
-      if (!session) return;
-
-      try {
-        ordersList.innerHTML = "<p>লোড হচ্ছে...</p>";
-        ticketsList.innerHTML = "<p>লোড হচ্ছে...</p>";
-        const state = await fetchCloudState();
-        renderOrders(state.orders);
-        renderTickets(state.tickets);
-      } catch (err) {
-        ordersList.innerHTML = `<p>অর্ডার লোড করতে সমস্যা হয়েছে: ${err.message}</p>`;
-        ticketsList.innerHTML = `<p>সাপোর্ট টিকিট লোড করতে সমস্যা হয়েছে: ${err.message}</p>`;
-      }
-    }
 
     window.updateOrderStatus = async function (orderId, newStatus) {
       const session = getSession();
@@ -524,7 +933,7 @@
           item.id === orderId ? { ...item, status: newStatus } : item
         );
         await saveCloudState(state);
-        renderOrders(state.orders);
+        renderAll(state);
       } catch (err) {
         alert(`স্ট্যাটাস আপডেট ব্যর্থ হয়েছে: ${err.message}`);
       }
@@ -543,7 +952,7 @@
           t.id === ticketId ? { ...t, status: "Resolved" } : t
         );
         await saveCloudState(state);
-        renderTickets(state.tickets);
+        renderAll(state);
       } catch (err) {
         alert(`টিকিট আপডেট ব্যর্থ হয়েছে: ${err.message}`);
       }
@@ -557,13 +966,18 @@
         return;
       }
 
+      const pkgSelect = document.getElementById("packageName");
+      const selectedOption = pkgSelect.options[pkgSelect.selectedIndex];
+      const priceValue = Number(selectedOption?.dataset?.price) || 0;
+
       formStatus.textContent = "অর্ডার সেভ করা হচ্ছে...";
 
       const newOrder = {
         id: "ORD" + Date.now(),
         customerUsername: session.username,
         service: document.getElementById("serviceType").value,
-        package: document.getElementById("packageName").value,
+        package: pkgSelect.value,
+        price: priceValue,
         uid: document.getElementById("playerUid").value.trim(),
         paymentMethod: document.getElementById("paymentMethod").value,
         trxId: document.getElementById("trxId").value.trim(),
@@ -589,7 +1003,7 @@
 
         formStatus.textContent = `অর্ডার সফলভাবে জমা হয়েছে! Order ID: ${newOrder.id}`;
         orderForm.reset();
-        renderOrders(state.orders);
+        renderAll(state);
       } catch (err) {
         formStatus.textContent = `সমস্যা হয়েছে: ${err.message}`;
       }
@@ -629,7 +1043,7 @@
 
         supportStatus.textContent = `সাপোর্ট রিকোয়েস্ট পাঠানো হয়েছে! Ticket ID: ${newTicket.id}`;
         supportForm.reset();
-        renderTickets(state.tickets);
+        renderAll(state);
       } catch (err) {
         supportStatus.textContent = `সাপোর্ট পাঠাতে সমস্যা হয়েছে: ${err.message}`;
       }
@@ -637,7 +1051,8 @@
 
     refreshBtn.addEventListener("click", loadAndRender);
 
-    // Initial load
+    // Initial Boot
+    syncNavActive();
     applySessionUI();
     if (getSession()) {
       loadAndRender();
