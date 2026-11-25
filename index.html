@@ -3,694 +3,645 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>A.S FF TopUp — Instant UID & Auto Like</title>
+  <title>A.S FF TopUp</title>
   <style>
-    :root {
-      --bg: #090b10;
-      --card: #121622;
-      --card-2: #181e2e;
-      --text: #f3f6fc;
-      --muted: #9aa4b8;
-      --accent: #00e5a8;
-      --accent-2: #3b82f6;
-      --danger: #ff4d6d;
-      --warn: #ffb703;
-      --border: rgba(255, 255, 255, 0.08);
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
-    }
-
+    * { box-sizing: border-box; font-family: Arial, sans-serif; }
     body {
-      background: radial-gradient(circle at top, #131b2e 0%, var(--bg) 55%);
-      color: var(--text);
-      min-height: 100vh;
-      padding-bottom: 64px;
+      margin: 0;
+      padding: 16px;
+      background: #0f172a;
+      color: #f8fafc;
     }
-
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      backdrop-filter: blur(12px);
-      background: rgba(9, 11, 16, 0.85);
-      border-bottom: 1px solid var(--border);
-      padding: 14px 18px;
+    .container {
+      max-width: 920px;
+      margin: 0 auto;
+    }
+    .card {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+    .header-row {
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .brand {
-      display: flex;
       align-items: center;
+      flex-wrap: wrap;
       gap: 10px;
-      font-weight: 800;
-      font-size: 1.05rem;
     }
-
-    .brand-badge {
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      color: #061014;
-      padding: 4px 9px;
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: bold;
+      background: #334155;
+      color: #e2e8f0;
+    }
+    h1, h2, h3 { margin-top: 0; }
+    label {
+      display: block;
+      margin: 10px 0 6px;
+      font-size: 14px;
+      color: #cbd5e1;
+    }
+    input, select, textarea, button {
+      width: 100%;
+      padding: 10px 12px;
       border-radius: 8px;
-      font-size: 0.78rem;
-      font-weight: 900;
+      border: 1px solid #475569;
+      font-size: 14px;
     }
-
-    .nav-actions {
+    input, select, textarea {
+      background: #0f172a;
+      color: #f8fafc;
+    }
+    textarea {
+      min-height: 85px;
+      resize: vertical;
+    }
+    button {
+      margin-top: 12px;
+      background: #2563eb;
+      color: #ffffff;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:hover { background: #1d4ed8; }
+    .btn-secondary { background: #475569; }
+    .btn-secondary:hover { background: #334155; }
+    .btn-complete { background: #16a34a; }
+    .btn-complete:hover { background: #15803d; }
+    .btn-cancel { background: #dc2626; }
+    .btn-cancel:hover { background: #b91c1c; }
+    .status-msg {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #38bdf8;
+    }
+    .item-box {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 12px;
+      margin-top: 10px;
+    }
+    .row-actions {
       display: flex;
       gap: 8px;
-      flex-wrap: wrap;
+      margin-top: 10px;
     }
-
-    button, a.btn {
-      cursor: pointer;
-      border: none;
-      border-radius: 10px;
-      padding: 10px 14px;
-      font-weight: 600;
-      font-size: 0.88rem;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      transition: transform 0.15s ease, opacity 0.15s ease, background 0.2s ease;
+    .row-actions button {
+      margin-top: 0;
+      padding: 8px;
+      font-size: 13px;
     }
-
-    button:active, a.btn:active {
-      transform: scale(0.98);
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--accent), #00b894);
-      color: #05110e;
-    }
-
-    .btn-secondary {
-      background: var(--card-2);
-      color: var(--text);
-      border: 1px solid var(--border);
-    }
-
-    .btn-danger {
-      background: rgba(255, 77, 109, 0.16);
-      color: #ff859b;
-      border: 1px solid rgba(255, 77, 109, 0.35);
-    }
-
-    .container {
-      max-width: 980px;
-      margin: 22px auto;
-      padding: 0 16px;
-    }
-
-    .hero {
-      background: linear-gradient(135deg, rgba(0, 229, 168, 0.12), rgba(59, 130, 246, 0.12));
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 20px;
-      margin-bottom: 20px;
-    }
-
-    .hero h1 {
-      font-size: 1.4rem;
-      margin-bottom: 6px;
-    }
-
-    .hero p {
-      color: var(--muted);
-      font-size: 0.92rem;
-      line-height: 1.5;
-    }
-
-    .support-bar {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 14px;
-    }
-
-    .tabs {
+    .hidden { display: none; }
+    .grid-2 {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-      margin-bottom: 18px;
-    }
-
-    .tab-btn {
-      background: var(--card);
-      color: var(--muted);
-      border: 1px solid var(--border);
-      padding: 13px;
-      border-radius: 12px;
-      font-size: 0.95rem;
-    }
-
-    .tab-btn.active {
-      background: var(--card-2);
-      color: var(--text);
-      border-color: var(--accent);
-      box-shadow: 0 0 0 1px rgba(0, 229, 168, 0.25);
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(165px, 1fr));
-      gap: 12px;
-      margin-bottom: 22px;
-    }
-
-    .pkg-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 15px;
-      text-align: center;
-      cursor: pointer;
-      transition: 0.2s ease;
-    }
-
-    .pkg-card:hover {
-      border-color: rgba(0, 229, 168, 0.45);
-      transform: translateY(-2px);
-    }
-
-    .pkg-card.selected {
-      background: rgba(0, 229, 168, 0.12);
-      border-color: var(--accent);
-    }
-
-    .pkg-title {
-      font-weight: 700;
-      font-size: 0.98rem;
-      margin-bottom: 6px;
-    }
-
-    .pkg-price {
-      color: var(--accent);
-      font-weight: 800;
-      font-size: 1.02rem;
-    }
-
-    .panel {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 18px;
-      margin-bottom: 22px;
-    }
-
-    .panel h2 {
-      font-size: 1.1rem;
-      margin-bottom: 14px;
-    }
-
-    .form-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 12px;
-    }
-
-    .field {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      margin-bottom: 12px;
-    }
-
-    label {
-      font-size: 0.85rem;
-      color: var(--muted);
-    }
-
-    input, select {
-      background: var(--bg);
-      color: var(--text);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 11px 12px;
-      font-size: 0.92rem;
-      outline: none;
-    }
-
-    input:focus, select:focus {
-      border-color: var(--accent);
-    }
-
-    .payment-box {
-      background: var(--card-2);
-      border: 1px dashed rgba(255, 255, 255, 0.18);
-      border-radius: 12px;
-      padding: 12px 14px;
-      font-size: 0.88rem;
-      color: var(--muted);
-      margin-bottom: 14px;
-      line-height: 1.6;
-    }
-
-    .payment-box strong {
-      color: var(--text);
-    }
-
-    .toast {
-      margin-top: 12px;
-      padding: 12px 14px;
-      border-radius: 10px;
-      font-size: 0.9rem;
-      display: none;
-    }
-
-    .toast.ok {
-      display: block;
-      background: rgba(0, 229, 168, 0.14);
-      border: 1px solid rgba(0, 229, 168, 0.4);
-      color: #88ffd9;
-    }
-
-    .toast.err {
-      display: block;
-      background: rgba(255, 77, 109, 0.14);
-      border: 1px solid rgba(255, 77, 109, 0.4);
-      color: #ff9cb0;
-    }
-
-    #adminSection {
-      display: none;
-    }
-
-    .admin-toolbar {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-bottom: 14px;
-    }
-
-    .order-list {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .order-card {
-      background: var(--card-2);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 14px;
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    .order-meta {
-      font-size: 0.88rem;
-      line-height: 1.55;
-    }
-
-    .status-pill {
-      display: inline-block;
-      padding: 3px 9px;
-      border-radius: 999px;
-      font-size: 0.76rem;
-      font-weight: 700;
-      margin-left: 6px;
-    }
-
-    .st-pending {
-      background: rgba(255, 183, 3, 0.18);
-      color: var(--warn);
-    }
-
-    .st-done {
-      background: rgba(0, 229, 168, 0.18);
-      color: var(--accent);
-    }
-
-    .st-cancel {
-      background: rgba(255, 77, 109, 0.18);
-      color: #ff7b93;
-    }
-
-    .hidden-btn {
-      display: none !important;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
     }
   </style>
 </head>
 <body>
-
-  <header>
-    <div class="brand">
-      <span class="brand-badge">A.S</span>
-      <span>A.S FF TopUp</span>
-    </div>
-    <div class="nav-actions">
-      <a class="btn btn-secondary" href="https://t.me/+zMIcGJo1hMVkYTM1" target="_blank" rel="noopener">টেলিগ্রাম সাপোর্ট</a>
-      <a class="btn btn-secondary" href="https://wa.me/8801820313593" target="_blank" rel="noopener">হোয়াটসঅ্যাপ</a>
-      <button id="toggleAdminBtn" type="button" class="btn btn-secondary" onclick="toggleAdminPanel()">অ্যাডমিন প্যানেল</button>
-    </div>
-  </header>
-
-  <main class="container">
-    <section class="hero">
-      <h1>দ্রুত ও নিরাপদ Free Fire TopUp এবং Auto Like</h1>
-      <p>সঠিক UID এবং ট্রানজেকশন আইডি (TrxID) দিয়ে অর্ডার করুন। অর্ডার সাবমিট করার সাথে সাথে টেলিগ্রামে লাইভ নোটিফিকেশন পৌঁছে যাবে।</p>
-      <div class="support-bar">
-        <a class="btn btn-primary" href="https://t.me/+zMIcGJo1hMVkYTM1" target="_blank" rel="noopener">টেলিগ্রাম সাপোর্ট</a>
-        <a class="btn btn-secondary" href="https://wa.me/8801820313593" target="_blank" rel="noopener">সরাসরি WhatsApp</a>
+  <div class="container">
+    <!-- Top Header -->
+    <div class="card header-row">
+      <div>
+        <h1>A.S FF TopUp</h1>
+        <span id="sessionBadge" class="badge">Guest Mode</span>
       </div>
-    </section>
-
-    <div id="shopSection">
-      <div class="tabs">
-        <button id="tabUid" type="button" class="tab-btn active" onclick="switchCategory('UID TopUp')">FF UID TopUp</button>
-        <button id="tabLike" type="button" class="tab-btn" onclick="switchCategory('Auto Like')">FF Auto Like</button>
+      <div style="min-width: 140px;">
+        <button type="button" id="logoutBtn" class="btn-secondary hidden">লগআউট</button>
       </div>
+    </div>
 
-      <div id="packageGrid" class="grid"></div>
+    <!-- Login Section (Customer & Admin) -->
+    <div id="authSection" class="grid-2">
+      <!-- Customer Login / Register -->
+      <div class="card">
+        <h2>কাস্টমার লগইন / রেজিস্টার</h2>
+        <p style="font-size: 13px; color: #cbd5e1;">
+          নিজের অ্যাকাউন্ট তৈরি বা লগইন করে অর্ডার ও সাপোর্ট সুবিধা নিন।
+        </p>
+        <form id="customerAuthForm">
+          <label for="custUsername">কাস্টমার ইউজারনেম বা মোবাইল</label>
+          <input type="text" id="custUsername" placeholder="যেমন: 017XXXXXXXX বা rahim" required />
 
-      <section class="panel">
-        <h2>অর্ডার ফর্ম</h2>
+          <label for="custPassword">পাসওয়ার্ড</label>
+          <input type="password" id="custPassword" placeholder="পাসওয়ার্ড লিখুন" required />
 
-        <div class="payment-box">
-          <strong>পেমেন্ট নির্দেশনা:</strong> নির্বাচিত প্যাকেজের টাকা বিকাশ অথবা রকেট (Send Money)-এ পাঠিয়ে নিচে আপনার নাম্বার এবং <strong>TrxID</strong> দিন।<br />
-          বিকাশ / রকেট পার্সোনাল: <strong>01820313593</strong>
-        </div>
-
-        <form id="orderForm" onsubmit="submitOrder(event)">
-          <div class="form-grid">
-            <div class="field">
-              <label for="categoryInput">সার্ভিস ক্যাটাগরি</label>
-              <input id="categoryInput" type="text" value="FF UID TopUp" readonly />
-            </div>
-
-            <div class="field">
-              <label for="selectedPkgInput">নির্বাচিত প্যাকেজ</label>
-              <input id="selectedPkgInput" type="text" placeholder="একটি প্যাকেজ সিলেক্ট করুন" readonly required />
-            </div>
-
-            <div class="field">
-              <label for="uidInput">Free Fire UID</label>
-              <input id="uidInput" type="text" inputmode="numeric" placeholder="যেমন: 1234567890" required />
-            </div>
-
-            <div class="field">
-              <label for="methodSelect">পেমেন্ট মাধ্যম</label>
-              <select id="methodSelect" required>
-                <option value="bKash">bKash (বিকাশ)</option>
-                <option value="Rocket">Rocket (রকেট)</option>
-              </select>
-            </div>
-
-            <div class="field">
-              <label for="senderInput">যে নাম্বার থেকে টাকা পাঠিয়েছেন</label>
-              <input id="senderInput" type="tel" placeholder="01XXXXXXXXX" required />
-            </div>
-
-            <div class="field">
-              <label for="trxInput">Transaction ID (TrxID)</label>
-              <input id="trxInput" type="text" placeholder="যেমন: 9X7K2L8P1M" required />
-            </div>
-          </div>
-
-          <button id="verifyOrderBtn" type="submit" class="btn btn-primary" style="width: 100%; padding: 13px; font-size: 0.98rem;">
-            ভেরিফাই করুন ও অর্ডার পাঠান
-          </button>
+          <button type="submit">কাস্টমার হিসেবে প্রবেশ করুন</button>
         </form>
+        <div id="custAuthMsg" class="status-msg"></div>
+      </div>
 
-        <div id="statusToast" class="toast"></div>
-      </section>
+      <!-- Admin Login -->
+      <div class="card">
+        <h2>অ্যাডমিন প্যানেল লগইন</h2>
+        <p style="font-size: 13px; color: #cbd5e1;">
+          শুধুমাত্র অ্যাডমিন সব অর্ডার, সাপোর্ট মেসেজ ও স্ট্যাটাস নিয়ন্ত্রণ করতে পারবেন।
+        </p>
+        <form id="adminAuthForm">
+          <label for="adminPassword">অ্যাডমিন পাসওয়ার্ড</label>
+          <input type="password" id="adminPassword" placeholder="অ্যাডমিন পাসওয়ার্ড লিখুন" required />
+
+          <button type="submit">অ্যাডমিন প্যানেলে লগইন করুন</button>
+        </form>
+        <div id="adminAuthMsg" class="status-msg"></div>
+      </div>
     </div>
 
-    <section id="adminSection" class="panel">
-      <h2>অ্যাডমিন অর্ডার ম্যানেজমেন্ট</h2>
-      <div class="admin-toolbar">
-        <button id="hideVerifyBtn" type="button" class="btn btn-secondary" onclick="toggleVerifyButtonVisibility()">ভেরিফাই বাটন হাইড/শো</button>
-        <button type="button" class="btn btn-secondary" onclick="testTelegramNotification()">টেলিগ্রাম টেস্ট নোটিফিকেশন</button>
-        <button type="button" class="btn btn-danger" onclick="clearAllOrders()">সব অর্ডার মুছুন</button>
-      </div>
-      <div id="adminOrdersList" class="order-list"></div>
-    </section>
-  </main>
+    <!-- Customer Order Section -->
+    <div id="customerSection" class="card hidden">
+      <h2>নতুন অর্ডার করুন (Customer Panel)</h2>
+      <form id="orderForm">
+        <label for="serviceType">সার্ভিস নির্বাচন করুন</label>
+        <select id="serviceType" required>
+          <option value="UID TopUp">UID TopUp</option>
+          <option value="200 Like Auto Like">200 Like Auto Like</option>
+        </select>
+
+        <label for="packageName">প্যাকেজ নির্বাচন করুন</label>
+        <select id="packageName" required>
+          <option value="💎 25 ডায়মন্ড - 22 TK">💎 25 ডায়মন্ড — 22 TK</option>
+          <option value="💎 50 ডায়মন্ড - 37 TK">💎 50 ডায়মন্ড — 37 TK</option>
+          <option value="💎 115 ডায়মন্ড - 80 TK">💎 115 ডায়মন্ড — 80 TK</option>
+          <option value="💎 240 ডায়মন্ড - 156 TK">💎 240 ডায়মন্ড — 156 TK</option>
+          <option value="💎 610 ডায়মন্ড - 395 TK">💎 610 ডায়মন্ড — 395 TK</option>
+          <option value="💎 1240 ডায়মন্ড - 785 TK">💎 1240 ডায়মন্ড — 785 TK</option>
+          <option value="💎 2530 ডায়মন্ড - 1570 TK">💎 2530 ডায়মন্ড — 1570 TK</option>
+          <option value="Weekly - 160 TK">Weekly — 160 TK</option>
+          <option value="Monthly - 780 TK">Monthly — 780 TK</option>
+          <option value="❌২০০০ Unipin (Out of stock) - 1690 TK" disabled>❌২০০০ Unipin (Out of stock) — 1690 TK</option>
+        </select>
+
+        <label for="playerUid">প্লেয়ার UID</label>
+        <input type="text" id="playerUid" placeholder="যেমন: 123456789" required />
+
+        <label for="paymentMethod">পেমেন্ট মাধ্যম</label>
+        <select id="paymentMethod" required>
+          <option value="bKash">bKash</option>
+          <option value="Rocket">Rocket</option>
+        </select>
+
+        <label for="trxId">Transaction ID (TrxID)</label>
+        <input type="text" id="trxId" placeholder="পেমেন্টের TrxID লিখুন" required />
+
+        <button type="submit">অর্ডার সাবমিট করুন</button>
+      </form>
+      <div id="formStatus" class="status-msg"></div>
+    </div>
+
+    <!-- Customer Support Request Form -->
+    <div id="supportFormSection" class="card hidden">
+      <h2>কাস্টমার সাপোর্ট / সমস্যা জানান</h2>
+      <p style="font-size: 13px; color: #cbd5e1;">
+        কোনো সমস্যায় পড়লে আপনার লগইন অ্যাকাউন্টের তথ্যসহ সাপোর্ট রিকোয়েস্ট পাঠান।
+      </p>
+      <form id="supportForm">
+        <label for="supportOrderId">সম্পর্কিত Order ID (ঐচ্ছিক)</label>
+        <input type="text" id="supportOrderId" placeholder="যেমন: ORD1732512345678" />
+
+        <label for="supportMessage">সমস্যার বিবরণ</label>
+        <textarea id="supportMessage" placeholder="আপনার সমস্যা বা প্রয়োজনীয় তথ্য বিস্তারিত লিখুন..." required></textarea>
+
+        <button type="submit">সাপোর্ট রিকোয়েস্ট পাঠান</button>
+      </form>
+      <div id="supportStatus" class="status-msg"></div>
+    </div>
+
+    <!-- Orders List Section (Shows own orders for Customer, all orders for Admin) -->
+    <div id="ordersSection" class="card hidden">
+      <h2 id="ordersHeading">অর্ডার তালিকা</h2>
+      <button type="button" id="refreshBtn" class="btn-secondary">অর্ডার রিফ্রেশ করুন</button>
+      <div id="ordersList"></div>
+    </div>
+
+    <!-- Support Tickets Section (Shows own tickets for Customer, all tickets for Admin) -->
+    <div id="ticketsSection" class="card hidden">
+      <h2 id="ticketsHeading">সাপোর্ট টিকিট</h2>
+      <div id="ticketsList"></div>
+    </div>
+  </div>
 
   <script>
-    const TELEGRAM_BOT_TOKEN = "9120055505:AAHFGkjefGTxTEulB16xGbaOgu2AifHPoKg";
-    const TELEGRAM_CHAT_ID = "7283303333";
+    // JSONBin Credentials
+    const JSONBIN_BIN_ID = "6b067cb4ac6210605aa290d1";
+    const JSONBIN_API_KEY = "$2a$10$AhZsafNeOZouWRx4.UglpOBFprt4lAhYP9a11LA8MMO5OIkaeMWm6";
+    const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`;
 
-    const PACKAGES = {
-      "UID TopUp": [
-        { name: "25 Diamonds", price: 25 },
-        { name: "50 Diamonds", price: 45 },
-        { name: "115 Diamonds", price: 85 },
-        { name: "240 Diamonds", price: 170 },
-        { name: "355 Diamonds", price: 255 },
-        { name: "480 Diamonds", price: 340 },
-        { name: "610 Diamonds", price: 425 },
-        { name: "725 Diamonds", price: 510 },
-        { name: "850 Diamonds", price: 595 },
-        { name: "1090 Diamonds", price: 765 },
-        { name: "1240 Diamonds", price: 850 },
-        { name: "2530 Diamonds", price: 1700 },
-        { name: "5060 Diamonds", price: 3400 },
-        { name: "10120 Diamonds", price: 6800 },
-        { name: "Weekly Membership", price: 160 },
-        { name: "Monthly Membership", price: 780 },
-        { name: "Weekly Lite", price: 45 },
-        { name: "Level Up Pass", price: 160 }
-      ],
-      "Auto Like": [
-        { name: "200 Likes", price: 15 }
-      ]
-    };
+    // Admin Password
+    const ADMIN_PASSWORD = "/like bd 6817246793";
 
-    let currentCategory = "UID TopUp";
-    let selectedPackage = null;
-    let isVerifyHidden = false;
+    // Optional Telegram Config (প্রয়োজনে নিজের Token ও Chat ID বসান)
+    const TELEGRAM_BOT_TOKEN = "";
+    const TELEGRAM_CHAT_ID = "";
 
-    const STORAGE_KEY = "as_ff_topup_orders_v1";
+    const SESSION_KEY = "as_ff_topup_session_v1";
 
-    function loadOrders() {
+    // DOM Elements
+    const sessionBadge = document.getElementById("sessionBadge");
+    const logoutBtn = document.getElementById("logoutBtn");
+    const authSection = document.getElementById("authSection");
+    const customerSection = document.getElementById("customerSection");
+    const supportFormSection = document.getElementById("supportFormSection");
+    const ordersSection = document.getElementById("ordersSection");
+    const ticketsSection = document.getElementById("ticketsSection");
+    const ordersHeading = document.getElementById("ordersHeading");
+    const ticketsHeading = document.getElementById("ticketsHeading");
+
+    const customerAuthForm = document.getElementById("customerAuthForm");
+    const adminAuthForm = document.getElementById("adminAuthForm");
+    const custAuthMsg = document.getElementById("custAuthMsg");
+    const adminAuthMsg = document.getElementById("adminAuthMsg");
+
+    const orderForm = document.getElementById("orderForm");
+    const formStatus = document.getElementById("formStatus");
+    const supportForm = document.getElementById("supportForm");
+    const supportStatus = document.getElementById("supportStatus");
+
+    const ordersList = document.getElementById("ordersList");
+    const ticketsList = document.getElementById("ticketsList");
+    const refreshBtn = document.getElementById("refreshBtn");
+
+    function getSession() {
       try {
-        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+        return JSON.parse(localStorage.getItem(SESSION_KEY)) || null;
       } catch {
-        return [];
+        return null;
       }
     }
 
-    function saveOrders(orders) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(orders));
+    function setSession(sessionObj) {
+      localStorage.setItem(SESSION_KEY, JSON.stringify(sessionObj));
+      applySessionUI();
+      loadAndRender();
     }
 
-    function switchCategory(category) {
-      currentCategory = category;
-      selectedPackage = null;
-      document.getElementById("categoryInput").value = category === "UID TopUp" ? "FF UID TopUp" : "FF Auto Like";
-      document.getElementById("selectedPkgInput").value = "";
-
-      document.getElementById("tabUid").classList.toggle("active", category === "UID TopUp");
-      document.getElementById("tabLike").classList.toggle("active", category === "Auto Like");
-
-      renderPackages();
+    function clearSession() {
+      localStorage.removeItem(SESSION_KEY);
+      applySessionUI();
     }
 
-    function renderPackages() {
-      const grid = document.getElementById("packageGrid");
-      const list = PACKAGES[currentCategory] || [];
-      grid.innerHTML = "";
+    function applySessionUI() {
+      const session = getSession();
+      custAuthMsg.textContent = "";
+      adminAuthMsg.textContent = "";
+      formStatus.textContent = "";
+      supportStatus.textContent = "";
 
-      list.forEach((pkg, index) => {
-        const card = document.createElement("div");
-        card.className = "pkg-card";
-        card.innerHTML = `
-          <div class="pkg-title">${pkg.name}</div>
-          <div class="pkg-price">${pkg.price} টাকা</div>
-        `;
-        card.onclick = () => selectPackage(index, card);
-        grid.appendChild(card);
+      if (!session) {
+        sessionBadge.textContent = "Guest Mode";
+        logoutBtn.classList.add("hidden");
+        authSection.classList.remove("hidden");
+        customerSection.classList.add("hidden");
+        supportFormSection.classList.add("hidden");
+        ordersSection.classList.add("hidden");
+        ticketsSection.classList.add("hidden");
+        ordersList.innerHTML = "";
+        ticketsList.innerHTML = "";
+        return;
+      }
+
+      logoutBtn.classList.remove("hidden");
+      authSection.classList.add("hidden");
+      ordersSection.classList.remove("hidden");
+      ticketsSection.classList.remove("hidden");
+
+      if (session.role === "admin") {
+        sessionBadge.textContent = "Logged in as: Admin";
+        customerSection.classList.add("hidden");
+        supportFormSection.classList.add("hidden");
+        ordersHeading.textContent = "সকল কাস্টমারের অর্ডার (Admin Panel)";
+        ticketsHeading.textContent = "কাস্টমার সাপোর্ট রিকোয়েস্টসমূহ (Admin Panel)";
+      } else {
+        sessionBadge.textContent = `Customer Account: ${session.username}`;
+        customerSection.classList.remove("hidden");
+        supportFormSection.classList.remove("hidden");
+        ordersHeading.textContent = "আমার অর্ডারসমূহ";
+        ticketsHeading.textContent = "আমার সাপোর্ট টিকিটসমূহ";
+      }
+    }
+
+    // Fetch & Save Cloud Data ({ orders: [], users: [], tickets: [] })
+    async function fetchCloudState() {
+      const res = await fetch(`${JSONBIN_URL}/latest`, {
+        method: "GET",
+        headers: {
+          "X-Master-Key": JSONBIN_API_KEY
+        }
       });
-
-      if (list.length > 0 && grid.firstElementChild) {
-        selectPackage(0, grid.firstElementChild);
+      if (!res.ok) {
+        throw new Error(`JSONBin GET Error: ${res.status}`);
       }
+      const data = await res.json();
+      const record = data && data.record ? data.record : {};
+      return {
+        orders: Array.isArray(record.orders) ? record.orders : [],
+        users: Array.isArray(record.users) ? record.users : [],
+        tickets: Array.isArray(record.tickets) ? record.tickets : []
+      };
     }
 
-    function selectPackage(index, element) {
-      document.querySelectorAll(".pkg-card").forEach(c => c.classList.remove("selected"));
-      element.classList.add("selected");
-      const pkg = PACKAGES[currentCategory][index];
-      selectedPackage = pkg;
-      document.getElementById("selectedPkgInput").value = `${pkg.name} (${pkg.price} টাকা)`;
-    }
-
-    function showToast(message, isSuccess = true) {
-      const toast = document.getElementById("statusToast");
-      toast.textContent = message;
-      toast.className = `toast ${isSuccess ? "ok" : "err"}`;
+    async function saveCloudState(nextState) {
+      const res = await fetch(JSONBIN_URL, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Master-Key": JSONBIN_API_KEY
+        },
+        body: JSON.stringify({
+          orders: nextState.orders,
+          users: nextState.users,
+          tickets: nextState.tickets
+        })
+      });
+      if (!res.ok) {
+        throw new Error(`JSONBin PUT Error: ${res.status}`);
+      }
+      return await res.json();
     }
 
     async function sendTelegramMessage(text) {
-      const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
-      const response = await fetch(url, {
+      if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) return;
+      await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           chat_id: TELEGRAM_CHAT_ID,
-          text: text,
-          parse_mode: "HTML"
+          text
         })
       });
-
-      const data = await response.json();
-      if (!response.ok || !data.ok) {
-        throw new Error(data.description || "Telegram API Error");
-      }
-      return data;
     }
 
-    async function submitOrder(event) {
-      event.preventDefault();
+    // Customer Login / Register
+    customerAuthForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const username = document.getElementById("custUsername").value.trim().toLowerCase();
+      const password = document.getElementById("custPassword").value;
 
-      if (!selectedPackage) {
-        showToast("অনুগ্রহ করে একটি প্যাকেজ সিলেক্ট করুন।", false);
+      custAuthMsg.textContent = "যাচাই করা হচ্ছে...";
+      try {
+        const state = await fetchCloudState();
+        const existingUser = state.users.find((u) => u.username === username);
+
+        if (existingUser) {
+          if (existingUser.password !== password) {
+            custAuthMsg.textContent = "ভুল পাসওয়ার্ড দিয়েছেন!";
+            return;
+          }
+          setSession({ role: "customer", username });
+        } else {
+          state.users.push({
+            username,
+            password,
+            createdAt: new Date().toISOString()
+          });
+          await saveCloudState(state);
+          setSession({ role: "customer", username });
+        }
+        customerAuthForm.reset();
+      } catch (err) {
+        custAuthMsg.textContent = `লগইন সমস্যা: ${err.message}`;
+      }
+    });
+
+    // Admin Login
+    adminAuthForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const inputPass = document.getElementById("adminPassword").value;
+
+      if (inputPass !== ADMIN_PASSWORD) {
+        adminAuthMsg.textContent = "অ্যাডমিন পাসওয়ার্ড সঠিক নয়!";
         return;
       }
 
-      const uid = document.getElementById("uidInput").value.trim();
-      const method = document.getElementById("methodSelect").value;
-      const sender = document.getElementById("senderInput").value.trim();
-      const trxId = document.getElementById("trxInput").value.trim();
+      adminAuthForm.reset();
+      setSession({ role: "admin", username: "admin" });
+    });
 
-      if (!uid || !sender || !trxId) {
-        showToast("সবগুলো তথ্য সঠিকভাবে পূরণ করুন।", false);
+    logoutBtn.addEventListener("click", clearSession);
+
+    function renderOrders(orders) {
+      const session = getSession();
+      if (!session) return;
+
+      const filtered = session.role === "admin"
+        ? orders
+        : orders.filter((o) => o.customerUsername === session.username);
+
+      if (!filtered.length) {
+        ordersList.innerHTML = "<p>কোনো অর্ডার পাওয়া যায়নি।</p>";
         return;
       }
 
-      const orderId = "ORD-" + Math.floor(100000 + Math.random() * 900000);
-      const timeStr = new Date().toLocaleString("bn-BD");
+      ordersList.innerHTML = filtered
+        .slice()
+        .reverse()
+        .map((order) => `
+          <div class="item-box">
+            <div><strong>ID:</strong> ${order.id} | <strong>Status:</strong> ${order.status}</div>
+            <div><strong>Customer Account:</strong> ${order.customerUsername || "N/A"}</div>
+            <div><strong>Service:</strong> ${order.service} — ${order.package}</div>
+            <div><strong>UID:</strong> ${order.uid} | <strong>${order.paymentMethod}:</strong> ${order.trxId}</div>
+            ${
+              session.role === "admin"
+                ? `<div class="row-actions">
+                    <button type="button" class="btn-complete" onclick="updateOrderStatus('${order.id}', 'Completed')">Completed</button>
+                    <button type="button" class="btn-cancel" onclick="updateOrderStatus('${order.id}', 'Cancelled')">Cancelled</button>
+                  </div>`
+                : ""
+            }
+          </div>
+        `)
+        .join("");
+    }
+
+    function renderTickets(tickets) {
+      const session = getSession();
+      if (!session) return;
+
+      const filtered = session.role === "admin"
+        ? tickets
+        : tickets.filter((t) => t.customerUsername === session.username);
+
+      if (!filtered.length) {
+        ticketsList.innerHTML = "<p>কোনো সাপোর্ট টিকিট পাওয়া যায়নি।</p>";
+        return;
+      }
+
+      ticketsList.innerHTML = filtered
+        .slice()
+        .reverse()
+        .map((ticket) => `
+          <div class="item-box">
+            <div><strong>Ticket ID:</strong> ${ticket.id} | <strong>Status:</strong> ${ticket.status}</div>
+            <div><strong>Customer Account:</strong> ${ticket.customerUsername}</div>
+            <div><strong>Order ID:</strong> ${ticket.orderId || "উল্লেখ নেই"}</div>
+            <div><strong>Message:</strong> ${ticket.message}</div>
+            ${
+              session.role === "admin" && ticket.status !== "Resolved"
+                ? `<div class="row-actions">
+                    <button type="button" class="btn-complete" onclick="resolveTicket('${ticket.id}')">Mark Resolved</button>
+                  </div>`
+                : ""
+            }
+          </div>
+        `)
+        .join("");
+    }
+
+    async function loadAndRender() {
+      const session = getSession();
+      if (!session) return;
+
+      try {
+        ordersList.innerHTML = "<p>লোড হচ্ছে...</p>";
+        ticketsList.innerHTML = "<p>লোড হচ্ছে...</p>";
+        const state = await fetchCloudState();
+        renderOrders(state.orders);
+        renderTickets(state.tickets);
+      } catch (err) {
+        ordersList.innerHTML = `<p>অর্ডার লোড করতে সমস্যা হয়েছে: ${err.message}</p>`;
+        ticketsList.innerHTML = `<p>সাপোর্ট টিকিট লোড করতে সমস্যা হয়েছে: ${err.message}</p>`;
+      }
+    }
+
+    window.updateOrderStatus = async function (orderId, newStatus) {
+      const session = getSession();
+      if (!session || session.role !== "admin") {
+        alert("শুধুমাত্র অ্যাডমিন স্ট্যাটাস পরিবর্তন করতে পারবেন।");
+        return;
+      }
+
+      try {
+        const state = await fetchCloudState();
+        state.orders = state.orders.map((item) =>
+          item.id === orderId ? { ...item, status: newStatus } : item
+        );
+        await saveCloudState(state);
+        renderOrders(state.orders);
+      } catch (err) {
+        alert(`স্ট্যাটাস আপডেট ব্যর্থ হয়েছে: ${err.message}`);
+      }
+    };
+
+    window.resolveTicket = async function (ticketId) {
+      const session = getSession();
+      if (!session || session.role !== "admin") {
+        alert("শুধুমাত্র অ্যাডমিন সাপোর্ট টিকিট আপডেট করতে পারবেন।");
+        return;
+      }
+
+      try {
+        const state = await fetchCloudState();
+        state.tickets = state.tickets.map((t) =>
+          t.id === ticketId ? { ...t, status: "Resolved" } : t
+        );
+        await saveCloudState(state);
+        renderTickets(state.tickets);
+      } catch (err) {
+        alert(`টিকিট আপডেট ব্যর্থ হয়েছে: ${err.message}`);
+      }
+    };
+
+    orderForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const session = getSession();
+      if (!session || session.role !== "customer") {
+        formStatus.textContent = "অর্ডার করতে আগে কাস্টমার হিসেবে লগইন করুন।";
+        return;
+      }
+
+      formStatus.textContent = "অর্ডার সেভ করা হচ্ছে...";
 
       const newOrder = {
-        id: orderId,
-        category: currentCategory === "UID TopUp" ? "FF UID TopUp" : "FF Auto Like",
-        packageName: selectedPackage.name,
-        price: selectedPackage.price,
-        uid,
-        method,
-        sender,
-        trxId,
+        id: "ORD" + Date.now(),
+        customerUsername: session.username,
+        service: document.getElementById("serviceType").value,
+        package: document.getElementById("packageName").value,
+        uid: document.getElementById("playerUid").value.trim(),
+        paymentMethod: document.getElementById("paymentMethod").value,
+        trxId: document.getElementById("trxId").value.trim(),
         status: "Pending",
-        createdAt: timeStr
+        createdAt: new Date().toISOString()
       };
 
-      const orders = loadOrders();
-      orders.unshift(newOrder);
-      saveOrders(orders);
-
-      const tgText =
-        `🔔 <b>নতুন অর্ডার এসেছে! (A.S FF TopUp)</b>\n` +
-        `━━━━━━━━━━━━━━━━━━\n` +
-        `🆔 <b>Order ID:</b> <code>${newOrder.id}</code>\n` +
-        `📦 <b>Category:</b> ${newOrder.category}\n` +
-        `💎 <b>Package:</b> ${newOrder.packageName}\n` +
-        `💰 <b>Amount:</b> ${newOrder.price} ৳\n` +
-        `🎮 <b>Game UID:</b> <code>${newOrder.uid}</code>\n` +
-        `💳 <b>Method:</b> ${newOrder.method}\n` +
-        `📱 <b>Sender:</b> <code>${newOrder.sender}</code>\n` +
-        `🧾 <b>TrxID:</b> <code>${newOrder.trxId}</code>\n` +
-        `🕒 <b>Time:</b> ${newOrder.createdAt}`;
-
       try {
-        await sendTelegramMessage(tgText);
-        showToast(`অর্ডার (${orderId}) সফলভাবে রিসিভ হয়েছে এবং টেলিগ্রামে নোটিফিকেশন পাঠানো হয়েছে!`, true);
+        const state = await fetchCloudState();
+        state.orders.push(newOrder);
+        await saveCloudState(state);
+
+        await sendTelegramMessage(
+          `নতুন অর্ডার এসেছে!\n` +
+          `Order ID: ${newOrder.id}\n` +
+          `Customer Account: ${newOrder.customerUsername}\n` +
+          `Service: ${newOrder.service}\n` +
+          `Package: ${newOrder.package}\n` +
+          `UID: ${newOrder.uid}\n` +
+          `Payment: ${newOrder.paymentMethod} (${newOrder.trxId})\n` +
+          `Status: ${newOrder.status}`
+        );
+
+        formStatus.textContent = `অর্ডার সফলভাবে জমা হয়েছে! Order ID: ${newOrder.id}`;
+        orderForm.reset();
+        renderOrders(state.orders);
       } catch (err) {
-        showToast(`অর্ডার সেভ হয়েছে, তবে টেলিগ্রাম নোটিফিকেশনে সমস্যা হয়েছে: ${err.message}`, false);
+        formStatus.textContent = `সমস্যা হয়েছে: ${err.message}`;
       }
+    });
 
-      document.getElementById("uidInput").value = "";
-      document.getElementById("senderInput").value = "";
-      document.getElementById("trxInput").value = "";
-      renderAdminOrders();
-    }
-
-    function toggleAdminPanel() {
-      const adminSec = document.getElementById("adminSection");
-      const isVisible = adminSec.style.display === "block";
-      adminSec.style.display = isVisible ? "none" : "block";
-      if (!isVisible) {
-        renderAdminOrders();
-        adminSec.scrollIntoView({ behavior: "smooth" });
-      }
-    }
-
-    function toggleVerifyButtonVisibility() {
-      isVerifyHidden = !isVerifyHidden;
-      const verifyBtn = document.getElementById("verifyOrderBtn");
-      verifyBtn.classList.toggle("hidden-btn", isVerifyHidden);
-      document.getElementById("hideVerifyBtn").textContent = isVerifyHidden
-        ? "ভেরিফাই বাটন শো করুন"
-        : "ভেরিফাই বাটন হাইড করুন";
-    }
-
-    function updateOrderStatus(orderId, nextStatus) {
-      const orders = loadOrders().map(o => o.id === orderId ? { ...o, status: nextStatus } : o);
-      saveOrders(orders);
-      renderAdminOrders();
-    }
-
-    function clearAllOrders() {
-      localStorage.removeItem(STORAGE_KEY);
-      renderAdminOrders();
-    }
-
-    async function testTelegramNotification() {
-      try {
-        await sendTelegramMessage("✅ <b>A.S FF TopUp</b> নোটিফিকেশন সিস্টেম সঠিকভাবে কাজ করছে!");
-        alert("টেলিগ্রামে টেস্ট মেসেজ পাঠানো হয়েছে!");
-      } catch (err) {
-        alert("টেস্ট মেসেজ পাঠানো যায়নি: " + err.message);
-      }
-    }
-
-    function renderAdminOrders() {
-      const container = document.getElementById("adminOrdersList");
-      const orders = loadOrders();
-
-      if (orders.length === 0) {
-        container.innerHTML = `<p style="color: var(--muted); font-size: 0.9rem;">এখনো কোনো অর্ডার নেই।</p>`;
+    supportForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const session = getSession();
+      if (!session || session.role !== "customer") {
+        supportStatus.textContent = "সাপোর্ট রিকোয়েস্ট পাঠাতে আগে কাস্টমার হিসেবে লগইন করুন।";
         return;
       }
 
-      container.innerHTML = orders.map(order => {
-        const badgeClass =
-          order.status === "Completed" ? "st-done" :
-          order.status === "Cancelled" ? "st-cancel" : "st-pending";
+      supportStatus.textContent = "সাপোর্ট রিকোয়েস্ট পাঠানো হচ্ছে...";
 
-        return `
-          <div class="order-card">
-            <div class="order-meta">
-              <strong>${order.id}</strong>
-              <span class="status-pill ${badgeClass}">${order.status}</span><br />
-              <span>${order.category} — <strong>${order.packageName}</strong> (${order.price} ৳)</span><br />
-              <span>UID: <strong>${order.uid}</strong> | ${order.method}: <strong>${order.sender}</strong> | TrxID: <strong>${order.trxId}</strong></span><br />
-              <small style="color: var(--muted);">${order.createdAt}</small>
-            </div>
-            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-              <button type="button" class="btn btn-primary" onclick="updateOrderStatus('${order.id}', 'Completed')">Complete</button>
-              <button type="button" class="btn btn-danger" onclick="updateOrderStatus('${order.id}', 'Cancelled')">Cancel</button>
-            </div>
-          </div>
-        `;
-      }).join("");
+      const newTicket = {
+        id: "SUP" + Date.now(),
+        customerUsername: session.username,
+        orderId: document.getElementById("supportOrderId").value.trim(),
+        message: document.getElementById("supportMessage").value.trim(),
+        status: "Open",
+        createdAt: new Date().toISOString()
+      };
+
+      try {
+        const state = await fetchCloudState();
+        state.tickets.push(newTicket);
+        await saveCloudState(state);
+
+        await sendTelegramMessage(
+          `নতুন সাপোর্ট রিকোয়েস্ট এসেছে!\n` +
+          `Ticket ID: ${newTicket.id}\n` +
+          `Customer Account: ${newTicket.customerUsername}\n` +
+          `Order ID: ${newTicket.orderId || "N/A"}\n` +
+          `Message: ${newTicket.message}`
+        );
+
+        supportStatus.textContent = `সাপোর্ট রিকোয়েস্ট পাঠানো হয়েছে! Ticket ID: ${newTicket.id}`;
+        supportForm.reset();
+        renderTickets(state.tickets);
+      } catch (err) {
+        supportStatus.textContent = `সাপোর্ট পাঠাতে সমস্যা হয়েছে: ${err.message}`;
+      }
+    });
+
+    refreshBtn.addEventListener("click", loadAndRender);
+
+    // Initial load
+    applySessionUI();
+    if (getSession()) {
+      loadAndRender();
     }
-
-    renderPackages();
   </script>
 </body>
 </html>
