@@ -37,7 +37,7 @@
       top: 0;
       z-index: 20;
       backdrop-filter: blur(12px);
-      background: rgba(9, 11, 16, 0.82);
+      background: rgba(9, 11, 16, 0.85);
       border-bottom: 1px solid var(--border);
       padding: 14px 18px;
       display: flex;
@@ -53,7 +53,6 @@
       gap: 10px;
       font-weight: 800;
       font-size: 1.05rem;
-      letter-spacing: 0.3px;
     }
 
     .brand-badge {
@@ -164,7 +163,7 @@
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(165px, 1fr));
       gap: 12px;
       margin-bottom: 22px;
     }
@@ -185,20 +184,20 @@
     }
 
     .pkg-card.selected {
-      background: rgba(0, 229, 168, 0.1);
+      background: rgba(0, 229, 168, 0.12);
       border-color: var(--accent);
     }
 
     .pkg-title {
       font-weight: 700;
-      font-size: 1rem;
+      font-size: 0.98rem;
       margin-bottom: 6px;
     }
 
     .pkg-price {
       color: var(--accent);
       font-weight: 800;
-      font-size: 1.05rem;
+      font-size: 1.02rem;
     }
 
     .panel {
@@ -283,7 +282,6 @@
       color: #ff9cb0;
     }
 
-    /* Admin Section */
     #adminSection {
       display: none;
     }
@@ -355,9 +353,9 @@
       <span>A.S FF TopUp</span>
     </div>
     <div class="nav-actions">
-      <a class="btn btn-secondary" href="https://t.me/+zMIcGJo1hMVkYTM1" target="_blank" rel="noopener">টেলিগ্রাম গ্রুপ</a>
+      <a class="btn btn-secondary" href="https://t.me/+zMIcGJo1hMVkYTM1" target="_blank" rel="noopener">টেলিগ্রাম সাপোর্ট</a>
       <a class="btn btn-secondary" href="https://wa.me/8801820313593" target="_blank" rel="noopener">হোয়াটসঅ্যাপ</a>
-      <button id="toggleAdminBtn" class="btn btn-secondary" onclick="toggleAdminPanel()">অ্যাডমিন প্যানেল</button>
+      <button id="toggleAdminBtn" type="button" class="btn btn-secondary" onclick="toggleAdminPanel()">অ্যাডমিন প্যানেল</button>
     </div>
   </header>
 
@@ -366,15 +364,15 @@
       <h1>দ্রুত ও নিরাপদ Free Fire TopUp এবং Auto Like</h1>
       <p>সঠিক UID এবং ট্রানজেকশন আইডি (TrxID) দিয়ে অর্ডার করুন। অর্ডার সাবমিট করার সাথে সাথে টেলিগ্রামে লাইভ নোটিফিকেশন পৌঁছে যাবে।</p>
       <div class="support-bar">
-        <a class="btn btn-primary" href="https://t.me/+zMIcGJo1hMVkYTM1" target="_blank" rel="noopener">সাপোর্ট গ্রুপে জয়েন করুন</a>
+        <a class="btn btn-primary" href="https://t.me/+zMIcGJo1hMVkYTM1" target="_blank" rel="noopener">টেলিগ্রাম সাপোর্ট</a>
         <a class="btn btn-secondary" href="https://wa.me/8801820313593" target="_blank" rel="noopener">সরাসরি WhatsApp</a>
       </div>
     </section>
 
     <div id="shopSection">
       <div class="tabs">
-        <button id="tabUid" class="tab-btn active" onclick="switchCategory('UID TopUp')">FF UID TopUp</button>
-        <button id="tabLike" class="tab-btn" onclick="switchCategory('Auto Like')">FF Auto Like</button>
+        <button id="tabUid" type="button" class="tab-btn active" onclick="switchCategory('UID TopUp')">FF UID TopUp</button>
+        <button id="tabLike" type="button" class="tab-btn" onclick="switchCategory('Auto Like')">FF Auto Like</button>
       </div>
 
       <div id="packageGrid" class="grid"></div>
@@ -384,7 +382,7 @@
 
         <div class="payment-box">
           <strong>পেমেন্ট নির্দেশনা:</strong> নির্বাচিত প্যাকেজের টাকা বিকাশ অথবা রকেট (Send Money)-এ পাঠিয়ে নিচে আপনার নাম্বার এবং <strong>TrxID</strong> দিন।<br />
-          বিকাশ / রকেট পার্সোনাল: <strong>01820313593</strong> (আপনার প্রয়োজন অনুযায়ী নাম্বার আপডেট করে নেবেন)
+          বিকাশ / রকেট পার্সোনাল: <strong>01820313593</strong>
         </div>
 
         <form id="orderForm" onsubmit="submitOrder(event)">
@@ -435,29 +433,41 @@
     <section id="adminSection" class="panel">
       <h2>অ্যাডমিন অর্ডার ম্যানেজমেন্ট</h2>
       <div class="admin-toolbar">
-        <button id="hideVerifyBtn" class="btn btn-secondary" onclick="toggleVerifyButtonVisibility()">ভেরিফাই বাটন হাইড/শো</button>
-        <button class="btn btn-secondary" onclick="testTelegramNotification()">টেলিগ্রাম টেস্ট নোটিফিকেশন</button>
-        <button class="btn btn-danger" onclick="clearAllOrders()">সব অর্ডার মুছুন</button>
+        <button id="hideVerifyBtn" type="button" class="btn btn-secondary" onclick="toggleVerifyButtonVisibility()">ভেরিফাই বাটন হাইড/শো</button>
+        <button type="button" class="btn btn-secondary" onclick="testTelegramNotification()">টেলিগ্রাম টেস্ট নোটিফিকেশন</button>
+        <button type="button" class="btn btn-danger" onclick="clearAllOrders()">সব অর্ডার মুছুন</button>
       </div>
       <div id="adminOrdersList" class="order-list"></div>
     </section>
   </main>
 
   <script>
-    // টেলিগ্রাম নোটিফিকেশন কনফিগারেশন
     const TELEGRAM_BOT_TOKEN = "9120055505:AAHFGkjefGTxTEulB16xGbaOgu2AifHPoKg";
     const TELEGRAM_CHAT_ID = "7283303333";
 
     const PACKAGES = {
       "UID TopUp": [
+        { name: "25 Diamonds", price: 25 },
+        { name: "50 Diamonds", price: 45 },
         { name: "115 Diamonds", price: 85 },
         { name: "240 Diamonds", price: 170 },
+        { name: "355 Diamonds", price: 255 },
+        { name: "480 Diamonds", price: 340 },
+        { name: "610 Diamonds", price: 425 },
+        { name: "725 Diamonds", price: 510 },
+        { name: "850 Diamonds", price: 595 },
+        { name: "1090 Diamonds", price: 765 },
+        { name: "1240 Diamonds", price: 850 },
+        { name: "2530 Diamonds", price: 1700 },
+        { name: "5060 Diamonds", price: 3400 },
+        { name: "10120 Diamonds", price: 6800 },
         { name: "Weekly Membership", price: 160 },
-        { name: "Monthly Membership", price: 780 }
+        { name: "Monthly Membership", price: 780 },
+        { name: "Weekly Lite", price: 45 },
+        { name: "Level Up Pass", price: 160 }
       ],
       "Auto Like": [
-        { name: "200 Likes", price: 15 },
-        { name: "400 Likes", price: 30 }
+        { name: "200 Likes", price: 15 }
       ]
     };
 
@@ -615,6 +625,7 @@
       adminSec.style.display = isVisible ? "none" : "block";
       if (!isVisible) {
         renderAdminOrders();
+        adminSec.scrollIntoView({ behavior: "smooth" });
       }
     }
 
@@ -671,8 +682,8 @@
               <small style="color: var(--muted);">${order.createdAt}</small>
             </div>
             <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-              <button class="btn btn-primary" onclick="updateOrderStatus('${order.id}', 'Completed')">Complete</button>
-              <button class="btn btn-danger" onclick="updateOrderStatus('${order.id}', 'Cancelled')">Cancel</button>
+              <button type="button" class="btn btn-primary" onclick="updateOrderStatus('${order.id}', 'Completed')">Complete</button>
+              <button type="button" class="btn btn-danger" onclick="updateOrderStatus('${order.id}', 'Cancelled')">Cancel</button>
             </div>
           </div>
         `;
