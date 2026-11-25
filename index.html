@@ -16,8 +16,10 @@
       --primary-dark: #1d4ed8;
       --success: #16a34a;
       --danger: #dc2626;
+      --bkash: #e2136e;
+      --rocket: #8c3494;
       --shadow: 0 4px 18px rgba(15, 23, 42, 0.06);
-      --radius: 14px;
+      --radius: 12px;
     }
 
     * {
@@ -27,7 +29,7 @@
 
     body {
       margin: 0;
-      padding: 0 0 84px 0;
+      padding: 0 0 88px 0;
       background: var(--bg);
       color: var(--text);
       line-height: 1.5;
@@ -59,8 +61,8 @@
     }
 
     .brand-logo {
-      width: 38px;
-      height: 38px;
+      width: 40px;
+      height: 40px;
       border-radius: 10px;
       background: linear-gradient(135deg, #2563eb, #0ea5e9);
       color: #ffffff;
@@ -139,6 +141,184 @@
       color: var(--muted);
     }
 
+    .section-label {
+      display: block;
+      margin: 14px 0 8px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #334155;
+    }
+
+    /* Square Box Grids */
+    .service-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .service-box {
+      border: 2px solid var(--border);
+      background: var(--surface-soft);
+      border-radius: 10px;
+      padding: 14px 12px;
+      text-align: center;
+      cursor: pointer;
+      transition: 0.15s ease;
+    }
+
+    .service-box:hover {
+      border-color: #93c5fd;
+      background: #ffffff;
+    }
+
+    .service-box.selected {
+      border-color: var(--primary);
+      background: #eff6ff;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    }
+
+    .service-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .service-sub {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 3px;
+    }
+
+    .package-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    @media (min-width: 640px) {
+      .package-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .pkg-box {
+      position: relative;
+      border: 2px solid var(--border);
+      background: var(--surface-soft);
+      border-radius: 10px;
+      padding: 12px;
+      text-align: left;
+      cursor: pointer;
+      transition: 0.15s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 86px;
+    }
+
+    .pkg-box:hover:not(.disabled) {
+      border-color: #93c5fd;
+      background: #ffffff;
+      transform: translateY(-1px);
+    }
+
+    .pkg-box.selected {
+      border-color: var(--primary);
+      background: #eff6ff;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    }
+
+    .pkg-box.disabled {
+      opacity: 0.55;
+      background: #f1f5f9;
+      cursor: not-allowed;
+    }
+
+    .pkg-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .pkg-price {
+      margin-top: 8px;
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .pkg-box.disabled .pkg-price {
+      color: var(--danger);
+      font-size: 12px;
+    }
+
+    .payment-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .pay-box {
+      border: 2px solid var(--border);
+      background: var(--surface-soft);
+      border-radius: 10px;
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: 0.15s ease;
+    }
+
+    .pay-box:hover {
+      background: #ffffff;
+      border-color: #cbd5e1;
+    }
+
+    .pay-box.selected.bkash {
+      border-color: var(--bkash);
+      background: #fdf2f8;
+      box-shadow: 0 0 0 3px rgba(226, 19, 110, 0.12);
+    }
+
+    .pay-box.selected.rocket {
+      border-color: var(--rocket);
+      background: #faf5ff;
+      box-shadow: 0 0 0 3px rgba(140, 52, 148, 0.12);
+    }
+
+    .pay-logo {
+      width: 44px;
+      height: 32px;
+      border-radius: 6px;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      font-size: 11px;
+      letter-spacing: 0.3px;
+      color: #ffffff;
+      flex-shrink: 0;
+    }
+
+    .pay-logo.bkash {
+      background: var(--bkash);
+    }
+
+    .pay-logo.rocket {
+      background: var(--rocket);
+    }
+
+    .pay-name {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .pay-hint {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
     .mode-switch {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -174,7 +354,7 @@
     .stat-box {
       background: var(--surface-soft);
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: 10px;
       padding: 12px;
       text-align: center;
     }
@@ -193,7 +373,7 @@
 
     label {
       display: block;
-      margin: 10px 0 6px;
+      margin: 12px 0 6px;
       font-size: 13px;
       font-weight: 700;
       color: #334155;
@@ -224,7 +404,7 @@
     }
 
     button {
-      margin-top: 12px;
+      margin-top: 14px;
       background: var(--primary);
       color: #ffffff;
       border: none;
@@ -286,7 +466,7 @@
     .list-item {
       background: var(--surface-soft);
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: 10px;
       padding: 13px;
       margin-top: 10px;
     }
@@ -447,7 +627,7 @@
       <div id="custAuthMsg" class="status-msg"></div>
     </section>
 
-    <!-- Hidden / Discreet Admin Login Box (Only opens when triggered) -->
+    <!-- Hidden / Discreet Admin Login Box -->
     <section id="adminAuthSection" class="card hidden">
       <div class="item-top">
         <h2>Admin Access</h2>
@@ -494,36 +674,91 @@
     <!-- Tab 1: Order Section -->
     <section id="tabOrder" class="card hidden">
       <h2>নতুন অর্ডার করুন</h2>
-      <p class="card-desc">প্যাকেজ তালিকা, ইন-গেম ইউআইডি কোড এবং পেমেন্ট সিস্টেম নির্বাচন করে অর্ডার দিন।</p>
-      <form id="orderForm">
-        <label for="serviceType">সার্ভিস নির্বাচন করুন</label>
-        <select id="serviceType" required>
-          <option value="UID TopUp">UID TopUp</option>
-          <option value="200 Like Auto Like">200 Like Auto Like</option>
-        </select>
+      <p class="card-desc">সার্ভিস, প্যাকেজ বক্স, ইন-গেম ইউআইডি এবং পেমেন্ট মেথড বক্স নির্বাচন করে অর্ডার দিন।</p>
 
-        <label for="packageName">প্যাকেজ তালিকা</label>
-        <select id="packageName" required>
-          <option value="💎 25 ডায়মন্ড - 22 TK" data-price="22">💎 25 ডায়মন্ড — 22 TK</option>
-          <option value="💎 50 ডায়মন্ড - 37 TK" data-price="37">💎 50 ডায়মন্ড — 37 TK</option>
-          <option value="💎 115 ডায়মন্ড - 80 TK" data-price="80">💎 115 ডায়মন্ড — 80 TK</option>
-          <option value="💎 240 ডায়মন্ড - 156 TK" data-price="156">💎 240 ডায়মন্ড — 156 TK</option>
-          <option value="💎 610 ডায়মন্ড - 395 TK" data-price="395">💎 610 ডায়মন্ড — 395 TK</option>
-          <option value="💎 1240 ডায়মন্ড - 785 TK" data-price="785">💎 1240 ডায়মন্ড — 785 TK</option>
-          <option value="💎 2530 ডায়মন্ড - 1570 TK" data-price="1570">💎 2530 ডায়মন্ড — 1570 TK</option>
-          <option value="Weekly - 160 TK" data-price="160">Weekly — 160 TK</option>
-          <option value="Monthly - 780 TK" data-price="780">Monthly — 780 TK</option>
-          <option value="❌২০০০ Unipin (Out of stock) - 1690 TK" data-price="1690" disabled>❌২০০০ Unipin (Out of stock) — 1690 TK</option>
-        </select>
+      <form id="orderForm">
+        <!-- Service Boxes -->
+        <span class="section-label">সার্ভিস নির্বাচন করুন</span>
+        <div class="service-grid" id="serviceGrid">
+          <div class="service-box selected" data-service="UID TopUp">
+            <div class="service-title">UID TopUp</div>
+            <div class="service-sub">ডায়মন্ড ও মেম্বারশিপ</div>
+          </div>
+          <div class="service-box" data-service="200 Like Auto Like">
+            <div class="service-title">200 Like Auto Like</div>
+            <div class="service-sub">ইন-গেম প্রোফাইল লাইক</div>
+          </div>
+        </div>
+        <input type="hidden" id="serviceType" value="UID TopUp" />
+
+        <!-- Package Boxes -->
+        <span class="section-label">প্যাকেজ তালিকা (বক্সে ক্লিক করুন)</span>
+        <div class="package-grid" id="packageGrid">
+          <div class="pkg-box selected" data-value="💎 25 ডায়মন্ড - 22 TK" data-price="22">
+            <div class="pkg-name">💎 25 ডায়মন্ড</div>
+            <div class="pkg-price">22 TK</div>
+          </div>
+          <div class="pkg-box" data-value="💎 50 ডায়মন্ড - 37 TK" data-price="37">
+            <div class="pkg-name">💎 50 ডায়মন্ড</div>
+            <div class="pkg-price">37 TK</div>
+          </div>
+          <div class="pkg-box" data-value="💎 115 ডায়মন্ড - 80 TK" data-price="80">
+            <div class="pkg-name">💎 115 ডায়মন্ড</div>
+            <div class="pkg-price">80 TK</div>
+          </div>
+          <div class="pkg-box" data-value="💎 240 ডায়মন্ড - 156 TK" data-price="156">
+            <div class="pkg-name">💎 240 ডায়মন্ড</div>
+            <div class="pkg-price">156 TK</div>
+          </div>
+          <div class="pkg-box" data-value="💎 610 ডায়মন্ড - 395 TK" data-price="395">
+            <div class="pkg-name">💎 610 ডায়মন্ড</div>
+            <div class="pkg-price">395 TK</div>
+          </div>
+          <div class="pkg-box" data-value="💎 1240 ডায়মন্ড - 785 TK" data-price="785">
+            <div class="pkg-name">💎 1240 ডায়মন্ড</div>
+            <div class="pkg-price">785 TK</div>
+          </div>
+          <div class="pkg-box" data-value="💎 2530 ডায়মন্ড - 1570 TK" data-price="1570">
+            <div class="pkg-name">💎 2530 ডায়মন্ড</div>
+            <div class="pkg-price">1570 TK</div>
+          </div>
+          <div class="pkg-box" data-value="Weekly - 160 TK" data-price="160">
+            <div class="pkg-name">Weekly</div>
+            <div class="pkg-price">160 TK</div>
+          </div>
+          <div class="pkg-box" data-value="Monthly - 780 TK" data-price="780">
+            <div class="pkg-name">Monthly</div>
+            <div class="pkg-price">780 TK</div>
+          </div>
+          <div class="pkg-box disabled" data-value="❌২০০০ Unipin (Out of stock) - 1690 TK" data-price="1690" data-disabled="true">
+            <div class="pkg-name">❌ ২০০০ Unipin</div>
+            <div class="pkg-price">Out of stock — 1690 TK</div>
+          </div>
+        </div>
+        <input type="hidden" id="packageName" value="💎 25 ডায়মন্ড - 22 TK" data-price="22" />
 
         <label for="playerUid">ইন-গেম ইউআইডি কোড দিন</label>
         <input type="text" id="playerUid" placeholder="যেমন: 123456789" required />
 
-        <label for="paymentMethod">পেমেন্ট সিস্টেম নির্বাচন করুন</label>
-        <select id="paymentMethod" required>
-          <option value="bKash">bKash</option>
-          <option value="Rocket">Rocket</option>
-        </select>
+        <!-- Payment Method Boxes with Logo Badges -->
+        <span class="section-label">পেমেন্ট সিস্টেম নির্বাচন করুন</span>
+        <div class="payment-grid" id="paymentGrid">
+          <div class="pay-box bkash selected" data-method="bKash">
+            <div class="pay-logo bkash">bKash</div>
+            <div>
+              <div class="pay-name">বিকাশ (bKash)</div>
+              <div class="pay-hint">Send Money / Payment</div>
+            </div>
+          </div>
+          <div class="pay-box rocket" data-method="Rocket">
+            <div class="pay-logo rocket">ROCKET</div>
+            <div>
+              <div class="pay-name">রকেট (Rocket)</div>
+              <div class="pay-hint">Send Money / Payment</div>
+            </div>
+          </div>
+        </div>
+        <input type="hidden" id="paymentMethod" value="bKash" />
 
         <label for="trxId">Transaction ID (TrxID)</label>
         <input type="text" id="trxId" placeholder="পেমেন্টের TrxID লিখুন" required />
@@ -598,13 +833,13 @@
     const ADMIN_EMAIL = "mdassadikislambd123@gmail";
     const ADMIN_PASSWORD = "/like bd 6817246793";
 
-    // Optional Telegram Config
-    const TELEGRAM_BOT_TOKEN = "";
-    const TELEGRAM_CHAT_ID = "";
+    // Telegram Notification Config
+    const TELEGRAM_BOT_TOKEN = "9120055505:AAHFGkjefGTxTEulB16xGbaOgu2AifHPoKg";
+    const TELEGRAM_CHAT_ID = "7283303333";
 
     const SESSION_KEY = "as_ff_topup_session_v3";
     let activeTab = "order";
-    let authMode = "register"; // "register" | "login"
+    let authMode = "register";
     let showAdminBox = false;
     let cachedState = { orders: [], users: [], tickets: [] };
 
@@ -645,6 +880,9 @@
     const adminAuthMsg = document.getElementById("adminAuthMsg");
 
     const orderForm = document.getElementById("orderForm");
+    const serviceTypeInput = document.getElementById("serviceType");
+    const packageNameInput = document.getElementById("packageName");
+    const paymentMethodInput = document.getElementById("paymentMethod");
     const formStatus = document.getElementById("formStatus");
     const supportForm = document.getElementById("supportForm");
     const supportStatus = document.getElementById("supportStatus");
@@ -653,6 +891,57 @@
     const ticketsList = document.getElementById("ticketsList");
     const refreshBtn = document.getElementById("refreshBtn");
     const navButtons = document.querySelectorAll(".nav-btn");
+
+    // Box selection handlers
+    document.querySelectorAll("#serviceGrid .service-box").forEach((box) => {
+      box.addEventListener("click", () => {
+        document.querySelectorAll("#serviceGrid .service-box").forEach((b) => b.classList.remove("selected"));
+        box.classList.add("selected");
+        serviceTypeInput.value = box.dataset.service;
+      });
+    });
+
+    document.querySelectorAll("#packageGrid .pkg-box").forEach((box) => {
+      box.addEventListener("click", () => {
+        if (box.dataset.disabled === "true") return;
+        document.querySelectorAll("#packageGrid .pkg-box").forEach((b) => b.classList.remove("selected"));
+        box.classList.add("selected");
+        packageNameInput.value = box.dataset.value;
+        packageNameInput.dataset.price = box.dataset.price;
+      });
+    });
+
+    document.querySelectorAll("#paymentGrid .pay-box").forEach((box) => {
+      box.addEventListener("click", () => {
+        document.querySelectorAll("#paymentGrid .pay-box").forEach((b) => b.classList.remove("selected"));
+        box.classList.add("selected");
+        paymentMethodInput.value = box.dataset.method;
+      });
+    });
+
+    function resetBoxSelections() {
+      const firstService = document.querySelector("#serviceGrid .service-box");
+      if (firstService) {
+        document.querySelectorAll("#serviceGrid .service-box").forEach((b) => b.classList.remove("selected"));
+        firstService.classList.add("selected");
+        serviceTypeInput.value = firstService.dataset.service;
+      }
+
+      const firstPkg = document.querySelector("#packageGrid .pkg-box:not(.disabled)");
+      if (firstPkg) {
+        document.querySelectorAll("#packageGrid .pkg-box").forEach((b) => b.classList.remove("selected"));
+        firstPkg.classList.add("selected");
+        packageNameInput.value = firstPkg.dataset.value;
+        packageNameInput.dataset.price = firstPkg.dataset.price;
+      }
+
+      const firstPay = document.querySelector("#paymentGrid .pay-box");
+      if (firstPay) {
+        document.querySelectorAll("#paymentGrid .pay-box").forEach((b) => b.classList.remove("selected"));
+        firstPay.classList.add("selected");
+        paymentMethodInput.value = firstPay.dataset.method;
+      }
+    }
 
     function escapeHtml(str) {
       return String(str ?? "")
@@ -1099,20 +1388,18 @@
         return;
       }
 
-      const pkgSelect = document.getElementById("packageName");
-      const selectedOption = pkgSelect.options[pkgSelect.selectedIndex];
-      const priceValue = Number(selectedOption?.dataset?.price) || 0;
+      const priceValue = Number(packageNameInput.dataset?.price) || 0;
 
       formStatus.textContent = "অর্ডার সেভ করা হচ্ছে...";
 
       const newOrder = {
         id: "ORD" + Date.now(),
         customerEmail: session.email,
-        service: document.getElementById("serviceType").value,
-        package: pkgSelect.value,
+        service: serviceTypeInput.value,
+        package: packageNameInput.value,
         price: priceValue,
         uid: document.getElementById("playerUid").value.trim(),
-        paymentMethod: document.getElementById("paymentMethod").value,
+        paymentMethod: paymentMethodInput.value,
         trxId: document.getElementById("trxId").value.trim(),
         status: "Pending",
         createdAt: new Date().toISOString()
@@ -1136,6 +1423,7 @@
 
         formStatus.textContent = `অর্ডার সফলভাবে জমা হয়েছে! Order ID: ${newOrder.id}`;
         orderForm.reset();
+        resetBoxSelections();
         renderAll(state);
       } catch (err) {
         formStatus.textContent = `সমস্যা হয়েছে: ${err.message}`;
@@ -1186,6 +1474,7 @@
 
     // Initial Boot
     setAuthMode("register");
+    resetBoxSelections();
     syncNavActive();
     applySessionUI();
     if (getSession()) {
