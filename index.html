@@ -526,7 +526,6 @@
       display: none !important;
     }
 
-    /* Modal */
     .modal-bg {
       position: fixed;
       inset: 0;
@@ -638,7 +637,6 @@
       <span>সার্ভিস সময়: সকাল ০৮:০০ – রাত ১০:০০</span>
     </div>
 
-    <!-- Customer Auth -->
     <section id="authSection" class="panel">
       <div class="panel-head">
         <div>
@@ -656,15 +654,14 @@
         <label for="custGmail" class="field-label">আপনার Gmail ঠিকানা</label>
         <input type="email" id="custGmail" placeholder="example@gmail.com" required />
 
-        <label for="custPassword" class="field-label">পাসওয়ার্ড</label>
-        <input type="password" id="custPassword" placeholder="পাসওয়ার্ড লিখুন" required />
+        <label for="custPassword" class="field-label">পাসওয়ার্ড (কমপক্ষে ৬ অক্ষর)</label>
+        <input type="password" id="custPassword" minlength="6" placeholder="পাসওয়ার্ড লিখুন" required />
 
         <button type="submit" id="authSubmitBtn">অ্যাকাউন্ট তৈরি করুন</button>
       </form>
       <div id="custAuthMsg" class="msg-line"></div>
     </section>
 
-    <!-- Admin Login -->
     <section id="adminAuthSection" class="panel hidden">
       <div class="panel-head">
         <h2>Admin Access</h2>
@@ -688,7 +685,6 @@
       <div id="adminAuthMsg" class="msg-line"></div>
     </section>
 
-    <!-- Profile Summary -->
     <section id="profileCard" class="panel hidden">
       <div class="panel-head">
         <div>
@@ -713,7 +709,6 @@
       </div>
     </section>
 
-    <!-- Tab 1: Order -->
     <section id="tabOrder" class="panel hidden">
       <div class="panel-head">
         <div>
@@ -798,7 +793,6 @@
       <div id="formStatus" class="msg-line"></div>
     </section>
 
-    <!-- Tab 2: Orders -->
     <section id="tabOrdersList" class="panel hidden">
       <div id="adminPaymentSettings" class="admin-box hidden">
         <h3>পেমেন্ট নম্বর আপডেট (পার্সোনাল)</h3>
@@ -821,7 +815,6 @@
       <div id="ordersList"></div>
     </section>
 
-    <!-- Tab 3: Support -->
     <section id="tabSupport" class="panel hidden">
       <div class="panel-head">
         <div>
@@ -862,6 +855,10 @@
   </nav>
 
   <script>
+    // ঐচ্ছিক: Cloudflare Worker URL দিলে ফ্রন্টএন্ড সরাসরি Key/Token ছাড়া সুরক্ষিতভাবে কাজ করবে।
+    // খালি রাখলে সরাসরি নিচের JSONBin / Telegram কনফিগ ব্যবহার করবে।
+    const WORKER_PROXY_URL = "";
+
     const JSONBIN_BIN_ID = "6b067cb4ac6210605aa290d1";
     const JSONBIN_API_KEY = "$2a$10$AhZsafNeOZouWRx4.UglpOBFprt4lAhYP9a11LA8MMO5OIkaeMWm6";
     const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`;
@@ -873,12 +870,12 @@
     const TELEGRAM_CHAT_ID = "7283303333";
 
     const PROFILE_IMAGE_URL = "https://i.postimg.cc/pTzSZY5j/image-35a7e2c0.jpg";
-    const WEBSITE_BASE_URL = "https://mdassadikislambd123.github.io/22/";
+    const WEBSITE_BASE_URL = "https://tinyurl.com/AS-FF-TopUp";
 
-    const SESSION_KEY = "as_ff_topup_session_v6";
-    const CONFIG_KEY = "as_ff_topup_config_v3";
-    const PROCESSING_DURATION_MS = 5000; // কাস্টমারের জন্য ৫ সেকেন্ড
-    const ADMIN_COMPLETE_DURATION_MS = 180000; // অ্যাডমিনের জন্য ৩ মিনিট
+    const SESSION_KEY = "as_ff_topup_session_v7";
+    const CONFIG_KEY = "as_ff_topup_config_v4";
+    const PROCESSING_DURATION_MS = 5000;
+    const ADMIN_COMPLETE_DURATION_MS = 180000;
 
     const DEFAULT_BKASH_NUM = "01820313593";
     const DEFAULT_ROCKET_NUM = "01820313593";
@@ -886,7 +883,7 @@
     let activeTab = "order";
     let authMode = "register";
     let showAdminBox = false;
-    let cachedState = { orders: [], users: [], tickets: [] };
+    let cachedState = { orders: [], users: [], tickets: [], paymentConfig: null };
     let countdownInterval = null;
     let processingTimeout = null;
     let adminTimerInterval = null;
@@ -946,6 +943,15 @@
     const ticketsList = document.getElementById("ticketsList");
     const refreshBtn = document.getElementById("refreshBtn");
     const navButtons = document.querySelectorAll(".dock-btn");
+
+    async function sha256Hex(plainText) {
+      const encoder = new TextEncoder();
+      const data = encoder.encode(String(plainText || ""));
+      const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+      return Array.from(new Uint8Array(hashBuffer))
+        .map((b) => b.toString(16).padStart(2, "0"))
+        .join("");
+    }
 
     function getAdminDirectUrl() {
       const base = (WEBSITE_BASE_URL || window.location.href.split("?")[0]).trim();
@@ -1169,6 +1175,18 @@
     }
 
     async function fetchCloudState() {
+      if (WORKER_PROXY_URL) {
+        const res = await fetch(`${WORKER_PROXY_URL}/state`, { method: "GET" });
+        if (!res.ok) throw new Error(`Proxy GET Error: ${res.status}`);
+        const data = await res.json();
+        return {
+          orders: Array.isArray(data.orders) ? data.orders : [],
+          users: Array.isArray(data.users) ? data.users : [],
+          tickets: Array.isArray(data.tickets) ? data.tickets : [],
+          paymentConfig: data.paymentConfig || null
+        };
+      }
+
       const res = await fetch(`${JSONBIN_URL}/latest`, {
         method: "GET",
         headers: { "X-Master-Key": JSONBIN_API_KEY }
@@ -1179,40 +1197,73 @@
       return {
         orders: Array.isArray(record.orders) ? record.orders : [],
         users: Array.isArray(record.users) ? record.users : [],
-        tickets: Array.isArray(record.tickets) ? record.tickets : []
+        tickets: Array.isArray(record.tickets) ? record.tickets : [],
+        paymentConfig: record.paymentConfig || null
       };
     }
 
     async function saveCloudState(nextState) {
+      const payloadData = {
+        orders: nextState.orders,
+        users: nextState.users,
+        tickets: nextState.tickets,
+        paymentConfig: nextState.paymentConfig || paymentConfig
+      };
+
+      if (WORKER_PROXY_URL) {
+        const res = await fetch(`${WORKER_PROXY_URL}/state`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payloadData)
+        });
+        if (!res.ok) throw new Error(`Proxy PUT Error: ${res.status}`);
+        cachedState = { ...nextState, paymentConfig: payloadData.paymentConfig };
+        return await res.json();
+      }
+
       const res = await fetch(JSONBIN_URL, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
           "X-Master-Key": JSONBIN_API_KEY
         },
-        body: JSON.stringify({
-          orders: nextState.orders,
-          users: nextState.users,
-          tickets: nextState.tickets
-        })
+        body: JSON.stringify(payloadData)
       });
       if (!res.ok) throw new Error(`JSONBin PUT Error: ${res.status}`);
-      cachedState = nextState;
+      cachedState = { ...nextState, paymentConfig: payloadData.paymentConfig };
       return await res.json();
     }
 
     async function sendTelegramMessage(captionText, withPhoto = false, includeAdminButton = false) {
+      const adminUrl = getAdminDirectUrl();
+      const keyboard = includeAdminButton && /^https?:\/\//i.test(adminUrl)
+        ? {
+            inline_keyboard: [
+              [{ text: "🔐 অ্যাডমিন প্যানেলে লগইন করুন", url: adminUrl }]
+            ]
+          }
+        : undefined;
+
+      if (WORKER_PROXY_URL) {
+        try {
+          await fetch(`${WORKER_PROXY_URL}/notify`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              caption: captionText,
+              withPhoto: Boolean(withPhoto),
+              photoUrl: PROFILE_IMAGE_URL,
+              replyMarkup: keyboard || null
+            })
+          });
+        } catch (err) {
+          console.error(err);
+        }
+        return;
+      }
+
       if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) return;
       try {
-        const adminUrl = getAdminDirectUrl();
-        const keyboard = includeAdminButton && /^https?:\/\//i.test(adminUrl)
-          ? {
-              inline_keyboard: [
-                [{ text: "🔐 অ্যাডমিন প্যানেলে লগইন করুন", url: adminUrl }]
-              ]
-            }
-          : undefined;
-
         if (withPhoto && PROFILE_IMAGE_URL) {
           const payload = {
             chat_id: TELEGRAM_CHAT_ID,
@@ -1425,6 +1476,13 @@
     function renderAll(state) {
       const session = getSession();
       if (!session) return;
+      if (state.paymentConfig && state.paymentConfig.bkashNum && state.paymentConfig.rocketNum) {
+        paymentConfig = {
+          bkashNum: state.paymentConfig.bkashNum,
+          rocketNum: state.paymentConfig.rocketNum
+        };
+        syncAdminNumberInputs();
+      }
       if (session.role === "customer") updateCustomerStats(state.orders, session.email);
       renderOrders(state.orders);
       renderTickets(state.tickets);
@@ -1477,20 +1535,22 @@
       e.preventDefault();
       const email = normalizeEmail(document.getElementById("custGmail").value);
       const password = document.getElementById("custPassword").value;
-      if (!email.includes("@")) {
-        custAuthMsg.textContent = "সঠিক Gmail ঠিকানা লিখুন।";
+      if (!email.includes("@") || password.length < 6) {
+        custAuthMsg.textContent = "সঠিক Gmail এবং কমপক্ষে ৬ অক্ষরের পাসওয়ার্ড দিন।";
         return;
       }
       custAuthMsg.textContent = "অপেক্ষা করুন...";
       try {
         const state = await fetchCloudState();
+        const passwordHash = await sha256Hex(password);
         const existingUser = state.users.find((u) => normalizeEmail(u.email || u.username) === email);
+
         if (authMode === "register") {
           if (existingUser) {
             custAuthMsg.textContent = "এই Gmail দিয়ে আগেই অ্যাকাউন্ট আছে। সাইন ইন করুন।";
             return;
           }
-          state.users.push({ email, password, createdAt: new Date().toISOString() });
+          state.users.push({ email, passwordHash, createdAt: new Date().toISOString() });
           await saveCloudState(state);
           customerAuthForm.reset();
           setSession({ role: "customer", email });
@@ -1499,9 +1559,16 @@
             custAuthMsg.textContent = "এই Gmail দিয়ে কোনো অ্যাকাউন্ট নেই।";
             return;
           }
-          if (existingUser.password !== password) {
+          const matchesHash = existingUser.passwordHash === passwordHash;
+          const matchesLegacy = !existingUser.passwordHash && existingUser.password === password;
+          if (!matchesHash && !matchesLegacy) {
             custAuthMsg.textContent = "পাসওয়ার্ড সঠিক নয়!";
             return;
+          }
+          if (matchesLegacy && !existingUser.passwordHash) {
+            existingUser.passwordHash = passwordHash;
+            delete existingUser.password;
+            await saveCloudState(state);
           }
           customerAuthForm.reset();
           setSession({ role: "customer", email });
@@ -1529,7 +1596,7 @@
       setSession({ role: "admin", email: ADMIN_EMAIL });
     });
 
-    paymentNumbersForm.addEventListener("submit", (e) => {
+    paymentNumbersForm.addEventListener("submit", async (e) => {
       e.preventDefault();
       const session = getSession();
       if (!session || session.role !== "admin") return;
@@ -1541,7 +1608,14 @@
         return;
       }
       savePaymentConfig(bkash, rocket);
-      paymentSaveMsg.textContent = "নম্বর আপডেট হয়েছে!";
+      try {
+        const latest = await fetchCloudState();
+        latest.paymentConfig = { bkashNum: bkash, rocketNum: rocket };
+        await saveCloudState(latest);
+        paymentSaveMsg.textContent = "নম্বর আপডেট ও সিঙ্ক হয়েছে!";
+      } catch {
+        paymentSaveMsg.textContent = "লোকালি নম্বর আপডেট হয়েছে!";
+      }
     });
 
     logoutBtn.addEventListener("click", clearSession);
@@ -1581,6 +1655,16 @@
 
     async function saveOrderImmediately(service, pkg, price, uid, senderPhone, trxId) {
       const session = getSession();
+      const normalizedTrx = String(trxId || "").trim().toUpperCase();
+      const state = await fetchCloudState();
+
+      const duplicateTrx = state.orders.some(
+        (o) => String(o.trxId || "").trim().toUpperCase() === normalizedTrx && o.status !== "Cancelled"
+      );
+      if (duplicateTrx) {
+        throw new Error("এই Transaction ID (TrxID) দিয়ে আগেই অর্ডার জমা দেওয়া হয়েছে!");
+      }
+
       const newOrder = {
         id: "ORD" + Date.now(),
         customerEmail: session.email,
@@ -1589,12 +1673,11 @@
         price: Number(price) || 0,
         uid,
         senderPhone,
-        trxId,
+        trxId: normalizedTrx,
         status: "Pending",
         createdAt: new Date().toISOString()
       };
 
-      const state = await fetchCloudState();
       state.orders.push(newOrder);
       await saveCloudState(state);
 
