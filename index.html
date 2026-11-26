@@ -863,7 +863,8 @@
 
     const SESSION_KEY = "as_ff_topup_session_v6";
     const CONFIG_KEY = "as_ff_topup_config_v3";
-    const PROCESSING_DURATION_MS = 120000;
+    const PROCESSING_DURATION_MS = 5000; // কাস্টমারের জন্য ৫ সেকেন্ড
+    const ADMIN_COMPLETE_DURATION_MS = 180000; // অ্যাডমিনের জন্য ৩ মিনিট
 
     const DEFAULT_BKASH_NUM = "01820313593";
     const DEFAULT_ROCKET_NUM = "01820313593";
@@ -874,6 +875,7 @@
     let cachedState = { orders: [], users: [], tickets: [] };
     let countdownInterval = null;
     let processingTimeout = null;
+    let adminTimerInterval = null;
 
     let paymentConfig = {
       bkashNum: DEFAULT_BKASH_NUM,
@@ -1219,6 +1221,39 @@
       }
     };
 
+    function formatTime(totalSeconds) {
+      const mins = Math.floor(totalSeconds / 60);
+      const secs = totalSeconds % 60;
+      return `${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
+    }
+
+    function getRemainingAdminSeconds(createdAt) {
+      if (!createdAt) return Math.floor(ADMIN_COMPLETE_DURATION_MS / 1000);
+      const elapsedSec = Math.floor((Date.now() - new Date(createdAt).getTime()) / 1000);
+      const totalSec = Math.floor(ADMIN_COMPLETE_DURATION_MS / 1000);
+      return Math.max(0, totalSec - elapsedSec);
+    }
+
+    function startAdminOrderTimers() {
+      if (adminTimerInterval) clearInterval(adminTimerInterval);
+      adminTimerInterval = setInterval(() => {
+        const timerEls = document.querySelectorAll(".admin-order-timer[data-created]");
+        if (!timerEls.length) return;
+
+        timerEls.forEach((el) => {
+          const created = el.getAttribute("data-created");
+          const rem = getRemainingAdminSeconds(created);
+          if (rem > 0) {
+            el.textContent = `⏳ কমপ্লিট করার সময় বাকি: ${formatTime(rem)}`;
+            el.style.color = "#fbbf24";
+          } else {
+            el.textContent = "⚠️ ৩ মিনিট সময় শেষ! দ্রুত কমপ্লিট করুন";
+            el.style.color = "#f87171";
+          }
+        });
+      }, 1000);
+    }
+
     function renderOrders(orders) {
       const session = getSession();
       if (!session) return;
@@ -1232,24 +1267,44 @@
         return;
       }
 
-      ordersList.innerHTML = filtered.slice().reverse().map((order) => `
-        <div class="order-box">
-          <div class="order-head">
-            <strong>${escapeHtml(order.id)}</strong>
-            <span class="tag ${statusClass(order.status)}">${escapeHtml(order.status)}</span>
+      ordersList.innerHTML = filtered.slice().reverse().map((order) => {
+        const isAdminPending = session.role === "admin" && order.status === "Pending";
+        const remSec = isAdminPending ? getRemainingAdminSeconds(order.createdAt) : 0;
+        const timerText = isAdminPending
+          ? (remSec > 0
+              ? `⏳ কমপ্লিট করার সময় বাকি: ${formatTime(remSec)}`
+              : "⚠️ ৩ মিনিট সময় শেষ! দ্রুত কমপ্লিট করুন")
+          : "";
+        const timerColor = remSec > 0 ? "#fbbf24" : "#f87171";
+
+        return `
+          <div class="order-box">
+            <div class="order-head">
+              <strong>${escapeHtml(order.id)}</strong>
+              <span class="tag ${statusClass(order.status)}">${escapeHtml(order.status)}</span>
+            </div>
+            <div>${escapeHtml(order.service)} — <strong>${escapeHtml(order.package)}</strong></div>
+            <div>UID: <strong>${escapeHtml(order.uid)}</strong> | Sender: ${escapeHtml(order.senderPhone || "N/A")} | TrxID: ${escapeHtml(order.trxId)}</div>
+            ${
+              isAdminPending
+                ? `<div class="admin-order-timer" data-created="${escapeHtml(order.createdAt || "")}" style="margin-top:8px; font-weight:700; font-size:12px; color:${timerColor};">${timerText}</div>`
+                : ""
+            }
+            ${
+              session.role === "admin"
+                ? `<div class="action-pair">
+                    <button type="button" class="btn-ok" onclick="updateOrderStatus('${escapeHtml(order.id)}', 'Completed')">Completed</button>
+                    <button type="button" class="btn-no" onclick="updateOrderStatus('${escapeHtml(order.id)}', 'Cancelled')">Cancelled</button>
+                  </div>`
+                : ""
+            }
           </div>
-          <div>${escapeHtml(order.service)} — <strong>${escapeHtml(order.package)}</strong></div>
-          <div>UID: <strong>${escapeHtml(order.uid)}</strong> | Sender: ${escapeHtml(order.senderPhone || "N/A")} | TrxID: ${escapeHtml(order.trxId)}</div>
-          ${
-            session.role === "admin"
-              ? `<div class="action-pair">
-                  <button type="button" class="btn-ok" onclick="updateOrderStatus('${escapeHtml(order.id)}', 'Completed')">Completed</button>
-                  <button type="button" class="btn-no" onclick="updateOrderStatus('${escapeHtml(order.id)}', 'Cancelled')">Cancelled</button>
-                </div>`
-              : ""
-          }
-        </div>
-      `).join("");
+        `;
+      }).join("");
+
+      if (session.role === "admin") {
+        startAdminOrderTimers();
+      }
     }
 
     function renderTickets(tickets) {
@@ -1318,6 +1373,7 @@
 
     function clearSession() {
       localStorage.removeItem(SESSION_KEY);
+      if (adminTimerInterval) { clearInterval(adminTimerInterval); adminTimerInterval = null; }
       showAdminBox = false;
       activeTab = "order";
       syncNavActive();
@@ -1440,13 +1496,7 @@
       modalContainer.innerHTML = "";
     };
 
-    function formatTime(totalSeconds) {
-      const mins = Math.floor(totalSeconds / 60);
-      const secs = totalSeconds % 60;
-      return `${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
-    }
-
-    async function executeFinalOrderSubmission(service, pkg, price, uid, senderPhone, trxId) {
+    async function saveOrderImmediately(service, pkg, price, uid, senderPhone, trxId) {
       const session = getSession();
       const newOrder = {
         id: "ORD" + Date.now(),
@@ -1461,56 +1511,38 @@
         createdAt: new Date().toISOString()
       };
 
-      try {
-        const state = await fetchCloudState();
-        state.orders.push(newOrder);
-        await saveCloudState(state);
+      const state = await fetchCloudState();
+      state.orders.push(newOrder);
+      await saveCloudState(state);
 
-        await sendTelegramMessage(
-          `নতুন অর্ডার এসেছে!\n` +
-          `Order ID: ${newOrder.id}\n` +
-          `Gmail: ${newOrder.customerEmail}\n` +
-          `Service: ${newOrder.service}\n` +
-          `Package: ${newOrder.package}\n` +
-          `UID: ${newOrder.uid}\n` +
-          `Sender: ${newOrder.senderPhone}\n` +
-          `TrxID: ${newOrder.trxId}\n` +
-          `Status: ${newOrder.status}`
-        );
+      await sendTelegramMessage(
+        `নতুন অর্ডার এসেছে!\n` +
+        `Order ID: ${newOrder.id}\n` +
+        `Gmail: ${newOrder.customerEmail}\n` +
+        `Service: ${newOrder.service}\n` +
+        `Package: ${newOrder.package}\n` +
+        `UID: ${newOrder.uid}\n` +
+        `Sender: ${newOrder.senderPhone}\n` +
+        `TrxID: ${newOrder.trxId}\n` +
+        `Status: ${newOrder.status}`
+      );
 
-        modalContainer.innerHTML = `
-          <div class="modal-sheet" style="text-align:center;">
-            <div style="font-size:44px; color:var(--success); font-weight:800;">✓</div>
-            <h2 style="margin:6px 0;">অর্ডার জমা হয়েছে</h2>
-            <p class="panel-sub">Order ID: <strong>${escapeHtml(newOrder.id)}</strong></p>
-            <button type="button" class="btn-ok" onclick="closeModalAfterSuccess()">অর্ডার দেখুন</button>
-          </div>
-        `;
-
-        formStatus.textContent = `অর্ডার জমা হয়েছে (${newOrder.id})`;
-        orderForm.reset();
-        resetPackageSelections();
-        renderAll(state);
-      } catch (err) {
-        modalContainer.innerHTML = `
-          <div class="modal-sheet" style="text-align:center;">
-            <div style="font-size:44px; color:var(--danger); font-weight:800;">✕</div>
-            <h2 style="margin:6px 0;">সমস্যা হয়েছে</h2>
-            <p class="panel-sub">${escapeHtml(err.message)}</p>
-            <button type="button" onclick="closeModal()">বন্ধ করুন</button>
-          </div>
-        `;
-      }
+      formStatus.textContent = `অর্ডার জমা হয়েছে (${newOrder.id})`;
+      orderForm.reset();
+      resetPackageSelections();
+      renderAll(state);
+      return newOrder;
     }
 
-    function showProcessingScreen(service, pkg, price, uid, senderPhone, trxId) {
+    function showProcessingScreen(newOrder) {
       let remainingSec = Math.floor(PROCESSING_DURATION_MS / 1000);
 
       modalContainer.innerHTML = `
         <div class="modal-sheet" style="text-align:center;">
           <div class="ring"></div>
           <h2 style="margin:0;">অর্ডার প্রসেসিং হচ্ছে</h2>
-          <p class="panel-sub">পেজটি বন্ধ করবেন না, ২ মিনিট অপেক্ষা করুন।</p>
+          <p class="panel-sub">Order ID: <strong>${escapeHtml(newOrder.id)}</strong></p>
+          <p class="panel-sub">মাত্র ৫ সেকেন্ড অপেক্ষা করুন...</p>
           <div id="countdownDisplay" class="timer-pill">${formatTime(remainingSec)}</div>
         </div>
       `;
@@ -1522,12 +1554,23 @@
         remainingSec -= 1;
         const el = document.getElementById("countdownDisplay");
         if (el && remainingSec >= 0) el.textContent = formatTime(remainingSec);
-        if (remainingSec <= 0) { clearInterval(countdownInterval); countdownInterval = null; }
+        if (remainingSec <= 0) {
+          clearInterval(countdownInterval);
+          countdownInterval = null;
+        }
       }, 1000);
 
-      processingTimeout = setTimeout(async () => {
+      processingTimeout = setTimeout(() => {
         if (countdownInterval) { clearInterval(countdownInterval); countdownInterval = null; }
-        await executeFinalOrderSubmission(service, pkg, price, uid, senderPhone, trxId);
+        modalContainer.innerHTML = `
+          <div class="modal-sheet" style="text-align:center;">
+            <div style="font-size:44px; color:var(--success); font-weight:800;">✓</div>
+            <h2 style="margin:6px 0;">অর্ডার জমা হয়েছে</h2>
+            <p class="panel-sub">Order ID: <strong>${escapeHtml(newOrder.id)}</strong></p>
+            <p class="panel-sub">অ্যাডমিন ৩ মিনিটের মধ্যে অর্ডারটি কমপ্লিট করবেন।</p>
+            <button type="button" class="btn-ok" onclick="closeModalAfterSuccess()">অর্ডার দেখুন</button>
+          </div>
+        `;
       }, PROCESSING_DURATION_MS);
     }
 
@@ -1566,17 +1609,34 @@
 
             <div class="action-pair" style="margin-top:16px;">
               <button type="button" class="btn-ghost" onclick="closeModal()">বাতিল</button>
-              <button type="submit" class="btn-ok">সাবমিট করুন</button>
+              <button type="submit" id="confirmOrderBtn" class="btn-ok">সাবমিট করুন</button>
             </div>
           </form>
         </div>
       `;
 
-      document.getElementById("paymentConfirmForm").addEventListener("submit", (subEvt) => {
+      document.getElementById("paymentConfirmForm").addEventListener("submit", async (subEvt) => {
         subEvt.preventDefault();
+        const btn = document.getElementById("confirmOrderBtn");
+        btn.disabled = true;
+        btn.textContent = "অর্ডার পাঠানো হচ্ছে...";
+
         const senderPhone = document.getElementById("senderPhone").value.trim();
         const trxId = document.getElementById("modalTrxId").value.trim();
-        showProcessingScreen(serviceVal, pkgVal, priceVal, uidVal, senderPhone, trxId);
+
+        try {
+          const newOrder = await saveOrderImmediately(serviceVal, pkgVal, priceVal, uidVal, senderPhone, trxId);
+          showProcessingScreen(newOrder);
+        } catch (err) {
+          modalContainer.innerHTML = `
+            <div class="modal-sheet" style="text-align:center;">
+              <div style="font-size:44px; color:var(--danger); font-weight:800;">✕</div>
+              <h2 style="margin:6px 0;">সমস্যা হয়েছে</h2>
+              <p class="panel-sub">${escapeHtml(err.message)}</p>
+              <button type="button" onclick="closeModal()">বন্ধ করুন</button>
+            </div>
+          `;
+        }
       });
     }
 
