@@ -72,6 +72,14 @@
       font-size: 16px;
       color: #fff;
       box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+      overflow: hidden;
+    }
+
+    .brand-mark img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
     }
 
     .brand h1 {
@@ -609,7 +617,9 @@
   <header class="topbar">
     <div class="topbar-inner">
       <div class="brand">
-        <div class="brand-mark">AS</div>
+        <div class="brand-mark">
+          <img src="https://i.postimg.cc/pTzSZY5j/image-35a7e2c0.jpg" alt="A.S FF TopUp" />
+        </div>
         <div>
           <h1>A.S FF TopUp</h1>
           <p>সকাল ৮:০০ – রাত ১০:০০ সাপোর্ট খোলা</p>
@@ -862,6 +872,9 @@
     const TELEGRAM_BOT_TOKEN = "9120055505:AAHFGkjefGTxTEulB16xGbaOgu2AifHPoKg";
     const TELEGRAM_CHAT_ID = "7283303333";
 
+    const PROFILE_IMAGE_URL = "https://i.postimg.cc/pTzSZY5j/image-35a7e2c0.jpg";
+    const WEBSITE_BASE_URL = "https://mdassadikislambd123.github.io/22/";
+
     const SESSION_KEY = "as_ff_topup_session_v6";
     const CONFIG_KEY = "as_ff_topup_config_v3";
     const PROCESSING_DURATION_MS = 5000; // কাস্টমারের জন্য ৫ সেকেন্ড
@@ -933,6 +946,29 @@
     const ticketsList = document.getElementById("ticketsList");
     const refreshBtn = document.getElementById("refreshBtn");
     const navButtons = document.querySelectorAll(".dock-btn");
+
+    function getAdminDirectUrl() {
+      const base = (WEBSITE_BASE_URL || window.location.href.split("?")[0]).trim();
+      const separator = base.includes("?") ? "&" : "?";
+      return `${base}${separator}admin=1`;
+    }
+
+    function checkUrlAdminParam() {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get("admin") === "1") {
+          const currentSession = getSession();
+          if (currentSession && currentSession.role === "admin") {
+            activeTab = "orders";
+            showAdminBox = false;
+          } else {
+            showAdminBox = true;
+          }
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
 
     function syncAdminNumberInputs() {
       const bInput = document.getElementById("panelBkashNum");
@@ -1088,6 +1124,7 @@
         if (showAdminBox) {
           authSection.classList.add("hidden");
           adminAuthSection.classList.remove("hidden");
+          adminAuthSection.scrollIntoView({ behavior: "smooth", block: "start" });
         } else {
           adminAuthSection.classList.add("hidden");
           authSection.classList.remove("hidden");
@@ -1164,14 +1201,59 @@
       return await res.json();
     }
 
-    async function sendTelegramMessage(text) {
+    async function sendTelegramMessage(captionText, withPhoto = false, includeAdminButton = false) {
       if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) return;
       try {
-        await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text })
-        });
+        const adminUrl = getAdminDirectUrl();
+        const keyboard = includeAdminButton && /^https?:\/\//i.test(adminUrl)
+          ? {
+              inline_keyboard: [
+                [{ text: "🔐 অ্যাডমিন প্যানেলে লগইন করুন", url: adminUrl }]
+              ]
+            }
+          : undefined;
+
+        if (withPhoto && PROFILE_IMAGE_URL) {
+          const payload = {
+            chat_id: TELEGRAM_CHAT_ID,
+            photo: PROFILE_IMAGE_URL,
+            caption: captionText,
+            parse_mode: "HTML"
+          };
+          if (keyboard) payload.reply_markup = keyboard;
+
+          const res = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          });
+
+          if (!res.ok) {
+            const msgPayload = {
+              chat_id: TELEGRAM_CHAT_ID,
+              text: captionText.replace(/<[^>]+>/g, "")
+            };
+            if (keyboard) msgPayload.reply_markup = keyboard;
+
+            await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(msgPayload)
+            });
+          }
+        } else {
+          const msgPayload = {
+            chat_id: TELEGRAM_CHAT_ID,
+            text: captionText.replace(/<[^>]+>/g, "")
+          };
+          if (keyboard) msgPayload.reply_markup = keyboard;
+
+          await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(msgPayload)
+          });
+        }
       } catch (err) {
         console.error(err);
       }
@@ -1516,16 +1598,27 @@
       state.orders.push(newOrder);
       await saveCloudState(state);
 
+      const safeOrderId = escapeHtml(newOrder.id);
+      const safeEmail = escapeHtml(newOrder.customerEmail);
+      const safeService = escapeHtml(newOrder.service);
+      const safePackage = escapeHtml(newOrder.package);
+      const safeUid = escapeHtml(newOrder.uid);
+      const safeSender = escapeHtml(newOrder.senderPhone);
+      const safeTrxId = escapeHtml(newOrder.trxId);
+      const safeStatus = escapeHtml(newOrder.status);
+
       await sendTelegramMessage(
-        `নতুন অর্ডার এসেছে!\n` +
-        `Order ID: ${newOrder.id}\n` +
-        `Gmail: ${newOrder.customerEmail}\n` +
-        `Service: ${newOrder.service}\n` +
-        `Package: ${newOrder.package}\n` +
-        `UID: ${newOrder.uid}\n` +
-        `Sender: ${newOrder.senderPhone}\n` +
-        `TrxID: ${newOrder.trxId}\n` +
-        `Status: ${newOrder.status}`
+        `🛒 <b>নতুন অর্ডার এসেছে!</b>\n\n` +
+        `🆔 <b>Order ID:</b> <code>${safeOrderId}</code>\n` +
+        `📧 <b>Gmail:</b> ${safeEmail}\n` +
+        `🎮 <b>Service:</b> ${safeService}\n` +
+        `💎 <b>Package:</b> ${safePackage}\n` +
+        `👤 <b>UID:</b> <code>${safeUid}</code>\n` +
+        `📱 <b>Sender:</b> <code>${safeSender}</code>\n` +
+        `💳 <b>TrxID:</b> <code>${safeTrxId}</code>\n` +
+        `⏳ <b>Status:</b> ${safeStatus}`,
+        true,
+        true
       );
 
       formStatus.textContent = `অর্ডার জমা হয়েছে (${newOrder.id})`;
@@ -1687,7 +1780,9 @@
           `Ticket ID: ${newTicket.id}\n` +
           `Gmail: ${newTicket.customerEmail}\n` +
           `Order ID: ${newTicket.orderId || "N/A"}\n` +
-          `Message: ${newTicket.message}`
+          `Message: ${newTicket.message}`,
+          false,
+          false
         );
         supportStatus.textContent = `পাঠানো হয়েছে (${newTicket.id})`;
         supportForm.reset();
@@ -1700,6 +1795,7 @@
     refreshBtn.addEventListener("click", loadAndRender);
 
     loadPaymentConfig();
+    checkUrlAdminParam();
     setAuthMode("register");
     resetPackageSelections();
     syncNavActive();
